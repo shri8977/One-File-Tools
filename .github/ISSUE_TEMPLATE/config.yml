@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ideas Board
+    url: https://github.com/praveenscience/One-File-Tools/blob/main/ReadMe.md#ideas-board
+    about: Check the Ideas Board in the ReadMe before proposing a new tool.
+  - name: Contributing Guide
+    url: https://github.com/praveenscience/One-File-Tools/blob/main/Contributing.md
+    about: Read the Contributing Guide before submitting a PR.

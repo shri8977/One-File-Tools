@@ -1,0 +1,104 @@
+name: New Tool Idea
+description: Propose a new single-file HTML developer tool.
+title: "Idea: "
+labels: ["idea"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing a new tool! Please fill in the details below.
+        Make sure your idea isn't already on the [Ideas Board](https://github.com/praveenscience/One-File-Tools/blob/main/ReadMe.md#ideas-board) or in existing issues.
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Tool Name
+      description: A short, descriptive name for the tool.
+      placeholder: e.g. JSON Formatter, Color Picker, JWT Decoder
+    validations:
+      required: true
+
+  - type: input
+    id: filename
+    attributes:
+      label: Proposed Filename
+      description: Kebab-case .html filename.
+      placeholder: e.g. json-formatter.html
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Which category does this tool belong to?
+      options:
+        - Web & SEO
+        - Image Tools
+        - Color Tools
+        - CSS Tools
+        - Text & Content
+        - JSON & API
+        - Developer Utilities
+        - Browser & Network
+        - Accessibility
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What does this tool do? Who is it for?
+      placeholder: Describe the tool's purpose and what problem it solves.
+    validations:
+      required: true
+
+  - type: textarea
+    id: features
+    attributes:
+      label: Key Features
+      description: List the main features (use bullet points).
+      placeholder: |
+        - Feature 1
+        - Feature 2
+        - Feature 3
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Suggested Difficulty
+      description: How complex do you think this tool is? (Final label assigned by maintainer, slightly negotiable.)
+      options:
+        - Easy
+        - Medium
+    validations:
+      required: true
+
+  - type: textarea
+    id: tags
+    attributes:
+      label: Tags
+      description: Comma-separated tags for filtering on the landing page.
+      placeholder: e.g. json, formatter, validator, minify
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References / Inspiration
+      description: Any existing tools or links for reference? (optional)
+      placeholder: Links to similar tools or screenshots for inspiration.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have checked the Ideas Board and existing issues for duplicates.
+          required: true
+        - label: This tool can be built as a single self-contained HTML file.
+          required: true
+        - label: This tool does not require a backend server to function.
+          required: true

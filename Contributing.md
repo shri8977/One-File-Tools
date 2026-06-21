@@ -43,12 +43,12 @@ This means:
 
 Every pull request should fall into one of these categories:
 
-| Type | Description | Label |
-|------|-------------|-------|
-| **New Tool** | Build a tool from the [Ideas Board](README.md#ideas-board) or propose your own. | `Easy` / `Medium` |
-| **Enhancement** | Improve an existing tool - UI, UX, features, accessibility, performance. | `Easy` / `Medium` |
-| **Bug Fix** | Fix something that’s broken. | `Easy` / `Medium` |
-| **Documentation** | Improve docs, add code comments, fix typos. | `Easy` |
+| Type              | Description                                                                     | Label             |
+| ----------------- | ------------------------------------------------------------------------------- | ----------------- |
+| **New Tool**      | Build a tool from the [Ideas Board](ReadMe.md#ideas-board) or propose your own. | `Easy` / `Medium` |
+| **Enhancement**   | Improve an existing tool - UI, UX, features, accessibility, performance.        | `Easy` / `Medium` |
+| **Bug Fix**       | Fix something that’s broken.                                                    | `Easy` / `Medium` |
+| **Documentation** | Improve docs, add code comments, fix typos.                                     | `Easy`            |
 
 ---
 
@@ -63,9 +63,11 @@ Every pull request should fall into one of these categories:
 
 If your tool idea isn’t on the Ideas Board:
 
-1. Open a new issue with the `idea` label.
-2. Describe the tool, its purpose, and what it does.
+1. Open a [New Tool Idea](https://github.com/praveenscience/One-File-Tools/issues/new?template=new-tool-idea.yml) issue using the issue template.
+2. Fill in the tool name, filename, category, description, features, and suggested difficulty.
 3. The maintainer will review it, assign a difficulty label, and add it to the board.
+
+For bug reports or enhancements to existing tools, use the appropriate [issue template](https://github.com/praveenscience/One-File-Tools/issues/new/choose).
 
 ---
 
@@ -356,7 +358,6 @@ Run Prettier before submitting:
 npx prettier --write tools/your-tool-name.html
 ```
 
-
 One thing worth noting: your `printWidth: 80000` is essentially “never wrap lines”. That’s intentional on your part, so I kept it as-is, but you may want to mention that in the description so contributors don’t think it’s a typo.
 
 ## Pull Request Process
@@ -372,34 +373,12 @@ Docs: what changed        — for documentation
 
 ### PR description
 
-Your pull request description should include:
+When you open a PR, a **template** will be pre-filled with the required sections. Fill in:
 
-1. **What** — What does this tool do / what did you change?
-2. **Screenshot** — Include a screenshot or GIF showing the tool in action
-3. **Checklist** — Confirm you’ve tested the requirements
-
-Example:
-
-```markdown
-## What: JSON Formatter (example)
-
-Added a JSON Formatter tool that formats, validates, and minifies JSON input.
-
-## Screenshot
-
-![JSON Formatter Screenshot](screenshot-url)
-
-## Checklist
-
-- [x] Single HTML file
-- [x] Works without a server
-- [x] Responsive design
-- [x] Dark mode support
-- [x] No console errors
-- [x] Tested on Chrome
-- [x] Tested on Firefox
-- [x] Tested on mobile viewport
-```
+1. **What** — What does this tool do / what did you change? Link the related issue with `Closes #123`.
+2. **Type of Change** — Check whether it’s a new tool, enhancement, bug fix, or docs update.
+3. **Screenshot** — Required for new tools and UI changes.
+4. **Checklist** — Go through the checklist and confirm you’ve met the requirements.
 
 ### What happens after you submit
 
@@ -414,9 +393,9 @@ Added a JSON Formatter tool that formats, validates, and minifies JSON input.
 
 ### Difficulty labels
 
-| Label | Meaning |
-|-------|---------|
-| `Easy` | Straightforward tool with a single clear purpose and minimal logic |
+| Label    | Meaning                                                                  |
+| -------- | ------------------------------------------------------------------------ |
+| `Easy`   | Straightforward tool with a single clear purpose and minimal logic       |
 | `Medium` | Tool with multiple features, interactive elements, or more complex logic |
 
 There are **no `Hard` labels** in this project. The single-file constraint naturally keeps scope manageable.
@@ -443,7 +422,7 @@ Welcome to **Social Summer of Code**! Here’s what you need to know:
 1. Go to the [Issues](https://github.com/praveenscience/One-File-Tools/issues) tab.
 2. Filter by `Easy` or `Medium` labels.
 3. Find an unassigned issue.
-4. Comment: *“I’d like to work on this as a part of SSoC”*.
+4. Comment: _“I’d like to work on this as a part of SSoC”_.
 5. Wait for assignment (do not start before being assigned).
 6. Fork, build, and submit your PR.
 7. Include `SSoC` in your PR description for tracking.
@@ -469,8 +448,8 @@ Welcome to **Social Summer of Code**! Here’s what you need to know:
 
 - **Stuck on something?** Comment on the issue you’re working on.
 - **Not sure which tool to pick?** Look for issues labeled `Easy` and `good first issue`.
-- **Found a bug?** Open an issue with the `bug` label.
-- **Have a tool idea?** Open an issue with the `idea` label.
+- **Found a bug?** Use the [Bug Report](https://github.com/praveenscience/One-File-Tools/issues/new?template=bug-report.yml) template.
+- **Have a tool idea?** Use the [New Tool Idea](https://github.com/praveenscience/One-File-Tools/issues/new?template=new-tool-idea.yml) template.
 - **General questions?** Open a discussion or reach out to the maintainer.
 
 ---

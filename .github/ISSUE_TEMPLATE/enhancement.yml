@@ -1,0 +1,79 @@
+name: Enhancement
+description: Suggest an improvement to an existing tool or the project infrastructure.
+title: "Enhance: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement! Please fill in the details below.
+
+  - type: input
+    id: tool-name
+    attributes:
+      label: Tool or Area
+      description: Which tool or part of the project does this affect?
+      placeholder: e.g. Open Graph Inspector, Landing Page, Build Script
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Enhancement Type
+      description: What kind of improvement is this?
+      options:
+        - UI / UX improvement
+        - New feature for existing tool
+        - Accessibility
+        - Dark mode / theming
+        - Keyboard shortcuts
+        - Performance
+        - Mobile responsiveness
+        - Documentation
+        - Build system
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What would you like to change or add?
+      placeholder: Describe the enhancement and why it would be useful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current Behavior
+      description: How does it work right now? (optional)
+      placeholder: Describe the current behavior or state.
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How should it work after the change?
+      placeholder: Describe your proposed solution or approach.
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots / Mockups
+      description: Any visuals to illustrate the enhancement? (optional)
+      placeholder: Drag and drop images here.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have checked existing issues for duplicates.
+          required: true
+        - label: This enhancement can be implemented without adding external dependencies.
+          required: true
