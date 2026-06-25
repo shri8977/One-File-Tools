@@ -98,6 +98,30 @@
       "status": "live"
     },
     {
+      "id": "box-shadow-generator",
+      "name": "Box Shadow Generator",
+      "shortDescription": "Design CSS box shadows visually with live preview, presets, and copy-ready output.",
+      "longDescription": "## Box Shadow Generator\n\nA visual CSS box-shadow designer for developers and designers.\n\n### Features\n\n- Interactive sliders for offset X/Y, blur radius, spread, and opacity\n- Color picker for shadow color\n- Inset shadow toggle\n- Multiple shadow layers support\n- Preset shadow styles\n- Live preview with customizable element\n- One-click copy of generated CSS code\n- Responsive, mobile-friendly design\n- Works completely offline",
+      "category": "css",
+      "tags": [
+        "box-shadow",
+        "css",
+        "design",
+        "frontend",
+        "generator",
+        "shadow",
+        "ui"
+      ],
+      "techStack": [
+        "CSS3",
+        "Google Fonts",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
       "id": "clip-path-generator",
       "name": "Clip Path Generator",
       "shortDescription": "Visually create complex CSS clip-path shapes and instantly copy the generated code.",
