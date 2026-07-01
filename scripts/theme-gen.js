@@ -7,10 +7,10 @@
  * in resume/themes/ and portfolio/themes/, outputting .html files.
  *
  * Usage:
- *   node theme-gen.js                      # uses ./profile.json
- *   node theme-gen.js path/to/profile.json  # custom profile path
+ *   node scripts/theme-gen.js                      # uses data/profile.json
+ *   node scripts/theme-gen.js path/to/profile.json  # custom profile path
  *
- * Contributors: create a .hbs file in resume/themes/ or portfolio/themes/.
+ * Contributors: create a .hbs file in resume/ or portfolio/.
  * See existing templates for examples. Available helpers are listed below.
  */
 
@@ -18,11 +18,13 @@ const fs = require("fs");
 const path = require("path");
 const Handlebars = require("handlebars");
 
+const rootDir = path.join(__dirname, "..");
+
 // ──────────────────────────────────────────────
 // Load profile data
 // ──────────────────────────────────────────────
 
-const profilePath = process.argv[2] || path.join(__dirname, "profile.json");
+const profilePath = process.argv[2] || path.join(rootDir, "data", "profile.json");
 let profile;
 try {
   profile = JSON.parse(fs.readFileSync(profilePath, "utf-8"));
@@ -171,8 +173,8 @@ function buildContext(profile) {
 // ──────────────────────────────────────────────
 
 var themeDirs = [
-  path.join(__dirname, "resume"),
-  path.join(__dirname, "portfolio")
+  path.join(rootDir, "resume"),
+  path.join(rootDir, "portfolio")
 ];
 
 var ctx = buildContext(profile);
@@ -194,7 +196,7 @@ themeDirs.forEach(function (dir) {
     var outName = file.replace(/\.hbs$/, ".html");
     var outPath = path.join(dir, outName);
     fs.writeFileSync(outPath, html, "utf-8");
-    console.log("  Built " + path.relative(__dirname, outPath));
+    console.log("  Built " + path.relative(rootDir, outPath));
     count++;
   });
 });

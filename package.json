@@ -4,7 +4,10 @@
   "description": "A collection of useful developer tools, each built as a single HTML file.",
   "private": true,
   "scripts": {
-    "build": "node build.js"
+    "build": "node scripts/build.js",
+    "themes": "node scripts/theme-gen.js",
+    "sort": "node scripts/sort-norm.js data/tools.json",
+    "sync-readme": "node scripts/sync-readme.js"
   },
   "author": "Praveen Kumar Purushothaman <praveen@praveen.science> (https://praveen.science)",
   "license": "Unlicense",

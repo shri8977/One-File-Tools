@@ -6,7 +6,7 @@ Thank you for contributing a portfolio theme to One File Tools! This guide will 
 
 ## What you're building
 
-A **single Handlebars template** (`.hbs` file) that turns `profile.json` data into a stunning portfolio website. When someone runs `node theme-gen.js`, your template gets filled with real data and outputs a standalone `.html` page.
+A **single Handlebars template** (`.hbs` file) that turns `data/profile.json` data into a stunning portfolio website. When someone runs `node scripts/theme-gen.js`, your template gets filled with real data and outputs a standalone `.html` page.
 
 Think of it like a mail merge — you design the layout, the data gets plugged in automatically.
 
@@ -24,7 +24,7 @@ portfolio/developer.html   <- generated automatically (don't commit this)
 
 1. Check [existing themes](#existing-themes) below so you don't duplicate a style
 2. Open an [issue](https://github.com/praveenscience/One-File-Tools/issues) to claim the theme you want to build
-3. Look at `profile.json` in the project root — this is the data your template will use
+3. Look at `data/profile.json` — this is the data your template will use
 4. Look at `portfolio/developer.hbs` — this is a working example you can learn from
 
 ---
@@ -152,19 +152,19 @@ Your file is a standard HTML page with Handlebars placeholders. Here's a starter
 ### 5. Test it
 
 ```bash
-node theme-gen.js
+node scripts/theme-gen.js
 open portfolio/creative.html
 ```
 
-Edit your `.hbs`, run `node theme-gen.js` again, refresh the browser. Repeat until you're happy.
+Edit your `.hbs`, run `node scripts/theme-gen.js` again, refresh the browser. Repeat until you're happy.
 
 ### 6. Take a screenshot
 
 Save it as `portfolio/creative.png` (same name as your `.hbs` file). Recommended size: **1280x720** (16:9 aspect ratio).
 
-### 7. Register in themes.json
+### 7. Register in data/themes.json
 
-Open `themes.json` in the project root and add your entry to the `"portfolio"` array:
+Open `data/themes.json` and add your entry to the `"portfolio"` array:
 
 ```json
 {
@@ -186,7 +186,7 @@ That's it — just `id`, `name`, `description`, `author`. All file paths are der
 ### 8. Commit and push
 
 ```bash
-git add portfolio/creative.hbs portfolio/creative.png themes.json
+git add portfolio/creative.hbs portfolio/creative.png data/themes.json
 git commit -m "Add: portfolio theme — creative"
 git push origin add/portfolio-theme-creative
 ```
@@ -199,7 +199,7 @@ Then open a Pull Request on GitHub.
 
 ## Available data
 
-Your template receives these fields from `profile.json`. Use whichever ones fit your design — you don't need to include them all.
+Your template receives these fields from `data/profile.json`. Use whichever ones fit your design — you don't need to include them all.
 
 ### Personal & contact
 
@@ -355,7 +355,7 @@ Use `{{#if}}` instead of `{{#fieldName}}` when inside a loop (avoids Handlebars 
 - [ ] Works by opening the generated `.html` in a browser
 - [ ] Responsive — looks good on desktop, tablet, and mobile
 - [ ] Screenshot saved as `portfolio/[id].png` (1280x720 recommended)
-- [ ] Entry added to `themes.json` under `"portfolio"`
+- [ ] Entry added to `data/themes.json` under `"portfolio"`
 - [ ] No console errors
 - [ ] Footer includes link back to One File Tools
 - [ ] Projects section is visually prominent
