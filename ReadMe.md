@@ -78,6 +78,7 @@ Every tool in this collection is a standalone `.html` file containing all the HT
 | 49 | [Twitter / X Card Preview](tools/twitter-x-card-preview.html) | Web & SEO | Preview how Twitter/X cards appear with live updates for Summary and Summary Large Image layouts. | [Try it](https://one-file-tools.pages.dev/tools/twitter-x-card-preview) |
 | 50 | [URL Encoder / Decoder](tools/url-encoder-decoder.html) | JSON & API | Encode and decode URLs or percent-encoded strings instantly using native browser APIs. | [Try it](https://one-file-tools.pages.dev/tools/url-encoder-decoder) |
 | 51 | [UUID Generator](tools/uuid-generator.html) | Developer Utilities | Generate random v4 UUIDs instantly, offline. | [Try it](https://one-file-tools.pages.dev/tools/uuid-generator) |
+| XX | [Privacy Policy Generator](tools/privacy-policy-generator.html) | Web & SEO | Generate customizable privacy policies for websites and apps with a simple form, live preview, copy, and download options. Works completely offline. | [Try it](https://one-file-tools.pages.dev/tools/privacy-policy-generator) |
 
 > **Want to see your tool here?** Check out the [Contributing Guide](Contributing.md) and pick an idea from the [Ideas Board](#ideas-board).
 
@@ -99,7 +100,7 @@ Below is a curated list of tool ideas waiting to be built. Each idea is a potent
 | JSON-LD / Schema.org Generator — build structured data         | Medium     |
 | Hreflang Tag Generator — generate multi-language link tags     | Easy       |
 | ~~Responsive Breakpoint Tester~~ — ✅ [Built](tools/responsive-breakpoint-tester.html) | Medium |
-| Privacy Policy Generator — fill a form, get a basic privacy policy   | Easy   |
+| ~~Privacy Policy Generator — fill a form, get a basic privacy policy~~ | ✅ Built |
 
 ### Image Tools
 

@@ -1065,6 +1065,22 @@
       "status": "live"
     },
     {
+      "name": "Privacy Policy Generator",
+      "filename": "privacy-policy-generator.html",
+      "category": "Web & SEO",
+      "description": "Generate customizable privacy policies for websites and apps using a simple form with live preview, copy, and download options. Works completely offline.",
+      "tags": [
+        "ccpa",
+        "gdpr",
+        "generator",
+        "legal",
+        "policy",
+        "privacy",
+        "seo",
+        "website"
+      ]
+    },
+    {
       "id": "qr-code-generator",
       "name": "QR Code Generator",
       "shortDescription": "Instantly generate customizable, high-quality QR codes offline.",
