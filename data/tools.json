@@ -337,6 +337,28 @@
       "status": "live"
     },
     {
+      "id": "color-palette-generator",
+      "name": "Color Palette Generator",
+      "shortDescription": "Generate beautiful random color combinations for designers and frontend developers.",
+      "longDescription": "## Color Palette Generator\n\nA modern tool that creates beautiful color combinations for designers and frontend developers. Press spacebar to rapidly generate new palettes.\n\n### Features\n\n- Generate 5-color palettes instantly\n- Lock individual colors (🔒/🔓) while regenerating the rest\n- Click to instantly copy HEX codes to your clipboard\n- Export as CSS root variables\n- Export as a JSON array file\n- Fully responsive layout for mobile testing",
+      "category": "color",
+      "tags": [
+        "color",
+        "css",
+        "design",
+        "hex",
+        "palette",
+        "ui"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "command-step-loader",
       "name": "Command Step Loader",
       "shortDescription": "Load multiple commands and copy them one at a time with a terminal-style interface.",
