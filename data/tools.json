@@ -2307,49 +2307,6 @@
       ],
       "difficulty": "Easy",
       "status": "live"
-<<<<<<< HEAD
-=======
-    },
-    {
-      "id": "target-grade-forecaster",
-      "name": "Target Grade Forecaster",
-      "shortDescription": "Calculate your current average and find out exactly what you need on the final.",
-      "longDescription": "## Target Grade & GPA Forecaster\n\nCalculate your current average and find out exactly what you need on the final exam to achieve your target grade.",
-      "category": "utilities",
-      "tags": [
-        "education",
-        "student",
-        "calculator",
-        "grades",
-        "university"
-      ],
-      "techStack": [
-        "HTML5",
-        "CSS3",
-        "Vanilla JS"
-      ],
-      "difficulty": "Easy",
-      "status": "live"
-    },
-    {
-      "id": "css-animation-builder",
-      "name": "CSS Animation Builder",
-      "shortDescription": "Visually create CSS animations and export keyframes without manually writing CSS.",
-      "longDescription": "## CSS Animation Builder\n\nAllow users to visually create CSS animations and export keyframes without manually writing CSS.",
-      "category": "css",
-      "tags": [
-        "css",
-        "animation",
-        "frontend"
-      ],
-      "techStack": [
-        "HTML5",
-        "CSS3",
-        "Vanilla JS"
-      ],
-      "difficulty": "Medium",
-      "status": "live"
->>>>>>> af7b77a34ce5141f2a7a1b3fd4a8518b465cfec1
     }
   ]
 }
