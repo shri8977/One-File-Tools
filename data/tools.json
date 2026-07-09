@@ -104,7 +104,7 @@
       "name": "Advanced Robots.txt Generator",
       "shortDescription": "Visually create and customize robots.txt files with support for multiple user-agents, crawl rules, sitemaps, and instant code generation.",
       "longDescription": "## Advanced Robots.txt Generator\n\nGenerate a valid robots.txt file through an intuitive visual interface. Configure multiple user-agent groups, Allow/Disallow directives, Crawl-delay values, optional Host directives, and XML Sitemaps while seeing the generated robots.txt update instantly.\n\n### Features\n\n- Visual editor for robots.txt generation\n- Support for multiple User-agent groups\n- Add Allow and Disallow rules with one click\n- Optional Crawl-delay directive for each user-agent\n- Optional Host directive support\n- Add multiple XML Sitemap URLs\n- Built-in presets including Allow All, Disallow All, Standard SEO, and WordPress Base\n- Live syntax-highlighted robots.txt preview\n- Copy generated robots.txt to the clipboard\n- Download the generated file as robots.txt\n- Fully responsive interface with modern dark theme\n- Built with HTML, CSS, and Vanilla JavaScript with no backend required",
-      "category": "seo",
+      "category": "web-seo",
       "tags": [
         "crawler",
         "generator",
@@ -668,10 +668,22 @@
     {
       "id": "css-animation-builder",
       "name": "CSS Animation Builder",
-      "shortDescription": "Allow users to visually create CSS animations and export keyframes without manually writing CSS.",
-      "link": "/tools/css-animation-builder.html",
-      "icon": "fa-film",
-      "image": "/tools/css-animation-builder.png"
+      "shortDescription": "Visually create CSS animations and export keyframes without manually writing CSS.",
+      "longDescription": "## CSS Animation Builder\n\nA visual tool for creating CSS animations with keyframe editing and live preview.\n\n### Features\n\n- Visual keyframe editor\n- Live animation preview\n- Export generated CSS keyframes\n- Dark mode support",
+      "category": "css",
+      "tags": [
+        "animation",
+        "css",
+        "generator",
+        "keyframes"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
     },
     {
       "id": "css-color-converter",
@@ -1725,7 +1737,7 @@
       "name": "Procedural Pixel Art Generator",
       "shortDescription": "Generate symmetrical retro 8-bit sprites using cellular automata and random noise.",
       "longDescription": "## Procedural Pixel Art Sprite Generator & Animator\n\nCreate a web-based pixel art creator and procedural asset generator using HTML, CSS, and JavaScript. The application leverages cellular automata and symmetric random noise to automatically generate retro sprites (e.g. spaceships, monsters, items) and animate them using pixel grid timelines.\n\n### Features\n\n- Educates developers on procedural logic, cellular automata (Conway's rules), and random seeding.\n- Provides an interactive UI for creating, generating, and exporting retro pixel art.\n- Demonstrates timeline frames and sprite sheet generation techniques.",
-      "category": "web-seo",
+      "category": "image",
       "tags": [
         "canvas",
         "enhancement",
@@ -2102,27 +2114,6 @@
       "techStack": [
         "CSS3",
         "Google Fonts",
-        "HTML5",
-        "Vanilla JS"
-      ],
-      "difficulty": "Easy",
-      "status": "live"
-    },
-    {
-      "id": "target-grade-forecaster",
-      "name": "Target Grade Forecaster",
-      "shortDescription": "Calculate your current average and find out exactly what you need on the final.",
-      "longDescription": "## Target Grade & GPA Forecaster\n\nCalculate your current average and find out exactly what you need on the final exam to achieve your target grade.",
-      "category": "utilities",
-      "tags": [
-        "calculator",
-        "education",
-        "grades",
-        "student",
-        "university"
-      ],
-      "techStack": [
-        "CSS3",
         "HTML5",
         "Vanilla JS"
       ],

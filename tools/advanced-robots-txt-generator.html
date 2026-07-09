@@ -417,6 +417,8 @@
     </main>
 
     <script>
+      function esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+
       let state = {
         host: "",
         sitemaps: [],
@@ -456,12 +458,12 @@
                     
                     <div class="form-group">
                         <label>User-Agent</label>
-                        <input type="text" value="${agent.name}" placeholder="*" oninput="updateAgent(${agentIndex}, 'name', this.value)">
+                        <input type="text" value="${esc(agent.name)}" placeholder="*" oninput="updateAgent(${agentIndex}, 'name', this.value)">
                     </div>
 
                     <div class="form-group">
                         <label>Crawl-Delay (seconds, optional)</label>
-                        <input type="text" value="${agent.delay}" placeholder="e.g., 10" oninput="updateAgent(${agentIndex}, 'delay', this.value)">
+                        <input type="text" value="${esc(agent.delay)}" placeholder="e.g., 10" oninput="updateAgent(${agentIndex}, 'delay', this.value)">
                     </div>
 
                     <div class="form-group">
@@ -474,7 +476,7 @@
                                     <button class="toggle-option ${rule.type === "Allow" ? "active" : ""}" onclick="updateRuleType(${agentIndex}, ${ruleIndex}, 'Allow')">Allow</button>
                                     <button class="toggle-option ${rule.type === "Disallow" ? "active disallow" : ""}" onclick="updateRuleType(${agentIndex}, ${ruleIndex}, 'Disallow')">Disallow</button>
                                 </div>
-                                <input type="text" value="${rule.path}" placeholder="/" oninput="updateRulePath(${agentIndex}, ${ruleIndex}, this.value)">
+                                <input type="text" value="${esc(rule.path)}" placeholder="/" oninput="updateRulePath(${agentIndex}, ${ruleIndex}, this.value)">
                                 <button class="icon-btn" onclick="removeRule(${agentIndex}, ${ruleIndex})">✕</button>
                             </div>
                         `
@@ -596,17 +598,17 @@
         state.agents.forEach((agent) => {
           if (!agent.name) return;
           raw += `User-agent: ${agent.name}\n`;
-          html += `<span class="token-key">User-agent:</span> <span class="token-value">${agent.name}</span>\n`;
+          html += `<span class="token-key">User-agent:</span> <span class="token-value">${esc(agent.name)}</span>\n`;
 
           if (agent.delay) {
             raw += `Crawl-delay: ${agent.delay}\n`;
-            html += `<span class="token-key">Crawl-delay:</span> <span class="token-value">${agent.delay}</span>\n`;
+            html += `<span class="token-key">Crawl-delay:</span> <span class="token-value">${esc(agent.delay)}</span>\n`;
           }
 
           agent.rules.forEach((rule) => {
             if (!rule.path) return;
             raw += `${rule.type}: ${rule.path}\n`;
-            html += `<span class="token-key">${rule.type}:</span> <span class="token-path">${rule.path}</span>\n`;
+            html += `<span class="token-key">${esc(rule.type)}:</span> <span class="token-path">${esc(rule.path)}</span>\n`;
           });
           raw += "\n";
           html += "\n";
@@ -615,7 +617,7 @@
         state.sitemaps.forEach((sm) => {
           if (!sm) return;
           raw += `Sitemap: ${sm}\n`;
-          html += `<span class="token-key">Sitemap:</span> <span class="token-value">${sm}</span>\n`;
+          html += `<span class="token-key">Sitemap:</span> <span class="token-value">${esc(sm)}</span>\n`;
         });
 
         document.getElementById("code-output").innerHTML = html;
