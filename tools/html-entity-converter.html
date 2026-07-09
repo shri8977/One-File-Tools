@@ -417,7 +417,7 @@ Built for One File Tools.
       /** Returns true when a character is a "safe" printable ASCII letter/digit/space. */
       function isSafeAscii(char) {
         const code = char.codePointAt(0);
-        return (code >= 0x20 && code <= 0x7e) && !/[&<>"']/.test(char);
+        return code >= 0x20 && code <= 0x7e && !/[&<>"']/.test(char);
       }
 
       /** Encodes a single character per the selected format and options. */

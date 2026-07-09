@@ -1067,7 +1067,6 @@
           renderExports();
         }
 
-
         function renderStats(lineCount) {
           const stats = getStats();
           nodes.totalStat.textContent = String(stats.total);
@@ -1125,7 +1124,6 @@
           const pageRows = filteredRows.slice(start, start + state.pageSize);
           const fragment = document.createDocumentFragment();
 
-
           pageRows.forEach((row) => {
             const tr = document.createElement("tr");
             appendCell(tr, String(row.index));
@@ -1140,15 +1138,11 @@
           nodes.body.replaceChildren(fragment);
           nodes.empty.hidden = filteredRows.length > 0;
 
-          nodes.pageSummary.textContent =
-            pageCount === 0
-              ? "No results (0 rows)"
-              : "Page " + state.page + " of " + pageCount + " (" + filteredRows.length + " rows)";
+          nodes.pageSummary.textContent = pageCount === 0 ? "No results (0 rows)" : "Page " + state.page + " of " + pageCount + " (" + filteredRows.length + " rows)";
 
           nodes.prevPage.disabled = pageCount === 0 || state.page <= 1;
           nodes.nextPage.disabled = pageCount === 0 || state.page >= pageCount;
         }
-
 
         function appendCell(rowElement, text, className) {
           const td = document.createElement("td");
@@ -1268,7 +1262,6 @@
           // When there are 0 rows after filtering, treat it as 0 pages.
           return Math.ceil(rows.length / state.pageSize);
         }
-
 
         function renderIssues() {
           const fragment = document.createDocumentFragment();

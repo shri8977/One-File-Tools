@@ -506,13 +506,7 @@ Built for One File Tools.
       btnCopy.addEventListener("click", async () => {
         if (!lastResult) return;
 
-        const lines = [
-          lastResult.method + " " + lastResult.url,
-          "Status: " + lastResult.status + " " + lastResult.statusText,
-          "Time: " + lastResult.durationMs + " ms",
-          "",
-          ...lastResult.headers.map((h) => h.name + ": " + h.value)
-        ];
+        const lines = [lastResult.method + " " + lastResult.url, "Status: " + lastResult.status + " " + lastResult.statusText, "Time: " + lastResult.durationMs + " ms", "", ...lastResult.headers.map((h) => h.name + ": " + h.value)];
         const text = lines.join("\n");
 
         const originalText = btnCopy.textContent;
@@ -558,4 +552,3 @@ Built for One File Tools.
     </script>
   </body>
 </html>
-
