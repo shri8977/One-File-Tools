@@ -639,6 +639,25 @@
       "status": "live"
     },
     {
+      "id": "css-animation-builder",
+      "name": "CSS Animation Builder",
+      "shortDescription": "Visually create CSS animations and export keyframes without manually writing CSS.",
+      "longDescription": "## CSS Animation Builder\n\nAllow users to visually create CSS animations and export keyframes without manually writing CSS.",
+      "category": "css",
+      "tags": [
+        "animation",
+        "css",
+        "frontend"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "css-color-converter",
       "name": "CSS Color Converter",
       "shortDescription": "Convert between Hex, RGB, HSL, HSLA, and OKLCH color formats instantly with a visual picker.",
@@ -2095,6 +2114,27 @@
       "status": "live"
     },
     {
+      "id": "target-grade-forecaster",
+      "name": "Target Grade Forecaster",
+      "shortDescription": "Calculate your current average and find out exactly what you need on the final.",
+      "longDescription": "## Target Grade & GPA Forecaster\n\nCalculate your current average and find out exactly what you need on the final exam to achieve your target grade.",
+      "category": "utilities",
+      "tags": [
+        "calculator",
+        "education",
+        "grades",
+        "student",
+        "university"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
       "id": "text-diff-viewer",
       "name": "Text Diff Viewer",
       "shortDescription": "Compare two blocks of text and see line-level and word-level differences, side-by-side or unified.",
@@ -2259,6 +2299,24 @@
       "status": "live"
     },
     {
+      "id": "visual-turing-machine",
+      "name": "Visual Turing Machine",
+      "shortDescription": "A compiler and visual simulator engine for Turing Machine rules (State / Read / Write / Move / Next).",
+      "longDescription": "## Visual Turing Machine\n\nSimulator for Turing Machine rules.",
+      "category": "utilities",
+      "tags": [
+        "simulator",
+        "turing"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Hard",
+      "status": "live"
+    },
+    {
       "id": "word-character-counter",
       "name": "Word / Character Counter",
       "shortDescription": "Real-time word, character, and sentence counter for text of any length.",
@@ -2306,64 +2364,6 @@
         "Vanilla JS"
       ],
       "difficulty": "Easy",
-      "status": "live"
-    },
-    {
-      "id": "target-grade-forecaster",
-      "name": "Target Grade Forecaster",
-      "shortDescription": "Calculate your current average and find out exactly what you need on the final.",
-      "longDescription": "## Target Grade & GPA Forecaster\n\nCalculate your current average and find out exactly what you need on the final exam to achieve your target grade.",
-      "category": "utilities",
-      "tags": [
-        "education",
-        "student",
-        "calculator",
-        "grades",
-        "university"
-      ],
-      "techStack": [
-        "HTML5",
-        "CSS3",
-        "Vanilla JS"
-      ],
-      "difficulty": "Easy",
-      "status": "live"
-    },
-    {
-      "id": "css-animation-builder",
-      "name": "CSS Animation Builder",
-      "shortDescription": "Visually create CSS animations and export keyframes without manually writing CSS.",
-      "longDescription": "## CSS Animation Builder\n\nAllow users to visually create CSS animations and export keyframes without manually writing CSS.",
-      "category": "css",
-      "tags": [
-        "css",
-        "animation",
-        "frontend"
-      ],
-      "techStack": [
-        "HTML5",
-        "CSS3",
-        "Vanilla JS"
-      ],
-      "difficulty": "Medium",
-      "status": "live"
-    },
-    {
-      "id": "visual-turing-machine",
-      "name": "Visual Turing Machine",
-      "shortDescription": "A compiler and visual simulator engine for Turing Machine rules (State / Read / Write / Move / Next).",
-      "longDescription": "## Visual Turing Machine\n\nSimulator for Turing Machine rules.",
-      "category": "utilities",
-      "tags": [
-        "turing",
-        "simulator"
-      ],
-      "techStack": [
-        "HTML5",
-        "CSS3",
-        "Vanilla JS"
-      ],
-      "difficulty": "Hard",
       "status": "live"
     }
   ]
