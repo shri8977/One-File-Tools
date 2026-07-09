@@ -1661,6 +1661,27 @@
       "status": "live"
     },
     {
+      "id": "procedural-animator",
+      "name": "Procedural Pixel Art Generator",
+      "shortDescription": "Generate symmetrical retro 8-bit sprites using cellular automata and random noise.",
+      "longDescription": "## Procedural Pixel Art Sprite Generator & Animator\n\nCreate a web-based pixel art creator and procedural asset generator using HTML, CSS, and JavaScript. The application leverages cellular automata and symmetric random noise to automatically generate retro sprites (e.g. spaceships, monsters, items) and animate them using pixel grid timelines.\n\n### Features\n\n- Educates developers on procedural logic, cellular automata (Conway's rules), and random seeding.\n- Provides an interactive UI for creating, generating, and exporting retro pixel art.\n- Demonstrates timeline frames and sprite sheet generation techniques.",
+      "category": "Web & SEO",
+      "tags": [
+        "canvas",
+        "enhancement",
+        "game-dev",
+        "javascript",
+        "procedural-generation"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "qr-code-generator",
       "name": "QR Code Generator",
       "shortDescription": "Instantly generate customizable, high-quality QR codes offline.",
