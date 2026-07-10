@@ -475,6 +475,10 @@ Built for One File Tools.
        * which we surface as a clear error rather than a silent failure.
        */
       async function fetchUrlHtml(url) {
+        const parsed = new URL(url);
+        if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+          throw new Error("Only http and https URLs are supported.");
+        }
         const response = await fetch(url, { mode: "cors" });
         if (!response.ok) throw new Error("Server responded with status " + response.status);
         return await response.text();
@@ -590,7 +594,7 @@ Built for One File Tools.
         analyzeError.textContent = "";
         const { headings, issues, counts } = analyzeHeadings(htmlString);
 
-        if (headings.length === 0 && issues.length === 0) {
+        if (headings.length === 0) {
           emptyState.hidden = false;
           statsRow.innerHTML = "";
           issuesList.innerHTML = "";
