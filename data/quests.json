@@ -74,6 +74,30 @@
       "status": "live"
     },
     {
+      "id": "closure-escape-room",
+      "name": "Closure Escape Room",
+      "shortDescription": "Escape puzzle rooms by solving JavaScript closure, lexical scope, callback, and private state challenges.",
+      "longDescription": "## Closure Escape Room\n\nAn escape-room themed JavaScript quest where every locked door is opened by solving a closure puzzle. Learn how closures capture variables, understand lexical scope, debug common mistakes, and master private state through interactive challenges.\n\n### Features\n\n- 10 progressively challenging escape rooms\n- Learn closures, lexical scope, callbacks, private variables, and data encapsulation\n- Interactive puzzles with real-time feedback and explanations\n- Hint system for difficult challenges\n- Progress saved locally using localStorage\n- Responsive and keyboard accessible\n- Works completely offline",
+      "category": "js-fundamentals",
+      "tags": [
+        "closures",
+        "escape-room",
+        "interactive",
+        "javascript",
+        "lexical-scope",
+        "puzzle",
+        "quest"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "LocalStorage API",
+        "Vanilla JS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "dead-scope",
       "name": "Dead Scope",
       "shortDescription": "A horror-themed JavaScript quiz — 10 hauntings covering closures, shadowing, hoisting, and loop bindings. Wrong answers drain your sanity and darken the room.",
