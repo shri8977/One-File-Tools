@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Closure Escape Room</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #170F26;
+    --bg-2: #201638;
+    --bg-3: #2A1E48;
+    --ink: #F4EEFF;
+    --ink-soft: #C9BEE0;
+    --muted: #8B7FA8;
+    --line: rgba(255,255,255,0.09);
+    --line-strong: rgba(255,255,255,0.18);
+    --cyan: #28E1E5;
+    --brass: #FF3D81;
+    --brass-bright: #FF6FA3;
+    --amber: #FFC857;
+    --success: #4CE39A;
+    --danger: #FF5D6C;
+    --code-bg: #0C0718;
+    --radius: 8px;
+    --display: 'Chakra Petch', 'Inter', sans-serif;
+    --pixel: 'Press Start 2P', var(--display);
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  *{ box-sizing: border-box; }
+  html,body{ margin:0; padding:0; height:100%; }
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(255,61,129,0.16), transparent 60%),
+      radial-gradient(ellipse 900px 600px at 100% 10%, rgba(40,225,229,0.14), transparent 55%),
+      var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    min-height: 100vh;
+    position: relative;
+    isolation: isolate;
+  }
+  body::after{
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 998;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.035) 0px,
+      rgba(255,255,255,0.035) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: overlay;
+  }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+  button{ font-family: inherit; }
+  :focus-visible{ outline: 2px solid var(--cyan); outline-offset: 2px; }
+  @keyframes fadeUp{ from{ opacity:0; transform: translateY(8px);} to{ opacity:1; transform: translateY(0);} }
+  @keyframes popIn{ from{ opacity:0; transform: scale(0.9);} to{ opacity:1; transform: scale(1);} }
+  @keyframes pulseGlow{ 0%,100%{ box-shadow: 0 0 6px rgba(40,225,229,0.4);} 50%{ box-shadow: 0 0 16px rgba(40,225,229,0.75);} }
+  @keyframes slideInRight{ from{ opacity:0; transform: translateX(24px);} to{ opacity:1; transform: translateX(0);} }
+  @keyframes slideOutRight{ from{ opacity:1; transform: translateX(0);} to{ opacity:0; transform: translateX(24px);} }
+  @keyframes titleGlow{ 0%,100%{ text-shadow: 0 0 14px rgba(255,111,163,0.65), 0 0 34px rgba(40,225,229,0.3);} 50%{ text-shadow: 0 0 22px rgba(255,111,163,0.9), 0 0 46px rgba(40,225,229,0.5);} }
+
+  /* ---------------- Splash ---------------- */
+  .splash-overlay{
+    position: fixed; inset: 0; z-index: 2000;
+    background: radial-gradient(ellipse 1100px 700px at 50% 20%, rgba(255,61,129,0.18), transparent 60%), var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  .splash-overlay.hidden{ opacity: 0; visibility: hidden; pointer-events: none; }
+  .splash-card{
+    max-width: 520px;
+    text-align: center;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 14px;
+    padding: 40px 30px;
+    background: rgba(255,255,255,0.02);
+    box-shadow: 0 0 0 1px rgba(40,225,229,0.1) inset, 0 20px 60px -20px rgba(0,0,0,0.6);
+    animation: popIn 0.5s ease;
+  }
+  .splash-eyebrow{
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 18px;
+  }
+  .splash-title{
+    font-family: var(--pixel);
+    font-size: clamp(20px, 5vw, 30px);
+    line-height: 1.6;
+    color: var(--brass-bright);
+    margin: 0 0 20px;
+    animation: titleGlow 2.4s ease-in-out infinite;
+  }
+  .splash-blurb{ color: var(--ink-soft); font-size: 14px; margin: 0 0 26px; }
+  .splash-start{ font-size: 14px; padding: 14px 28px; }
+  .splash-hint{ margin: 16px 0 0; font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+  /* ---------------- Confetti / toast layers ---------------- */
+  #confettiCanvas{ position: fixed; inset: 0; z-index: 1500; pointer-events: none; }
+  /* ---------------- Mascot: Bit, the vault spirit ---------------- */
+  @keyframes mascotBob{ 0%,100%{ transform: translateY(0) rotate(0deg);} 50%{ transform: translateY(-7px) rotate(-2deg);} }
+  @keyframes mascotBlink{ 0%,90%,100%{ transform: scaleY(1);} 95%{ transform: scaleY(0.15);} }
+  @keyframes mascotPoke{ 0%{ transform: scale(1) translateY(0);} 30%{ transform: scale(0.88) translateY(4px);} 60%{ transform: scale(1.06) translateY(-6px);} 100%{ transform: scale(1) translateY(0);} }
+  .mascot-wrap{
+    position: fixed; left: 16px; bottom: 16px; z-index: 1400;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+    max-width: min(260px, calc(100vw - 32px));
+  }
+  .mascot-bubble{
+    position: relative;
+    background: var(--bg-2);
+    border: 1.5px solid var(--line-strong);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    box-shadow: 0 10px 28px -10px rgba(0,0,0,0.55);
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+    transition: opacity 0.22s ease, transform 0.22s ease;
+    pointer-events: none;
+  }
+  .mascot-bubble.show{ opacity: 1; transform: translateY(0) scale(1); }
+  .mascot-bubble::after{
+    content: "";
+    position: absolute; left: 20px; bottom: -6px;
+    width: 11px; height: 11px;
+    background: var(--bg-2);
+    border-right: 1.5px solid var(--line-strong);
+    border-bottom: 1.5px solid var(--line-strong);
+    transform: rotate(45deg);
+  }
+  .mascot-name{ font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cyan); display:block; margin-bottom: 4px; }
+  .mascot-avatar{
+    width: 54px; height: 58px;
+    border: none; padding: 0; cursor: pointer;
+    background: linear-gradient(155deg, var(--cyan), var(--brass));
+    clip-path: polygon(50% 0%, 88% 8%, 100% 36%, 100% 76%, 86% 90%, 72% 78%, 58% 92%, 44% 78%, 30% 92%, 16% 78%, 0% 76%, 0% 36%, 12% 8%);
+    position: relative;
+    box-shadow: 0 0 16px rgba(255,61,129,0.45), 0 0 26px rgba(40,225,229,0.25);
+    animation: mascotBob 3.4s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .mascot-avatar:hover{ filter: brightness(1.1); }
+  .mascot-avatar.poked{ animation: mascotPoke 0.5s ease; }
+  .mascot-avatar .m-eye{
+    position: absolute; top: 40%; width: 8px; height: 8px;
+    background: #1A0B14; border-radius: 1px;
+    animation: mascotBlink 4.6s ease-in-out infinite;
+  }
+  .mascot-avatar .m-eye-l{ left: 28%; }
+  .mascot-avatar .m-eye-r{ right: 28%; }
+  .mascot-avatar.mini{ width: 40px; height: 43px; animation: mascotBob 3.4s ease-in-out infinite; }
+  .mascot-avatar.mini .m-eye{ width: 6px; height: 6px; }
+  .splash-mascot{ display: flex; align-items: center; gap: 12px; margin: 0 0 22px; text-align: left; }
+  .splash-mascot p{ margin: 0; font-size: 13px; color: var(--ink-soft); font-style: italic; }
+  @media (max-width: 520px){
+    .mascot-wrap{ left: 10px; bottom: 10px; }
+    .mascot-avatar{ width: 44px; height: 47px; }
+  }
+
+  .toast-stack{
+    position: fixed; top: 18px; right: 18px; z-index: 1600;
+    display: flex; flex-direction: column; gap: 10px;
+    max-width: min(320px, calc(100vw - 36px));
+  }
+  .toast{
+    background: var(--bg-2);
+    border: 1px solid var(--line-strong);
+    border-left: 4px solid var(--amber);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    box-shadow: 0 12px 30px -10px rgba(0,0,0,0.5);
+    animation: slideInRight 0.3s ease;
+  }
+  .toast.leaving{ animation: slideOutRight 0.3s ease forwards; }
+  .toast .tt{ font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--amber); margin: 0 0 3px; }
+  .toast .ts{ font-size: 12px; color: var(--ink-soft); margin: 0; }
+
+  .app{
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    min-height: 100vh;
+  }
+  @media (max-width: 860px){
+    .app{ grid-template-columns: 1fr; }
+  }
+
+  /* ---------------- Sidebar ---------------- */
+  .sidebar{
+    background: linear-gradient(180deg, var(--bg-2), var(--bg));
+    border-right: 1px solid var(--line);
+    padding: 22px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  @media (max-width: 860px){
+    .sidebar{ border-right:none; border-bottom: 1px solid var(--line); }
+  }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand .mark{
+    width: 32px; height: 32px; flex-shrink:0;
+    border-radius: 8px;
+    display:flex; align-items:center; justify-content:center;
+    font-family: var(--pixel); font-weight:400; font-size: 9px;
+    color: #1A0B14;
+    background: linear-gradient(155deg, var(--cyan), var(--brass));
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.08), 0 3px 0 rgba(0,0,0,0.35);
+  }
+  .brand h1{ font-family: var(--display); font-size: 18px; font-weight: 700; letter-spacing: 0.02em; margin: 0; line-height: 1.2; }
+  .brand .sub{ display:block; font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; }
+
+  .progress-card{
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+  }
+  .progress-top{ display:flex; justify-content: space-between; align-items:center; margin-bottom: 8px; }
+  .progress-top .label{ font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .progress-top .value{ font-family: var(--mono); font-size: 12px; color: var(--ink); }
+  .progress-ticks{ display:flex; gap: 4px; }
+  .progress-ticks .tick{ flex:1; height: 7px; border-radius: 3px; background: rgba(255,255,255,0.08); }
+  .progress-ticks .tick.filled{ background: linear-gradient(90deg, var(--cyan), var(--brass)); box-shadow: 0 0 6px rgba(255,61,129,0.5); }
+  .sound-row{ margin-top: 10px; display:flex; justify-content: flex-end; }
+  .sound-toggle{
+    display:flex; align-items:center; gap: 6px;
+    background: transparent; border: 1px solid var(--line-strong); color: var(--muted);
+    font-family: var(--mono); font-size: 11px; padding: 5px 9px; border-radius: 999px; cursor: pointer;
+  }
+  .sound-toggle:hover{ color: var(--ink); border-color: var(--cyan); }
+
+  .roommap{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; position: relative; }
+  .roommap::before{ content: ""; position: absolute; left: 15px; top: 6px; bottom: 6px; width: 1px; background: var(--line-strong); }
+  .roommap li{ position: relative; }
+  .roommap .divider{
+    margin: 10px 0 6px 4px;
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .door-btn{
+    width: 100%; display: flex; align-items: center; gap: 10px;
+    background: transparent; border: none; color: var(--muted);
+    padding: 8px 8px 8px 4px; border-radius: var(--radius); cursor: pointer; text-align: left; font-size: 13px;
+  }
+  .door-btn:hover:not(:disabled){ background: rgba(40,225,229,0.08); color: var(--ink-soft); }
+  .door-btn .num{
+    width: 24px; height: 24px; flex-shrink:0; border-radius: 6px;
+    border: 1.5px solid var(--muted); display:flex; align-items:center; justify-content:center;
+    font-family: var(--mono); font-size: 11px; font-weight: 600; background: var(--bg); z-index: 1; position: relative;
+  }
+  .door-btn .label{ flex:1; min-width:0; }
+  .door-btn .label .t{ display:block; font-weight:600; color: inherit; }
+  .door-btn .label .c{ display:block; font-size: 10px; color: var(--muted); font-family: var(--mono); }
+  .door-btn .rank{ font-family: var(--mono); font-size: 9px; letter-spacing: 0.04em; flex-shrink: 0; }
+  .door-btn .rank.flawless{ color: var(--amber); }
+  .door-btn .rank.sharp{ color: var(--cyan); }
+  .door-btn .rank.escaped{ color: var(--muted); }
+  .door-btn[aria-current="true"]{ color: var(--ink); }
+  .door-btn[aria-current="true"] .num{ border-color: var(--cyan); color: var(--cyan); animation: pulseGlow 1.8s ease-in-out infinite; }
+  .door-btn.solved .num{ background: var(--success); border-color: var(--success); color: #06251A; box-shadow: 0 0 8px rgba(76,227,154,0.45); }
+  .door-btn.solved .num::after{ content: "\\2713"; }
+  .door-btn:disabled{ opacity: 0.4; cursor: not-allowed; }
+  .door-btn:disabled .num::after{ content: "\\1F512"; font-size: 9px; }
+  .door-btn.bonus .num{ border-color: var(--amber); }
+  .door-btn.bonus.solved .num{ background: var(--amber); border-color: var(--amber); color: #3B2506; }
+
+  .badge-shelf{ border-top: 1px solid var(--line); padding-top: 14px; }
+  .badge-shelf h2{ font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; font-weight: 500; }
+  .badges{ display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge{
+    width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--muted);
+    display: flex; align-items:center; justify-content:center; font-size: 13px; color: var(--muted);
+    background: var(--bg); position: relative;
+  }
+  .badge.earned{
+    border-color: var(--amber);
+    background: radial-gradient(circle at 35% 30%, #FFE7B0, var(--amber) 55%, var(--brass) 100%);
+    color: #3B2506;
+    box-shadow: 0 0 10px rgba(255,200,87,0.5);
+    animation: popIn 0.4s ease;
+  }
+  .badge[title]{ cursor: help; }
+
+  .reset-row{ margin-top: auto; padding-top: 10px; }
+  .reset-btn{
+    width: 100%; background: transparent; border: 1px solid var(--line-strong); color: var(--muted);
+    padding: 8px 10px; border-radius: var(--radius); font-size: 11px; font-family: var(--mono); cursor: pointer;
+  }
+  .reset-btn:hover{ color: var(--danger); border-color: var(--danger); }
+
+  /* ---------------- Main ---------------- */
+  main{ padding: 28px clamp(16px, 3vw, 40px) 60px; max-width: 1180px; }
+  #roomView{ animation: fadeUp 0.35s ease; }
+  .room-head{ margin-bottom: 18px; }
+  .eyebrow{ font-family: var(--pixel); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--brass-bright); margin: 0 0 10px; line-height: 1.8; }
+  .room-head h2{ font-family: var(--display); font-size: clamp(22px, 3.4vw, 30px); font-weight: 700; margin: 0 0 10px; letter-spacing: 0.01em; }
+  .flavor{ font-size: 14px; color: var(--ink-soft); max-width: 72ch; border-left: 2px solid var(--line-strong); padding-left: 12px; font-style: italic; margin: 0 0 14px; }
+  .concept-pill{ display: inline-flex; align-items:center; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--cyan); border: 1px solid var(--line-strong); padding: 4px 10px; border-radius: 999px; margin-bottom: 4px; }
+  .concept-pill::before{ content:""; width:6px; height:6px; border-radius:50%; background: var(--cyan); }
+
+  .grid{ display: grid; grid-template-columns: 1.35fr 1fr; gap: 22px; margin-top: 20px; align-items: start; }
+  @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+
+  .panel{ background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; animation: fadeUp 0.4s ease; }
+  .panel h3{ font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; font-weight: 500; }
+
+  .predict-box{ margin-bottom: 14px; }
+  .predict-box p{ margin: 0 0 10px; font-size: 13px; color: var(--ink-soft); }
+  .predict-options{ display: flex; flex-wrap: wrap; gap: 8px; }
+  .predict-options button{
+    background: var(--bg-3); border: 1px solid var(--line-strong); color: var(--ink-soft);
+    font-family: var(--mono); font-size: 12.5px; padding: 8px 12px; border-radius: var(--radius); cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  .predict-options button:hover{ border-color: var(--cyan); }
+  .predict-options button:active{ transform: scale(0.96); }
+  .predict-options button[aria-pressed="true"]{ border-color: var(--brass-bright); background: rgba(255,111,163,0.16); color: var(--ink); box-shadow: 0 0 8px rgba(255,61,129,0.35); }
+  .predict-feedback{ margin-top: 8px; font-size: 12.5px; font-family: var(--mono); display: none; }
+  .predict-feedback.show{ display: block; animation: fadeUp 0.25s ease; }
+  .predict-feedback.ok{ color: var(--success); }
+  .predict-feedback.bad{ color: var(--danger); }
+
+  .code-editor{
+    width: 100%; min-height: 220px; background: var(--code-bg); color: #D9F0E6;
+    border: 1px solid var(--line); border-radius: var(--radius); font-family: var(--mono); font-size: 13px;
+    line-height: 1.6; padding: 12px 14px; resize: vertical; tab-size: 2; white-space: pre; overflow: auto;
+    transition: box-shadow 0.15s ease;
+  }
+  .code-editor:focus{ outline: 2px solid var(--cyan); outline-offset: 1px; box-shadow: 0 0 14px rgba(40,225,229,0.25); }
+
+  .run-row{ display: flex; align-items: center; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .btn{ font-family: var(--mono); font-size: 12.5px; font-weight: 600; border-radius: var(--radius); border: none; padding: 9px 16px; cursor: pointer; transition: transform 0.08s ease, box-shadow 0.15s ease, filter 0.15s ease; }
+  .btn-brass{ background: linear-gradient(180deg, var(--brass-bright), var(--brass)); color: #2E0517; box-shadow: 0 3px 0 #A01E52, 0 3px 10px rgba(255,61,129,0.35); }
+  .btn-brass:hover{ filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 4px 0 #A01E52, 0 5px 12px rgba(255,61,129,0.4); }
+  .btn-brass:active{ transform: translateY(1px); box-shadow: 0 1px 0 #A01E52; }
+  .btn-brass:disabled{ opacity: 0.4; cursor: not-allowed; filter: none; transform: none; box-shadow: none; }
+  .btn-ghost{ background: transparent; border: 1px solid var(--line-strong); color: var(--ink-soft); }
+  .btn-ghost:hover{ border-color: var(--cyan); color: var(--ink); }
+  .btn-ghost:active{ transform: scale(0.97); }
+  .run-status{ font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+  .console{
+    margin-top: 14px; background: var(--code-bg); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 12px 14px; font-family: var(--mono); font-size: 12.5px; color: #C7D6E0; min-height: 64px; white-space: pre-wrap;
+  }
+  .console .line{ padding: 1px 0; animation: fadeUp 0.2s ease; }
+  .console .err{ color: var(--danger); }
+  .console .placeholder{ color: var(--muted); font-style: italic; }
+
+  .unlock-banner{
+    margin-top: 14px; display: none; align-items: center; gap: 10px;
+    background: rgba(76,227,154,0.12); border: 1px solid var(--success); color: var(--success);
+    padding: 10px 14px; border-radius: var(--radius); font-family: var(--mono); font-size: 12.5px;
+    justify-content: space-between; flex-wrap: wrap;
+  }
+  .unlock-banner.show{ display: flex; animation: popIn 0.3s ease; }
+  .unlock-banner .rank-pill{ font-size: 11px; padding: 3px 9px; border-radius: 999px; border: 1px solid currentColor; }
+
+  .mismatch-banner{
+    margin-top: 14px; display: none; background: rgba(255,93,108,0.12); border: 1px solid var(--danger);
+    color: #FFC2C7; padding: 10px 14px; border-radius: var(--radius); font-size: 12.5px;
+  }
+  .mismatch-banner.show{ display: block; animation: fadeUp 0.25s ease; }
+  .mismatch-banner .row{ display:flex; gap: 8px; font-family: var(--mono); margin-top: 4px; }
+  .mismatch-banner .k{ color: var(--muted); min-width: 62px; flex-shrink:0; }
+
+  .hints-list{ list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .hint-item{ border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .hint-item .reveal{
+    width: 100%; background: var(--bg-3); border: none; color: var(--ink-soft); text-align: left;
+    padding: 9px 12px; font-size: 12.5px; font-family: var(--mono); cursor: pointer; display: flex; justify-content: space-between;
+  }
+  .hint-item .reveal:hover{ color: var(--brass-bright); }
+  .hint-item .body{ display: none; padding: 10px 12px; font-size: 13px; color: var(--ink-soft); background: var(--bg-2); animation: fadeUp 0.2s ease; }
+  .hint-item.open .body{ display: block; }
+  .hint-item.open .reveal{ color: var(--brass-bright); }
+
+  .why-panel{ margin-top: 16px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .why-panel .reveal{
+    width: 100%; background: var(--bg-3); border: none; color: var(--amber); text-align: left;
+    padding: 9px 12px; font-size: 12.5px; font-family: var(--mono); cursor: pointer; display: flex; justify-content: space-between;
+  }
+  .why-panel .body{ display: none; padding: 10px 12px; font-size: 13px; color: var(--ink-soft); background: var(--bg-2); animation: fadeUp 0.2s ease; }
+  .why-panel.open .body{ display: block; }
+
+  .scope-explorer{ display: flex; flex-direction: column; gap: 10px; }
+  .scope-box{
+    border: 1.5px solid var(--line-strong); border-radius: var(--radius); padding: 10px 12px; position: relative;
+    background: rgba(255,255,255,0.02); box-shadow: 0 0 0 1px rgba(40,225,229,0.12) inset;
+    animation: fadeUp 0.35s ease both;
+  }
+  .scope-box .scope-label{
+    font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--cyan);
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px; text-shadow: 0 0 6px rgba(40,225,229,0.5);
+  }
+  .scope-box .scope-label::before{ content:"\\25B8"; color: var(--brass-bright); text-shadow: 0 0 6px rgba(255,61,129,0.6); }
+  .scope-vars{ display: flex; flex-direction: column; gap: 5px; }
+  .scope-var{ font-family: var(--mono); font-size: 12px; color: var(--ink-soft); background: rgba(40,225,229,0.07); border-radius: 4px; padding: 4px 8px; border-left: 2px solid rgba(40,225,229,0.35); }
+  .scope-nest{ margin-left: 14px; margin-top: 8px; }
+
+  footer{ margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-family: var(--mono); }
+
+  /* ---------------- Finale / certificate ---------------- */
+  .finale{ display: none; padding: 30px 0 10px; }
+  .finale.show{ display: block; animation: fadeUp 0.5s ease; }
+  .certificate{
+    border: 1.5px solid var(--amber); border-radius: 14px; padding: 34px 30px; text-align: center;
+    background: radial-gradient(ellipse 700px 300px at 50% 0%, rgba(255,200,87,0.12), transparent 60%), var(--bg-2);
+    box-shadow: 0 0 40px -10px rgba(255,200,87,0.25);
+  }
+  .certificate h2{
+    font-family: var(--pixel); font-size: clamp(18px, 3vw, 24px); color: var(--brass-bright);
+    text-shadow: 0 0 12px rgba(255,111,163,0.7), 0 0 28px rgba(40,225,229,0.35); letter-spacing: 0.02em; margin: 0 0 14px;
+  }
+  .certificate > p{ color: var(--ink-soft); max-width: 60ch; margin: 0 auto 22px; }
+  .stat-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin: 0 0 24px; }
+  .stat-card{ border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 12px; }
+  .stat-card .n{ font-family: var(--display); font-size: 26px; font-weight: 700; color: var(--cyan); }
+  .stat-card .l{ font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 2px; }
+  .rank-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 8px; margin: 0 0 26px; text-align: left; }
+  .rank-row{ display:flex; justify-content: space-between; align-items:center; font-size: 12px; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; }
+  .rank-row .rn{ color: var(--ink-soft); font-family: var(--mono); }
+  .certificate-actions{ display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .bonus-cta{ margin-top: 20px; font-size: 12.5px; color: var(--muted); }
+  .bonus-cta button{ margin-left: 6px; }
+
+  @media print{
+    .sidebar, footer, .splash-overlay, #confettiCanvas, .toast-stack, #roomView, .mascot-wrap{ display: none !important; }
+    body{ background: #fff; color:#000; }
+    body::after{ display:none; }
+    .app{ display:block; }
+    main{ padding: 0; max-width: none; }
+    .certificate{ border-color:#000; box-shadow:none; background:none; }
+    .certificate h2{ color:#000; text-shadow:none; }
+    .stat-card .n{ color:#000; }
+  }
+</style>
+</head>
+<body>
+
+<div class="splash-overlay" id="splash">
+  <div class="splash-card">
+    <p class="splash-eyebrow">JavaScript Fundamentals &middot; 10 chambers + 1 bonus vault</p>
+    <h1 class="splash-title">CLOSURE<br>ESCAPE ROOM</h1>
+    <p class="splash-blurb">Ten locked chambers stand between you and truly understanding closures. Predict outputs, fix broken code, and read the scope chain like a map out.</p>
+    <div class="splash-mascot">
+      <button class="mascot-avatar mini" type="button" aria-hidden="true" tabindex="-1"><span class="m-eye m-eye-l"></span><span class="m-eye m-eye-r"></span></button>
+      <p>&#8220;Hi. I'm Bit. I've been waiting a long time for someone who actually gets closures. No pressure.&#8221;</p>
+    </div>
+    <button class="btn btn-brass splash-start" id="splashStart" type="button">PRESS START</button>
+    <p class="splash-hint" id="splashHint"></p>
+  </div>
+</div>
+
+<canvas id="confettiCanvas" aria-hidden="true"></canvas>
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<div class="mascot-wrap" id="mascotWrap">
+  <div class="mascot-bubble" id="mascotBubble"><span class="mascot-name">Bit</span><span id="mascotText"></span></div>
+  <button class="mascot-avatar" id="mascotAvatar" type="button" aria-label="Bit, the vault spirit. Click for a remark.">
+    <span class="m-eye m-eye-l"></span><span class="m-eye m-eye-r"></span>
+  </button>
+</div>
+
+<div class="app">
+
+  <nav class="sidebar" aria-label="Vault directory">
+    <div class="brand">
+      <span class="mark">CE</span>
+      <h1>Closure Escape Room<span class="sub">10 chambers + bonus</span></h1>
+    </div>
+
+    <div class="progress-card">
+      <div class="progress-top">
+        <span class="label">Vault progress</span>
+        <span class="value" id="progressValue">0 / 10</span>
+      </div>
+      <div class="progress-ticks" id="progressTicks"></div>
+      <div class="sound-row">
+        <button class="sound-toggle" id="soundToggle" type="button">\uD83D\uDD0A Sound on</button>
+      </div>
+    </div>
+
+    <ul class="roommap" id="roomMap"></ul>
+
+    <div class="badge-shelf">
+      <h2>Trophy shelf</h2>
+      <div class="badges" id="badgeShelf"></div>
+    </div>
+
+    <div class="reset-row">
+      <button class="reset-btn" id="resetBtn" type="button">Reset all progress</button>
+    </div>
+  </nav>
+
+  <main>
+    <div id="roomView"></div>
+
+    <div class="finale" id="finale">
+      <div class="certificate">
+        <h2>Vault Cleared</h2>
+        <p>Ten chambers, ten closures. You've traced lexical scope, captured variables, guarded private state, tamed loops and callbacks, memoized, curried, and debounced your way out. That's the whole toolkit &mdash; you now think in closures.</p>
+        <div class="stat-grid" id="statGrid"></div>
+        <div class="rank-grid" id="rankGrid"></div>
+        <div class="certificate-actions">
+          <button class="btn btn-brass" id="printBtn" type="button">Print certificate</button>
+          <button class="btn btn-ghost" id="replayBtn" type="button">Revisit any chamber</button>
+        </div>
+        <p class="bonus-cta" id="bonusCta"></p>
+      </div>
+    </div>
+
+    <footer>
+      <span>closure-escape-room</span>
+      <span>Runs entirely offline &middot; progress saved in this browser only</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   ROOM DATA
+   ============================================================ */
+var ROOMS = [
+{
+  id:1, title:"The Lexical Corridor", concept:"Lexical scope", badge:"Scope Novice",
+  flavor:"The corridor's torches flicker by rule, not by whim \u2014 a function always remembers where it was born, not where it's called from.",
+  type:"predict",
+  code:
+"let secret = \"torch\";\n\nfunction revealSecret() {\n  console.log(secret);\n}\n\nfunction tryGuess() {\n  let secret = \"candle\";\n  revealSecret();\n}\n\ntryGuess();",
+  options:["torch","candle","undefined","ReferenceError"],
+  answerIndex:0,
+  expectedLogs:["torch"],
+  scopeChain:[
+    {label:"Global Hall", vars:["secret = \"torch\"","function revealSecret() {\u2026}","function tryGuess() {\u2026}"]},
+    {label:"Chamber: tryGuess()", vars:["secret = \"candle\"  (local \u2014 only visible here)"]},
+    {label:"Vault: revealSecret()  \u2014 defined in Global Hall", vars:["looks up secret \u2192 climbs to where it was DEFINED (Global Hall), not where it was called from"]}
+  ],
+  hints:[
+    "A function's scope is fixed the moment it is written down, not when it happens to run.",
+    "revealSecret() was defined right after the first secret was declared \u2014 it never even sees tryGuess()'s local copy.",
+    "Its answer is whatever secret equals in the Global Hall: \"torch\"."
+  ],
+  whyItMatters:"This is why a helper function defined at the top of a file can \u2018see\u2019 module-level config, and why moving code between files can silently change what it's able to access."
+},
+{
+  id:2, title:"The Captured Flame", concept:"Variable capture", badge:"Flame Keeper",
+  flavor:"Each lantern you forge holds its own private flame. Light one, and the others stay untouched.",
+  type:"predict",
+  code:
+"function makeLantern() {\n  let brightness = 0;\n  return function () {\n    brightness += 1;\n    console.log(brightness);\n  };\n}\n\nconst lantern1 = makeLantern();\nlantern1();\nlantern1();\n\nconst lantern2 = makeLantern();\nlantern2();",
+  options:["1, 2, 1","1, 1, 1","1, 2, 3","undefined, undefined, undefined"],
+  answerIndex:0,
+  expectedLogs:["1","2","1"],
+  scopeChain:[
+    {label:"Global Hall", vars:["function makeLantern() {\u2026}","lantern1, lantern2"]},
+    {label:"Closure A \u2014 from lantern1's makeLantern() call", vars:["brightness = 0 \u2192 1 \u2192 2 (its own copy)"]},
+    {label:"Closure B \u2014 from lantern2's makeLantern() call", vars:["brightness = 0 \u2192 1 (a completely separate copy)"]}
+  ],
+  hints:[
+    "Every call to makeLantern() creates a brand-new brightness variable.",
+    "lantern1 and lantern2 close over two different variables that both happen to be named brightness.",
+    "lantern1 climbs 0\u21921\u21922. lantern2 starts fresh at 0\u21921, unaffected by lantern1."
+  ],
+  whyItMatters:"Every React custom hook and every factory function that returns handlers relies on exactly this: each call creates its own private state, never shared with sibling calls."
+},
+{
+  id:3, title:"The Private Vault", concept:"Private variables", badge:"Private Eye",
+  flavor:"A true vault leaks nothing. Right now, the combination is sitting in the open hall for anyone to read.",
+  type:"fix",
+  startCode:
+"let combination = 1234; // leaked into the Global Hall!\n\nfunction vaultLock() {\n  return {\n    unlock(code) {\n      return code === combination;\n    }\n  };\n}\n\nconst vault = vaultLock();\nconsole.log(vault.unlock(1234));\nconsole.log(typeof combination);",
+  expectedLogs:["true","undefined"],
+  scopeChain:[
+    {label:"Global Hall (goal: nothing sensitive here)", vars:["function vaultLock() {\u2026}","vault"]},
+    {label:"Private Chamber \u2014 inside vaultLock()", vars:["combination = 1234  \u2192 move it here"]},
+    {label:"Returned object's unlock() method", vars:["still closes over combination even after moving it inside"]}
+  ],
+  hints:[
+    "A variable is only private if it lives inside a function, not at the top level.",
+    "Move `let combination = 1234;` from the Global Hall to the first line inside vaultLock().",
+    "unlock() will still see combination through its closure \u2014 but nothing outside vaultLock() can reach it directly, so typeof combination becomes \"undefined\"."
+  ],
+  whyItMatters:"The module pattern \u2014 private state you can only touch through returned methods \u2014 predates, and directly inspired, real ES class private fields like #balance."
+},
+{
+  id:4, title:"The Torchlit Loop", concept:"Callbacks & loop closures (var)", badge:"Loop Breaker",
+  flavor:"You light three torches on a timer, but they all seem to remember the same, final number.",
+  type:"fix",
+  startCode:
+"function lightTorches() {\n  for (var i = 1; i <= 3; i++) {\n    setTimeout(function () {\n      console.log(\"Torch \" + i + \" lit\");\n    }, i * 15);\n  }\n}\n\nlightTorches();",
+  expectedLogs:["Torch 1 lit","Torch 2 lit","Torch 3 lit"],
+  scopeChain:[
+    {label:"Global Hall", vars:["function lightTorches() {\u2026}"]},
+    {label:"lightTorches() call \u2014 one shared loop variable with var", vars:["i \u2014 a single box, ends at 4 by the time the timers fire"]},
+    {label:"Fix: give each iteration its own box", vars:["swap var i for let i \u2014 each pass of the loop gets a fresh, separately-captured i"]}
+  ],
+  hints:[
+    "var is function-scoped: there is only ONE i for the whole loop, shared by all three callbacks.",
+    "By the time setTimeout's callbacks actually run, the loop has already finished and i is 4.",
+    "Change `var i` to `let i` \u2014 let is block-scoped, so each loop iteration captures its own i (1, then 2, then 3)."
+  ],
+  whyItMatters:"This exact bug shows up constantly in real projects and interviews: attaching click handlers or timers inside a for loop with var."
+},
+{
+  id:5, title:"The Guarded Doors", concept:"Loop closures (functions in arrays)", badge:"Door Warden",
+  flavor:"Three guards are posted, but when you call on them by number, they all shout the same name.",
+  type:"fix",
+  startCode:
+"function makeGuards() {\n  const guards = [];\n  for (var i = 0; i < 3; i++) {\n    guards.push(function () {\n      console.log(\"Guard #\" + i);\n    });\n  }\n  return guards;\n}\n\nconst guards = makeGuards();\nguards[0]();\nguards[1]();\nguards[2]();",
+  expectedLogs:["Guard #0","Guard #1","Guard #2"],
+  scopeChain:[
+    {label:"Global Hall", vars:["guards (array of 3 functions)"]},
+    {label:"makeGuards() call \u2014 var i shared across the whole loop", vars:["i ends at 3 once the loop is done"]},
+    {label:"Fix: let i creates one i per push()", vars:["guards[0] closes over i=0, guards[1] over i=1, guards[2] over i=2"]}
+  ],
+  hints:[
+    "Same bug as the torches: var i is one shared variable for the entire loop.",
+    "All three pushed functions close over that same, final i \u2014 which is 3 once the loop ends.",
+    "Change `var i` to `let i` so each guard captures the value of i at the moment it was created."
+  ],
+  whyItMatters:"Same root cause as the torch room, different shape \u2014 arrays of callbacks built in a loop turn up everywhere, from event listeners to Promise.all mapping."
+},
+{
+  id:6, title:"The Memoized Archive", concept:"Memoization", badge:"Archivist",
+  flavor:"The archive should only compute an answer once per question \u2014 right now it recomputes every time.",
+  type:"fix",
+  startCode:
+"function memoize(fn) {\n  const cache = {};\n  return function (n) {\n    console.log(\"computing \" + n);\n    return fn(n);\n  };\n}\n\nfunction square(n) { return n * n; }\nconst fastSquare = memoize(square);\n\nconsole.log(fastSquare(4));\nconsole.log(fastSquare(4));\nconsole.log(fastSquare(5));",
+  expectedLogs:["computing 4","16","16","computing 5","25"],
+  scopeChain:[
+    {label:"Global Hall", vars:["function square(n)","fastSquare"]},
+    {label:"memoize(square) call \u2014 private archive", vars:["cache = {}  \u2014 persists across every call to fastSquare"]},
+    {label:"Fix: check the archive before computing", vars:["if (n in cache) return cache[n];  else compute, log, store, and return"]}
+  ],
+  hints:[
+    "cache lives in memoize()'s closure, so it survives between calls to fastSquare \u2014 use that.",
+    "Before logging \"computing\" and calling fn(n), check whether cache already has an entry for n.",
+    "If cached, return cache[n] immediately (no log). Otherwise log, compute, store the result in cache[n], then return it."
+  ],
+  whyItMatters:"This is literally how utility libraries' memoize helpers, React's useMemo, and API response caching work under the hood."
+},
+{
+  id:7, title:"The Currying Chamber", concept:"Currying / partial application", badge:"Currying Champion",
+  flavor:"An adder-machine stands half-built. Feed it one number now, and it should remember it for later.",
+  type:"fix",
+  startCode:
+"function makeAdder(a) {\n  // return a function that takes b and gives back a + b\n}\n\nconst addFive = makeAdder(5);\nconsole.log(addFive(3));\nconsole.log(addFive(10));",
+  expectedLogs:["8","15"],
+  scopeChain:[
+    {label:"Global Hall", vars:["addFive"]},
+    {label:"makeAdder(5) call", vars:["a = 5  \u2014 remembered by the returned function"]},
+    {label:"Returned function(b)", vars:["closes over a, computes a + b"]}
+  ],
+  hints:[
+    "makeAdder needs to `return` a new function, not do the addition itself.",
+    "That returned function takes one parameter, commonly named b.",
+    "Its body should be: return a + b; \u2014 relying on the closure to remember a."
+  ],
+  whyItMatters:"Currying like this powers functional-utility libraries and lets you pre-configure functions \u2014 e.g. a logger with a fixed prefix, built once and reused everywhere."
+},
+{
+  id:8, title:"The Counting Chamber", concept:"Encapsulation with closures", badge:"Vault Keeper",
+  flavor:"A counter is meant to be touched only through its own door. Someone left a side entrance open.",
+  type:"fix",
+  startCode:
+"function createCounter() {\n  let count = 0;\n  return {\n    count: count, // a snapshot, not a live link \u2014 remove this\n    increment() { count++; },\n    get() { return count; }\n  };\n}\n\nconst counter = createCounter();\ncounter.increment();\ncounter.increment();\nconsole.log(counter.get());\nconsole.log(counter.get());",
+  expectedLogs:["2","2"],
+  scopeChain:[
+    {label:"Global Hall", vars:["counter"]},
+    {label:"createCounter() call \u2014 private chamber", vars:["count = 0  \u2192 2  (only reachable through get()/increment())"]},
+    {label:"Returned object's methods", vars:["increment() mutates count; get() reads the current, live value"]}
+  ],
+  hints:[
+    "The `count: count` property copies today's value once \u2014 it never updates again. Delete that line.",
+    "Only expose count through get(), which reads the live variable from the closure each time it's called.",
+    "After removing the leaky property, both console.log(counter.get()) calls should read 2."
+  ],
+  whyItMatters:"This encapsulation pattern is how you'd build a private counter, ID generator, or small state container before \u2014 or instead of \u2014 reaching for a class."
+},
+{
+  id:9, title:"The Shifting Password", concept:"Parameter capture vs. outer reassignment", badge:"Sentry",
+  flavor:"The watchword changed the moment after the sentry was posted. Does the sentry notice?",
+  type:"predict",
+  code:
+"function createSentry(watchword) {\n  return function (message) {\n    console.log(watchword + \": \" + message);\n  };\n}\n\nlet watchword = \"GUARD\";\nconst sentry = createSentry(watchword);\nwatchword = \"INTRUDER\";\n\nsentry(\"Who goes there?\");",
+  options:["GUARD: Who goes there?","INTRUDER: Who goes there?","undefined: Who goes there?","ReferenceError"],
+  answerIndex:0,
+  expectedLogs:["GUARD: Who goes there?"],
+  scopeChain:[
+    {label:"Global Hall", vars:["let watchword = \"GUARD\" \u2192 later reassigned to \"INTRUDER\"","sentry"]},
+    {label:"createSentry(watchword) call \u2014 the moment it ran, watchword was \"GUARD\"", vars:["parameter watchword = \"GUARD\"  (a fresh, separate copy, not linked to the outer variable)"]},
+    {label:"Returned function(message)", vars:["closes over its OWN parameter copy, unaffected by the later outer reassignment"]}
+  ],
+  hints:[
+    "watchword is passed as a parameter \u2014 parameters are copies, not live links to the caller's variable.",
+    "The outer `watchword = \"INTRUDER\"` reassignment happens to a completely different variable than the one createSentry captured.",
+    "The inner function always says \"GUARD\", frozen at the moment createSentry(watchword) was called."
+  ],
+  whyItMatters:"This subtlety trips people up in async code all the time: a callback capturing a parameter is frozen, but capturing an outer variable directly sees future changes."
+},
+{
+  id:10, title:"The Final Vault", concept:"Debounce (closures + timers + rest params)", badge:"Master Escapist",
+  flavor:"The vault door only registers your LAST attempt within a short window \u2014 build the mechanism that makes that true, and walk out.",
+  type:"fix",
+  startCode:
+"function debounce(fn, delay) {\n  let timer;\n  return function (...args) {\n    // clear any pending timer, then schedule a new one\n    // that calls fn(...args) after `delay` ms\n  };\n}\n\nlet escapeCount = 0;\nconst tryEscape = debounce(function () {\n  escapeCount++;\n  console.log(\"Escape attempt #\" + escapeCount + \" processed\");\n}, 25);\n\ntryEscape();\ntryEscape();\ntryEscape();",
+  expectedLogs:["Escape attempt #1 processed"],
+  scopeChain:[
+    {label:"Global Hall", vars:["escapeCount","tryEscape"]},
+    {label:"debounce(fn, delay) call \u2014 private timer", vars:["timer  \u2014 shared across every call to the returned function"]},
+    {label:"Returned function(...args)", vars:["clearTimeout(timer); timer = setTimeout(() => fn(...args), delay);"]}
+  ],
+  hints:[
+    "The returned function needs to cancel the previous timer before starting a new one: clearTimeout(timer).",
+    "Then schedule a fresh one: timer = setTimeout(function () { fn.apply(null, args); }, delay);",
+    "Because all three calls happen faster than 25ms apart, only the LAST scheduled timer ever actually fires \u2014 producing exactly one log."
+  ],
+  whyItMatters:"Debounce is one of the most-used utility functions in frontend code \u2014 search-as-you-type, resize handlers, and autosave all depend on exactly this pattern."
+},
+{
+  id:11, bonus:true, title:"The Observer's Annex", concept:"Closures as an event emitter", badge:"Observer",
+  flavor:"One last mechanism, entirely optional but satisfying: wire up the annex's alarm system \u2014 closures doing the job classes usually get credit for.",
+  type:"fix",
+  startCode:
+"function createEmitter() {\n  const listeners = {};\n  return {\n    on(event, fn) {\n      // register fn under listeners[event]\n    },\n    off(event, fn) {\n      // remove fn from listeners[event]\n    },\n    emit(event, payload) {\n      // call every listener registered for event, passing payload\n    }\n  };\n}\n\nconst emitter = createEmitter();\nfunction onOpen(msg) { console.log(\"Handler A: \" + msg); }\nfunction onOpenAgain(msg) { console.log(\"Handler B: \" + msg); }\n\nemitter.on(\"vault-open\", onOpen);\nemitter.on(\"vault-open\", onOpenAgain);\nemitter.emit(\"vault-open\", \"The seal breaks.\");\n\nemitter.off(\"vault-open\", onOpenAgain);\nemitter.emit(\"vault-open\", \"Only one echoes now.\");",
+  expectedLogs:["Handler A: The seal breaks.","Handler B: The seal breaks.","Handler A: Only one echoes now."],
+  scopeChain:[
+    {label:"Global Hall", vars:["emitter","onOpen","onOpenAgain"]},
+    {label:"createEmitter() call \u2014 private registry", vars:["listeners = {}  \u2014 persists across every on/off/emit call"]},
+    {label:"Returned object's methods", vars:["on / off / emit all close over the SAME listeners object"]}
+  ],
+  hints:[
+    "listeners is a plain object keyed by event name; each value is an array of callback functions.",
+    "on() should push fn onto listeners[event], creating the array first if it doesn't exist yet.",
+    "off() should filter fn out of listeners[event]; emit() should call every remaining function in listeners[event] with the payload."
+  ],
+  whyItMatters:"This on/off/emit shape is the backbone of DOM events, Node's EventEmitter, and most pub/sub libraries \u2014 all built from nothing more than a closure holding a list."
+}
+];
+
+var MAIN_TOTAL = 10;
+var BONUS_ID = 11;
+
+/* ============================================================
+   STATE + PERSISTENCE
+   ============================================================ */
+var STORAGE_KEY = "closureEscapeRoom.v2";
+var state = loadState();
+
+function defaultState(){
+  return {
+    unlocked: 1, solved: {}, badges: {}, code: {}, currentRoom: 1,
+    attempts: {}, hintsUsed: {}, ranks: {}, sound: true, bonusUnlocked: false
+  };
+}
+function loadState(){
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState();
+    var parsed = JSON.parse(raw);
+    var d = defaultState();
+    return {
+      unlocked: parsed.unlocked || d.unlocked,
+      solved: parsed.solved || d.solved,
+      badges: parsed.badges || d.badges,
+      code: parsed.code || d.code,
+      currentRoom: parsed.currentRoom || d.currentRoom,
+      attempts: parsed.attempts || d.attempts,
+      hintsUsed: parsed.hintsUsed || d.hintsUsed,
+      ranks: parsed.ranks || d.ranks,
+      sound: (typeof parsed.sound === "boolean") ? parsed.sound : d.sound,
+      bonusUnlocked: !!parsed.bonusUnlocked
+    };
+  } catch(e){ return defaultState(); }
+}
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){ /* storage unavailable */ }
+}
+
+/* ============================================================
+   Sound engine (Web Audio, offline, no assets)
+   ============================================================ */
+var audioCtx = null;
+function ensureAudio(){
+  if (audioCtx) return audioCtx;
+  try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e){ audioCtx = null; }
+  return audioCtx;
+}
+function tone(freq, start, dur, type, vol){
+  if (!state.sound) return;
+  var ctx = ensureAudio();
+  if (!ctx) return;
+  try{
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.type = type || "square";
+    osc.frequency.value = freq;
+    var t0 = ctx.currentTime + start;
+    gain.gain.setValueAtTime(0, t0);
+    gain.gain.linearRampToValueAtTime(vol || 0.07, t0 + 0.012);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(t0); osc.stop(t0 + dur + 0.02);
+  } catch(e){ /* ignore audio errors */ }
+}
+function playClick(){ tone(560,0,0.05,"square",0.05); }
+function playRun(){ tone(300,0,0.05,"triangle",0.05); tone(430,0.05,0.06,"triangle",0.05); }
+function playSuccess(){ [523,659,784,1046].forEach(function(f,i){ tone(f, i*0.09, 0.16,"square",0.07); }); }
+function playError(){ tone(190,0,0.18,"sawtooth",0.06); tone(140,0.1,0.22,"sawtooth",0.06); }
+function playBadge(){ tone(988,0,0.07,"square",0.08); tone(1318,0.07,0.14,"square",0.08); }
+function playFanfare(){ [523,659,784,1046,1318].forEach(function(f,i){ tone(f, i*0.11, 0.24,"square",0.08); }); }
+
+/* ============================================================
+   Confetti (canvas particle burst)
+   ============================================================ */
+var confettiCanvas = null, confettiCtx = null, confettiParticles = [], confettiRAF = null;
+function initConfetti(){
+  confettiCanvas = document.getElementById("confettiCanvas");
+  confettiCtx = confettiCanvas.getContext("2d");
+  resizeConfetti();
+  window.addEventListener("resize", resizeConfetti);
+}
+function resizeConfetti(){
+  if (!confettiCanvas) return;
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+}
+function burstConfetti(count){
+  if (!confettiCanvas) return;
+  var colors = ["#FF3D81","#28E1E5","#FFC857","#4CE39A","#FF6FA3"];
+  var n = count || 70;
+  for (var i=0;i<n;i++){
+    confettiParticles.push({
+      x: confettiCanvas.width/2 + (Math.random()-0.5)*260,
+      y: confettiCanvas.height*0.18 + (Math.random()-0.5)*40,
+      vx: (Math.random()-0.5)*7,
+      vy: Math.random()*-6 - 2,
+      size: 4 + Math.random()*4,
+      color: colors[(Math.random()*colors.length)|0],
+      rot: Math.random()*360,
+      vr: (Math.random()-0.5)*14,
+      life: 0,
+      maxLife: 90 + Math.random()*40
+    });
+  }
+  if (!confettiRAF) confettiRAF = requestAnimationFrame(stepConfetti);
+}
+function stepConfetti(){
+  confettiCtx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
+  var next = [];
+  for (var i=0;i<confettiParticles.length;i++){
+    var p = confettiParticles[i];
+    p.vy += 0.16;
+    p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life++;
+    if (p.life < p.maxLife && p.y < confettiCanvas.height + 20){
+      confettiCtx.save();
+      confettiCtx.translate(p.x, p.y);
+      confettiCtx.rotate(p.rot * Math.PI/180);
+      confettiCtx.fillStyle = p.color;
+      confettiCtx.globalAlpha = Math.max(0, 1 - p.life/p.maxLife);
+      confettiCtx.fillRect(-p.size/2, -p.size/2, p.size, p.size);
+      confettiCtx.restore();
+      next.push(p);
+    }
+  }
+  confettiParticles = next;
+  if (confettiParticles.length > 0){
+    confettiRAF = requestAnimationFrame(stepConfetti);
+  } else {
+    confettiRAF = null;
+  }
+}
+
+/* ============================================================
+   Toasts
+   ============================================================ */
+function showToast(title, subtitle){
+  var stack = document.getElementById("toastStack");
+  var t = document.createElement("div");
+  t.className = "toast";
+  t.innerHTML = '<p class="tt">'+escapeHtml(title)+'</p><p class="ts">'+escapeHtml(subtitle||"")+'</p>';
+  stack.appendChild(t);
+  setTimeout(function(){
+    t.classList.add("leaving");
+    setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, 320);
+  }, 3200);
+}
+
+/* ============================================================
+   Bit, the vault spirit \u2014 mascot dialogue engine
+   ============================================================ */
+var MASCOT_GREETINGS = {
+  1: "Oh good, a lexical scope puzzle. I've been reciting \u2018where you're defined, not where you're called\u2019 since 1999. Say it with me.",
+  2: "Careful with that lantern. I closed over a flame variable once and haven't been the same since \u2014 still burning, decades later.",
+  3: "1234? Really? That's rookie vault-code numbers. Anyway, the real crime here is that it isn't even private.",
+  4: "Ah, the var-in-a-loop classic. I've personally seen this bug end job interviews. Handle with care.",
+  5: "Three guards, one shared brain cell named i. Honestly, relatable.",
+  6: "I once asked this archive the same question twice. It computed it twice. We do not talk about the electricity bill.",
+  7: "Half a function, waiting patiently for its other half. Very on-brand for a ghost stuck between dimensions.",
+  8: "There's a leak in this vault's encapsulation. Not water. Worse. Leaked state.",
+  9: "One value is frozen in time, one changes behind your back. Only one of them is trustworthy. Guess which.",
+  10: "Triple-tap the escape button all you like \u2014 the vault only remembers your last knock. Rude, but efficient.",
+  11: "You didn't have to come back for this one. Nobody makes you build event emitters for fun. \u2026I respect that deeply."
+};
+var MASCOT_WRONG_PREDICT = [
+  "Bold guess! Bold, and also, respectfully, wrong.",
+  "Close! By which I mean not close at all, but I admire the confidence.",
+  "That would make total sense\u2026 in a language that isn't JavaScript.",
+  "Ooh, so close to backwards. Try flipping your intuition."
+];
+var MASCOT_WRONG_FIX = [
+  "Almost! The vault is still humming its \u2018access denied\u2019 tune though.",
+  "Nice try. The console disagrees, loudly.",
+  "Not quite the incantation. The scope chain never lies \u2014 unlike some ghosts.",
+  "Keep going \u2014 even I didn't get this one on the first try. (I got it on the four-hundredth.)"
+];
+var MASCOT_SOLVED = [
+  "YES. That's the sound of a door unlocking and, somewhere, a linter smiling.",
+  "Nailed it. I felt that in whatever passes for my soul.",
+  "Chamber cleared! You're now legally allowed to explain closures at parties.",
+  "Beautiful. Somewhere, a stale closure just got a little less stale."
+];
+var MASCOT_FLAWLESS = [
+  "FIRST TRY, ZERO HINTS. Show-off. I love it.",
+  "Flawless. I'm framing this. Do ghosts have walls? We're about to find out."
+];
+var MASCOT_HINT = [
+  "Hints are free real estate. No judgment. Okay, minor judgment.",
+  "Peeking at a hint, huh? Even vault spirits Google things.",
+  "That's what the hint's there for. Use it and move on with your life."
+];
+var MASCOT_POKES = [
+  "Fun fact: I am, myself, a closure. Please don't tell anyone I said that.",
+  "console.log('help') hasn't worked yet, but I appreciate the effort.",
+  "They say every function remembers where it was born. I remember where I was trapped. Same energy.",
+  "Semicolons are optional in JS. My freedom is not.",
+  "I've watched thousands of people solve Room 4. Loop bugs are timeless \u2014 literally, it's a timer bug.",
+  "You know what's not garbage collected? My memories of ES5.",
+  "Pro tip: this tip is not pro. I just wanted to talk to someone."
+];
+var MASCOT_FINALE = "You did it. Ten chambers, ten closures, zero var-in-loops left standing. I think I can finally rest. Or maybe I'll just go haunt Room 11 instead. See you there?";
+var MASCOT_BONUS_DONE = "The Annex is clear too. Full completion. I have never been prouder or more unemployed.";
+
+var mascotTypeTimer = null;
+var mascotReady = false;
+function mascotSay(text, duration){
+  var bubble = document.getElementById("mascotBubble");
+  var textEl = document.getElementById("mascotText");
+  if (!bubble || !textEl) return;
+  if (mascotTypeTimer) clearInterval(mascotTypeTimer);
+  textEl.textContent = "";
+  bubble.classList.add("show");
+  var i = 0;
+  mascotTypeTimer = setInterval(function(){
+    i++;
+    textEl.textContent = text.slice(0, i);
+    if (i >= text.length){
+      clearInterval(mascotTypeTimer);
+      mascotTypeTimer = null;
+    }
+  }, 16);
+  clearTimeout(mascotSay._hideTimer);
+  mascotSay._hideTimer = setTimeout(function(){
+    bubble.classList.remove("show");
+  }, duration || 6000);
+}
+function mascotPick(arr){ return arr[(Math.random() * arr.length) | 0]; }
+
+/* ============================================================
+   DOM refs
+   ============================================================ */
+var $ = function(id){ return document.getElementById(id); };
+var roomMapEl = $("roomMap");
+var badgeShelfEl = $("badgeShelf");
+var roomViewEl = $("roomView");
+var finaleEl = $("finale");
+var resetBtn = $("resetBtn");
+var replayBtn = $("replayBtn");
+var printBtn = $("printBtn");
+var soundToggle = $("soundToggle");
+var progressValueEl = $("progressValue");
+var progressTicksEl = $("progressTicks");
+var splash = $("splash");
+var splashStart = $("splashStart");
+var splashHint = $("splashHint");
+var mascotAvatar = $("mascotAvatar");
+
+/* ============================================================
+   Splash
+   ============================================================ */
+(function initSplash(){
+  var solvedCount = Object.keys(state.solved).filter(function(k){ return Number(k) <= MAIN_TOTAL; }).length;
+  if (solvedCount > 0){
+    splashHint.textContent = "Continuing \u2014 " + solvedCount + " / " + MAIN_TOTAL + " chambers already cleared.";
+  } else {
+    splashHint.textContent = "Progress saves automatically in this browser.";
+  }
+})();
+splashStart.addEventListener("click", function(){
+  ensureAudio();
+  playFanfare();
+  splash.classList.add("hidden");
+  mascotReady = true;
+  var currentRoom = ROOMS.filter(function(r){ return r.id === state.currentRoom; })[0];
+  if (currentRoom && MASCOT_GREETINGS[currentRoom.id]){
+    setTimeout(function(){ mascotSay(MASCOT_GREETINGS[currentRoom.id], 7000); }, 400);
+  }
+});
+
+mascotAvatar.addEventListener("click", function(){
+  playClick();
+  mascotAvatar.classList.remove("poked");
+  void mascotAvatar.offsetWidth;
+  mascotAvatar.classList.add("poked");
+  mascotSay(mascotPick(MASCOT_POKES));
+});
+
+/* ============================================================
+   Sound toggle
+   ============================================================ */
+function renderSoundToggle(){
+  soundToggle.innerHTML = state.sound ? "\uD83D\uDD0A Sound on" : "\uD83D\uDD07 Sound off";
+}
+soundToggle.addEventListener("click", function(){
+  state.sound = !state.sound;
+  saveState();
+  renderSoundToggle();
+  if (state.sound){ ensureAudio(); playClick(); }
+});
+
+/* ============================================================
+   Progress bar
+   ============================================================ */
+function renderProgress(){
+  var solvedCount = 0;
+  for (var i=1;i<=MAIN_TOTAL;i++){ if (state.solved[i]) solvedCount++; }
+  progressValueEl.textContent = solvedCount + " / " + MAIN_TOTAL;
+  progressTicksEl.innerHTML = "";
+  for (var j=1;j<=MAIN_TOTAL;j++){
+    var t = document.createElement("div");
+    t.className = "tick" + (state.solved[j] ? " filled" : "");
+    progressTicksEl.appendChild(t);
+  }
+}
+
+/* ============================================================
+   Sidebar rendering
+   ============================================================ */
+function rankClass(rank){
+  if (rank === "FLAWLESS") return "flawless";
+  if (rank === "SHARP") return "sharp";
+  return "escaped";
+}
+function renderSidebar(){
+  renderProgress();
+  roomMapEl.innerHTML = "";
+  ROOMS.forEach(function(room){
+    if (room.bonus){
+      var divider = document.createElement("li");
+      divider.className = "divider";
+      divider.textContent = "Bonus vault";
+      roomMapEl.appendChild(divider);
+    }
+    var li = document.createElement("li");
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "door-btn" + (state.solved[room.id] ? " solved" : "") + (room.bonus ? " bonus" : "");
+    var locked = room.bonus ? !state.solved[MAIN_TOTAL] : room.id > state.unlocked;
+    btn.disabled = locked;
+    btn.setAttribute("aria-current", room.id === state.currentRoom ? "true" : "false");
+    var rank = state.ranks[room.id];
+    btn.innerHTML =
+      '<span class="num">'+ (state.solved[room.id] ? "" : (room.bonus ? "\u2605" : room.id)) +'</span>' +
+      '<span class="label"><span class="t">'+escapeHtml(room.title)+'</span><span class="c">'+escapeHtml(room.concept)+'</span></span>' +
+      (rank ? '<span class="rank '+rankClass(rank)+'">'+rank+'</span>' : "");
+    btn.addEventListener("click", function(roomId){
+      return function(){
+        playClick();
+        state.currentRoom = roomId;
+        saveState();
+        renderAll();
+        roomViewEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+    }(room.id));
+    li.appendChild(btn);
+    roomMapEl.appendChild(li);
+  });
+
+  badgeShelfEl.innerHTML = "";
+  ROOMS.forEach(function(room){
+    var earned = !!state.badges[room.id];
+    var span = document.createElement("span");
+    span.className = "badge" + (earned ? " earned" : "");
+    span.title = earned ? (room.badge + " \u2014 earned") : (room.badge + " \u2014 locked");
+    span.textContent = earned ? "\u2605" : "\u2022";
+    badgeShelfEl.appendChild(span);
+  });
+}
+
+/* ============================================================
+   Scope explorer rendering
+   ============================================================ */
+function renderScopeChain(chain){
+  var wrap = document.createElement("div");
+  wrap.className = "scope-explorer";
+  var container = wrap;
+  chain.forEach(function(level, idx){
+    var box = document.createElement("div");
+    box.className = "scope-box";
+    box.style.animationDelay = (idx * 0.08) + "s";
+    var label = document.createElement("div");
+    label.className = "scope-label";
+    label.textContent = level.label;
+    var varsWrap = document.createElement("div");
+    varsWrap.className = "scope-vars";
+    level.vars.forEach(function(v){
+      var vEl = document.createElement("div");
+      vEl.className = "scope-var";
+      vEl.textContent = v;
+      varsWrap.appendChild(vEl);
+    });
+    box.appendChild(label);
+    box.appendChild(varsWrap);
+
+    if (idx === 0){
+      container.appendChild(box);
+      container = box;
+    } else {
+      var nest = document.createElement("div");
+      nest.className = "scope-nest";
+      nest.appendChild(box);
+      container.appendChild(nest);
+      container = box;
+    }
+  });
+  return wrap;
+}
+
+/* ============================================================
+   Room rendering
+   ============================================================ */
+function getRoomCode(room){
+  if (state.code[room.id] !== undefined) return state.code[room.id];
+  return room.type === "fix" ? room.startCode : room.code;
+}
+
+function renderRoom(room){
+  roomViewEl.innerHTML = "";
+  finaleEl.classList.remove("show");
+
+  if (mascotReady && MASCOT_GREETINGS[room.id]){
+    mascotSay(MASCOT_GREETINGS[room.id], 7000);
+  }
+
+  var head = document.createElement("div");
+  head.className = "room-head";
+  head.innerHTML =
+    '<p class="eyebrow">' + (room.bonus ? "Bonus Vault" : ("Chamber " + room.id + " of " + MAIN_TOTAL)) + '</p>' +
+    '<h2>'+escapeHtml(room.title)+'</h2>' +
+    '<span class="concept-pill">'+escapeHtml(room.concept)+'</span>' +
+    '<p class="flavor">'+escapeHtml(room.flavor)+'</p>';
+  roomViewEl.appendChild(head);
+
+  var grid = document.createElement("div");
+  grid.className = "grid";
+
+  /* ---- Left: challenge panel ---- */
+  var left = document.createElement("div");
+  left.className = "panel";
+  left.innerHTML = '<h3>' + (room.type === "predict" ? "Predict, then run" : "Fix the broken code") + '</h3>';
+
+  var predictWrap = null;
+  var runEnabled = true;
+  var chosenIndex = -1;
+
+  if (room.type === "predict"){
+    runEnabled = false;
+    predictWrap = document.createElement("div");
+    predictWrap.className = "predict-box";
+    predictWrap.innerHTML = '<p>What will this code print? Choose an answer to unlock the Run button.</p>';
+    var optsWrap = document.createElement("div");
+    optsWrap.className = "predict-options";
+    room.options.forEach(function(opt, i){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = opt;
+      b.setAttribute("aria-pressed","false");
+      b.addEventListener("click", function(){
+        playClick();
+        chosenIndex = i;
+        Array.prototype.forEach.call(optsWrap.children, function(c){ c.setAttribute("aria-pressed","false"); });
+        b.setAttribute("aria-pressed","true");
+        runBtn.disabled = false;
+        feedback.classList.remove("show","ok","bad");
+        feedback.textContent = "";
+      });
+      optsWrap.appendChild(b);
+    });
+    var feedback = document.createElement("div");
+    feedback.className = "predict-feedback";
+    predictWrap.appendChild(optsWrap);
+    predictWrap.appendChild(feedback);
+    left.appendChild(predictWrap);
+  }
+
+  var codeArea = document.createElement("textarea");
+  codeArea.className = "code-editor";
+  codeArea.spellcheck = false;
+  codeArea.setAttribute("aria-label", "Code for " + room.title);
+  codeArea.value = getRoomCode(room);
+  codeArea.addEventListener("input", function(){
+    state.code[room.id] = codeArea.value;
+    saveState();
+  });
+  codeArea.addEventListener("keydown", function(e){
+    if (e.key === "Tab"){
+      e.preventDefault();
+      var s = codeArea.selectionStart, en = codeArea.selectionEnd;
+      codeArea.value = codeArea.value.slice(0,s) + "  " + codeArea.value.slice(en);
+      codeArea.selectionStart = codeArea.selectionEnd = s + 2;
+      state.code[room.id] = codeArea.value;
+      saveState();
+    }
+    if ((e.key === "Enter") && (e.metaKey || e.ctrlKey)){
+      e.preventDefault();
+      if (!runBtn.disabled) runBtn.click();
+    }
+  });
+  left.appendChild(codeArea);
+
+  var runRow = document.createElement("div");
+  runRow.className = "run-row";
+  var runBtn = document.createElement("button");
+  runBtn.type = "button";
+  runBtn.className = "btn btn-brass";
+  runBtn.textContent = "Run code";
+  runBtn.disabled = !runEnabled;
+  var resetCodeBtn = document.createElement("button");
+  resetCodeBtn.type = "button";
+  resetCodeBtn.className = "btn btn-ghost";
+  resetCodeBtn.textContent = "Reset to starting code";
+  resetCodeBtn.addEventListener("click", function(){
+    playClick();
+    codeArea.value = room.type === "fix" ? room.startCode : room.code;
+    delete state.code[room.id];
+    saveState();
+    codeArea.focus();
+  });
+  var status = document.createElement("span");
+  status.className = "run-status";
+  status.setAttribute("role","status");
+  runRow.appendChild(runBtn);
+  runRow.appendChild(resetCodeBtn);
+  runRow.appendChild(status);
+  left.appendChild(runRow);
+
+  var consoleEl = document.createElement("div");
+  consoleEl.className = "console";
+  consoleEl.setAttribute("aria-live","polite");
+  consoleEl.innerHTML = '<span class="placeholder">Console output will appear here after you run the code.</span>';
+  left.appendChild(consoleEl);
+
+  var unlockBanner = document.createElement("div");
+  unlockBanner.className = "unlock-banner";
+  left.appendChild(unlockBanner);
+
+  var mismatchBanner = document.createElement("div");
+  mismatchBanner.className = "mismatch-banner";
+  left.appendChild(mismatchBanner);
+
+  grid.appendChild(left);
+
+  /* ---- Right: scope explorer + hints + why it matters ---- */
+  var right = document.createElement("div");
+
+  var scopePanel = document.createElement("div");
+  scopePanel.className = "panel";
+  scopePanel.innerHTML = '<h3>Scope chain explorer</h3>';
+  scopePanel.appendChild(renderScopeChain(room.scopeChain));
+  right.appendChild(scopePanel);
+
+  var hintPanel = document.createElement("div");
+  hintPanel.className = "panel";
+  hintPanel.style.marginTop = "16px";
+  hintPanel.innerHTML = '<h3>Hints</h3>';
+  var hintsList = document.createElement("div");
+  hintsList.className = "hints-list";
+  var hintsOpened = new Set((state.hintsUsed[room.id] || []));
+  room.hints.forEach(function(hint, i){
+    var item = document.createElement("div");
+    item.className = "hint-item";
+    var reveal = document.createElement("button");
+    reveal.type = "button";
+    reveal.className = "reveal";
+    reveal.innerHTML = '<span>Hint ' + (i+1) + '</span><span>+</span>';
+    var body = document.createElement("div");
+    body.className = "body";
+    body.textContent = hint;
+    reveal.addEventListener("click", function(){
+      playClick();
+      item.classList.toggle("open");
+      if (!hintsOpened.has(i)){
+        hintsOpened.add(i);
+        state.hintsUsed[room.id] = Array.from(hintsOpened);
+        saveState();
+        mascotSay(mascotPick(MASCOT_HINT), 5000);
+      }
+    });
+    item.appendChild(reveal);
+    item.appendChild(body);
+    hintsList.appendChild(item);
+  });
+  hintPanel.appendChild(hintsList);
+  right.appendChild(hintPanel);
+
+  var whyPanel = document.createElement("div");
+  whyPanel.className = "why-panel";
+  var whyReveal = document.createElement("button");
+  whyReveal.type = "button";
+  whyReveal.className = "reveal";
+  whyReveal.innerHTML = '<span>\u2605 Why this matters</span><span>+</span>';
+  var whyBody = document.createElement("div");
+  whyBody.className = "body";
+  whyBody.textContent = room.whyItMatters;
+  whyReveal.addEventListener("click", function(){
+    playClick();
+    whyPanel.classList.toggle("open");
+  });
+  whyPanel.appendChild(whyReveal);
+  whyPanel.appendChild(whyBody);
+  right.appendChild(whyPanel);
+
+  grid.appendChild(right);
+  roomViewEl.appendChild(grid);
+
+  /* ---- Behavior ---- */
+  function writeConsole(logs, err){
+    consoleEl.innerHTML = "";
+    if (logs.length === 0 && !err){
+      consoleEl.innerHTML = '<span class="placeholder">(no console output)</span>';
+      return;
+    }
+    logs.forEach(function(l){
+      var d = document.createElement("div");
+      d.className = "line";
+      d.textContent = l;
+      consoleEl.appendChild(d);
+    });
+    if (err){
+      var d2 = document.createElement("div");
+      d2.className = "line err";
+      d2.textContent = "Error: " + err;
+      consoleEl.appendChild(d2);
+    }
+  }
+
+  function checkSolved(logs){
+    if (logs.length !== room.expectedLogs.length) return false;
+    for (var i=0;i<logs.length;i++){
+      if (String(logs[i]) !== String(room.expectedLogs[i])) return false;
+    }
+    return true;
+  }
+
+  function computeRank(attemptsCount, hintsCount){
+    if (attemptsCount === 1 && hintsCount === 0) return "FLAWLESS";
+    if (attemptsCount <= 3 && hintsCount <= 1) return "SHARP";
+    return "ESCAPED";
+  }
+
+  runBtn.addEventListener("click", function(){
+    playRun();
+    unlockBanner.classList.remove("show");
+    mismatchBanner.classList.remove("show");
+    status.textContent = "Running\u2026";
+    runBtn.disabled = true;
+
+    state.attempts[room.id] = (state.attempts[room.id] || 0) + 1;
+    saveState();
+
+    runSandboxed(codeArea.value, function(result){
+      status.textContent = "";
+      runBtn.disabled = room.type === "predict" ? false : false;
+      writeConsole(result.logs, result.error);
+
+      if (room.type === "predict" && predictWrap){
+        var feedbackEl = predictWrap.querySelector(".predict-feedback");
+        var predictedRight = chosenIndex === room.answerIndex;
+        feedbackEl.classList.add("show", predictedRight ? "ok" : "bad");
+        feedbackEl.textContent = predictedRight
+          ? "Correct prediction! That matches what actually ran."
+          : "Not quite \u2014 compare your guess with the console output above, then check the scope chain explorer.";
+        if (!predictedRight) mascotSay(mascotPick(MASCOT_WRONG_PREDICT), 5000);
+      }
+
+      var solvedNow = !result.error && checkSolved(result.logs);
+      if (solvedNow){
+        var alreadySolved = !!state.solved[room.id];
+        var hintsCount = (state.hintsUsed[room.id] || []).length;
+        var rank = alreadySolved ? state.ranks[room.id] : computeRank(state.attempts[room.id], hintsCount);
+
+        unlockBanner.classList.add("show");
+        unlockBanner.innerHTML =
+          '<span>\u2713 Chamber cleared \u2014 badge \u201c'+escapeHtml(room.badge)+'\u201d earned' + (room.bonus ? "." : (room.id < MAIN_TOTAL ? ". Next door unlocked." : ". The vault is open.")) + '</span>' +
+          '<span class="rank-pill">'+rank+'</span>';
+
+        if (!alreadySolved){
+          playSuccess();
+          burstConfetti(50);
+          showToast("Chamber cleared!", room.badge + " earned \u2014 rank: " + rank);
+          setTimeout(function(){ playBadge(); }, 250);
+          mascotSay(rank === "FLAWLESS" ? mascotPick(MASCOT_FLAWLESS) : mascotPick(MASCOT_SOLVED), 5500);
+
+          state.solved[room.id] = true;
+          state.badges[room.id] = true;
+          state.ranks[room.id] = rank;
+          if (!room.bonus && room.id === state.unlocked && room.id < MAIN_TOTAL){
+            state.unlocked = room.id + 1;
+          }
+          saveState();
+          renderSidebar();
+
+          if (!room.bonus && room.id === MAIN_TOTAL){
+            setTimeout(function(){
+              playFanfare();
+              burstConfetti(140);
+              renderFinale();
+              finaleEl.classList.add("show");
+              finaleEl.scrollIntoView({behavior:"smooth"});
+              mascotSay(MASCOT_FINALE, 9000);
+            }, 400);
+          }
+          if (room.bonus){
+            setTimeout(function(){ mascotSay(MASCOT_BONUS_DONE, 8000); }, 600);
+          }
+        }
+      } else if (!result.error) {
+        playError();
+        mascotSay(mascotPick(MASCOT_WRONG_FIX), 5000);
+        mismatchBanner.classList.add("show");
+        mismatchBanner.innerHTML =
+          '<strong>Not there yet.</strong>' +
+          '<div class="row"><span class="k">Expected</span><span>' + escapeHtml(room.expectedLogs.join(" | ") || "(nothing)") + '</span></div>' +
+          '<div class="row"><span class="k">Got</span><span>' + escapeHtml(result.logs.join(" | ") || "(nothing)") + '</span></div>';
+      } else {
+        playError();
+      }
+    });
+  });
+}
+
+/* ============================================================
+   Finale / certificate
+   ============================================================ */
+function renderFinale(){
+  var totalAttempts = 0, totalHints = 0, flawless = 0, badgesEarned = 0;
+  for (var i=1;i<=MAIN_TOTAL;i++){
+    totalAttempts += (state.attempts[i] || 0);
+    totalHints += (state.hintsUsed[i] || []).length;
+    if (state.ranks[i] === "FLAWLESS") flawless++;
+    if (state.badges[i]) badgesEarned++;
+  }
+
+  var statGrid = $("statGrid");
+  statGrid.innerHTML =
+    '<div class="stat-card"><div class="n">'+badgesEarned+' / '+MAIN_TOTAL+'</div><div class="l">Badges earned</div></div>' +
+    '<div class="stat-card"><div class="n">'+flawless+'</div><div class="l">Flawless chambers</div></div>' +
+    '<div class="stat-card"><div class="n">'+totalAttempts+'</div><div class="l">Total run attempts</div></div>' +
+    '<div class="stat-card"><div class="n">'+totalHints+'</div><div class="l">Hints used</div></div>';
+
+  var rankGrid = $("rankGrid");
+  rankGrid.innerHTML = "";
+  for (var j=1;j<=MAIN_TOTAL;j++){
+    var room = ROOMS.filter(function(r){ return r.id === j; })[0];
+    var rank = state.ranks[j] || "\u2014";
+    var row = document.createElement("div");
+    row.className = "rank-row";
+    row.innerHTML = '<span class="rn">'+escapeHtml(room.title)+'</span><span class="rank '+rankClass(rank)+'">'+rank+'</span>';
+    rankGrid.appendChild(row);
+  }
+
+  var bonusCta = $("bonusCta");
+  if (!state.solved[BONUS_ID]){
+    bonusCta.innerHTML = 'One optional chamber remains: The Observer\u2019s Annex. <button class="btn btn-ghost" id="goBonusBtn" type="button">Go there now</button>';
+    setTimeout(function(){
+      var b = $("goBonusBtn");
+      if (b) b.addEventListener("click", function(){
+        playClick();
+        state.currentRoom = BONUS_ID;
+        saveState();
+        renderAll();
+        roomViewEl.scrollIntoView({behavior:"smooth"});
+      });
+    }, 0);
+  } else {
+    bonusCta.textContent = "You've also cleared the bonus vault. Full completion.";
+  }
+}
+
+/* ============================================================
+   Sandboxed execution
+   ============================================================ */
+function runSandboxed(userCode, callback){
+  var safeCode = userCode.split("</scr" + "ipt>").join("<\\/scr" + "ipt>");
+  var runnerHtml =
+    "<script>" +
+    "(function(){" +
+    "var logs=[];" +
+    "console.log=function(){var a=Array.prototype.slice.call(arguments);logs.push(a.map(function(x){try{return typeof x==='string'?x:JSON.stringify(x);}catch(e){return String(x);}}).join(' '));};" +
+    "var errorMsg=null;" +
+    "try{\n" + safeCode + "\n}catch(e){errorMsg=e && e.message ? e.message : String(e);}" +
+    "setTimeout(function(){parent.postMessage({__closureEscape:true, logs:logs, error:errorMsg}, '*');}, 350);" +
+    "})();" +
+    "<\/script>";
+
+  var iframe = document.createElement("iframe");
+  iframe.setAttribute("sandbox", "allow-scripts");
+  iframe.style.display = "none";
+  var settled = false;
+
+  function onMessage(e){
+    if (!e.data || !e.data.__closureEscape) return;
+    if (settled) return;
+    settled = true;
+    window.removeEventListener("message", onMessage);
+    callback({ logs: e.data.logs || [], error: e.data.error || null });
+    setTimeout(function(){ if (iframe.parentNode) iframe.parentNode.removeChild(iframe); }, 50);
+  }
+  window.addEventListener("message", onMessage);
+
+  document.body.appendChild(iframe);
+  iframe.srcdoc = runnerHtml;
+
+  setTimeout(function(){
+    if (settled) return;
+    settled = true;
+    window.removeEventListener("message", onMessage);
+    callback({ logs: [], error: "Timed out \u2014 check for an infinite loop." });
+    if (iframe.parentNode) iframe.parentNode.removeChild(iframe);
+  }, 4000);
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+  });
+}
+
+/* ============================================================
+   Wiring
+   ============================================================ */
+function renderAll(){
+  renderSidebar();
+  renderSoundToggle();
+  var room = ROOMS.filter(function(r){ return r.id === state.currentRoom; })[0] || ROOMS[0];
+  renderRoom(room);
+}
+
+resetBtn.addEventListener("click", function(){
+  playClick();
+  if (!confirm("Reset all progress, including solved chambers and badges? This cannot be undone.")) return;
+  state = defaultState();
+  saveState();
+  finaleEl.classList.remove("show");
+  renderAll();
+});
+
+replayBtn.addEventListener("click", function(){
+  playClick();
+  finaleEl.classList.remove("show");
+  state.currentRoom = 1;
+  saveState();
+  renderAll();
+  roomViewEl.scrollIntoView({behavior:"smooth"});
+});
+
+printBtn.addEventListener("click", function(){
+  playClick();
+  window.print();
+});
+
+initConfetti();
+renderAll();
+if (state.solved[MAIN_TOTAL]){
+  renderFinale();
+}
+
+})();
+</script>
+</body>
+</html>
