@@ -111,6 +111,29 @@
       ],
       "difficulty": "Medium",
       "status": "live"
+    },
+    {
+      "id": "js-type-coercion-trivia",
+      "name": "JS Type Coercion Trivia",
+      "shortDescription": "Test your understanding of JavaScript type coercion through interactive multiple-choice challenges.",
+      "longDescription": "## JS Type Coercion Trivia\n\nChallenge yourself with JavaScript's most confusing type conversion behaviors. Predict the output of expressions, understand implicit and explicit coercion, and learn why JavaScript behaves the way it does through interactive trivia questions.\n\n### Features\n\n- 8–10 randomized questions per attempt\n- Large question bank for replayability\n- Instant feedback with detailed explanations\n- Covers == vs ===, truthy/falsy values, NaN, typeof, implicit and explicit conversions\n- Progress saved locally using localStorage\n- Fully offline, single-file quiz",
+      "category": "js-fundamentals",
+      "tags": [
+        "javascript",
+        "type-coercion",
+        "quiz",
+        "learning",
+        "trivia",
+        "interactive"
+      ],
+      "techStack": [
+        "HTML5",
+        "CSS3",
+        "Vanilla JS",
+        "LocalStorage API"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
     }
   ]
 }
