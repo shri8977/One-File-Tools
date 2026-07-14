@@ -377,6 +377,7 @@ function loadState(){
     if(raw){
       const parsed = JSON.parse(raw);
       if(typeof parsed.level === 'number' && Array.isArray(parsed.answers)){
+        if(parsed.level >= LEVELS.length) parsed.level = 0;
         state = parsed;
       }
     }
@@ -501,9 +502,9 @@ function renderEnd(){
   const pct = state.score / LEVELS.length;
   let remark, icons;
   if(pct === 1){ remark = "Perfect score. The engine has nothing left to teach you."; icons = '🏆✨🏆'; }
-  else if(pct >= 0.75){ remark = "Strong instincts &mdash; a couple of edge cases got you."; icons = '⚡️✓⚡️'; }
+  else if(pct >= 0.75){ remark = "Strong instincts \u2014 a couple of edge cases got you."; icons = '⚡️✓⚡️'; }
   else if(pct >= 0.5){ remark = "Solid grasp of the basics, with some quirks still to learn."; icons = '🧪✓🧪'; }
-  else{ remark = "Coercion is famously unintuitive &mdash; worth another lap."; icons = '🔁🧪🔁'; }
+  else{ remark = "Coercion is famously unintuitive \u2014 worth another lap."; icons = '🔁🧪🔁'; }
   finalRemark.textContent = remark;
   const confettiRow = document.getElementById('confettiRow');
   if(confettiRow) confettiRow.textContent = icons;
