@@ -597,6 +597,30 @@
       "status": "live"
     },
     {
+      "id": "color-blindness-simulator-v2",
+      "name": "Color Blindness Simulator",
+      "shortDescription": "Preview how colors and images appear under different types of color vision deficiency.",
+      "longDescription": "## Color Blindness Simulator\n\nAn accessibility-focused tool that simulates how colors and images appear to people with different types of color vision deficiencies. Designers and developers can test UI elements, graphics, and uploaded images to create more inclusive experiences.\n\n### Features\n\n- Live color picker with instant simulation\n- Upload images for accessibility preview\n- Simulate Protanopia, Deuteranopia, Tritanopia, and Achromatopsia\n- Side-by-side comparison with the original\n- Copy HEX and RGB color values\n- Responsive, offline-first design\n- Works entirely in the browser without external APIs",
+      "category": "color-tools",
+      "tags": [
+        "accessibility",
+        "color",
+        "color-blindness",
+        "design",
+        "image",
+        "simulation",
+        "ui"
+      ],
+      "techStack": [
+        "Canvas API",
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "color-mixer-tool",
       "name": "Color Mixer Tool",
       "shortDescription": "Mix colors and generate harmonious color palettes.",
