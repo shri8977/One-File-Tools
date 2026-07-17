@@ -67,7 +67,7 @@ Write a single HTML file with all CSS/JS inline or loaded via CDN. Focus on:
 - **Accessibility** — semantic HTML, good contrast, keyboard navigable
 - **Interactivity** — hover states, transitions, working UI elements (tabs, dropdowns, etc.)
 
-Your design should feel like a real product page, not a wireframe.
+Your design should feel like a polished, production-ready piece — not a wireframe.
 
 ### 5. Register your design in data/design-system.json
 
