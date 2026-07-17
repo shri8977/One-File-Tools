@@ -1212,7 +1212,7 @@ function winGame() {
   const root = $id("root");
   root.innerHTML = "";
   const ov = el("div", { class: "overlay" }, [
-    el("h1", { class: "title-main", style: "color:var(--truthy);text-shadow:0 0 30px rgba(70,227,154,0.5)" }, [document.createTextNode("Coercion")," ",document.createTextNode("Mastered")]),
+    el("h1", { class: "title-main", style: "color:var(--truthy);text-shadow:0 0 30px rgba(70,227,154,0.5)" }, [document.createTextNode("Coercion"), document.createTextNode(" "), document.createTextNode("Mastered")]),
     el("div", { class: "title-sub" }, [document.createTextNode("the triple equals falls silent")]),
     el("div", { class: "stat-grid" }, [
       statBlock(acc + "%", "Accuracy"),
@@ -1240,7 +1240,7 @@ function loseGame() {
   const root = $id("root");
   root.innerHTML = "";
   const ov = el("div", { class: "overlay" }, [
-    el("h1", { class: "title-main", style: "color:var(--falsy);text-shadow:0 0 30px rgba(255,94,168,0.5)" }, [document.createTextNode("Coerced")," ",document.createTextNode("Away")]),
+    el("h1", { class: "title-main", style: "color:var(--falsy);text-shadow:0 0 30px rgba(255,94,168,0.5)" }, [document.createTextNode("Coerced"), document.createTextNode(" "), document.createTextNode("Away")]),
     el("div", { class: "title-sub" }, [document.createTextNode("fell on " + floor.name)]),
     el("div", { class: "stat-grid" }, [
       statBlock(acc + "%", "Accuracy"),
