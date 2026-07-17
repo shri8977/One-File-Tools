@@ -39,6 +39,34 @@
   ],
   "designs": [
     {
+      "id": "product-search-dropdown",
+      "name": "Product Search Dropdown",
+      "shortDescription": "A searchable product dropdown with category filters, keyboard navigation, and pastel cream styling.",
+      "longDescription": "## Product Search Dropdown\n\nA polished, interactive search dropdown component built with Tailwind CSS. Features real-time filtering, category pill selectors, keyboard navigation, and a warm pastel cream aesthetic.\n\n### Features\n\n- Real-time search with text highlight on matching terms\n- Category filter pills (All, Phones, Laptops, Audio, Wearables, Accessories)\n- Keyboard navigation (Arrow Up/Down, Enter to select, Escape to clear)\n- Product detail card on selection with rating and stock status\n- Stock availability badges (In Stock / Out of Stock)\n- Smooth dropdown animation and hover transitions\n- Dark/light mode toggle with localStorage persistence\n- Pastel cream color palette in light mode, warm stone in dark mode\n- Fully responsive",
+      "category": "components",
+      "tags": [
+        "component",
+        "dark-mode",
+        "dropdown",
+        "filter",
+        "pastel",
+        "responsive",
+        "search",
+        "tailwind"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "frameworks": [
+        "Tailwind CSS"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
       "id": "saas-analytics-dashboard",
       "name": "SaaS Analytics Dashboard",
       "shortDescription": "A premium analytics dashboard with revenue charts, stats cards, traffic breakdown, and activity feed.",
