@@ -2611,6 +2611,29 @@
       "status": "live"
     },
     {
+      "id": "binary-decimal-converter-v2",
+      "name": "RADIX — Base Converter",
+      "description": "Convert numbers between binary, decimal, hexadecimal, and octal with real-time updates and an interactive 8-bit switch bank.",
+      "shortDescription": "A modern base converter with real-time conversion, bit manipulation, and light/dark mode.",
+      "longDescription": "RADIX — Base Converter is a standalone utility for converting numbers between binary, decimal, hexadecimal, and octal in real time. It features an interactive 8-bit switch bank that lets users flip individual bits and instantly see the converted values across all supported number systems. The tool includes input validation for each base, one-click copy functionality for conversion results, responsive design, keyboard accessibility, and a built-in light/dark theme toggle. Designed with a clean, modern interface, it is useful for students, developers, and anyone working with binary data or number system conversions.",
+      "category": "utilities",
+      "tags": [
+        "base-converter",
+        "binary",
+        "decimal",
+        "hexadecimal",
+        "number-system",
+        "octal"
+      ],
+      "techStack": [
+        "CSS",
+        "HTML",
+        "JavaScript"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "readme-template-generator",
       "name": "README Template Generator",
       "shortDescription": "Generate a professional GitHub README.md with customizable sections. Copy or download instantly.",
