@@ -2230,6 +2230,29 @@
       "status": "live"
     },
     {
+      "id": "markdown-table-generator-girly",
+      "name": "Markdown Table Generator (Girly)",
+      "description": "Generate Markdown tables with a cute pink-themed interface and live preview.",
+      "shortDescription": "A cute pink-themed Markdown table generator with live preview and one-click copy.",
+      "longDescription": "Markdown Table Generator (Girly) is a charming, pastel-themed utility for creating GitHub-flavored Markdown tables quickly and effortlessly. Users can define the number of rows and columns, edit cell values in an intuitive interface, preview the generated Markdown in real time, and copy the output with a single click. Designed with a playful pink aesthetic, smooth animations, and a responsive layout, it combines productivity with an enjoyable user experience while remaining a lightweight, standalone HTML tool.",
+      "category": "text",
+      "tags": [
+        "editor",
+        "generator",
+        "girly",
+        "markdown",
+        "productivity",
+        "table"
+      ],
+      "techStack": [
+        "CSS",
+        "HTML",
+        "JavaScript"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
       "id": "meta-tag-generator",
       "name": "Meta Tag Generator",
       "shortDescription": "Generate essential HTML meta tags with a live preview and copy-ready code.",
