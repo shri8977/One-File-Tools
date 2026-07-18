@@ -417,6 +417,33 @@
       "status": "live"
     },
     {
+      "id": "microtask-heist",
+      "name": "Microtask Heist",
+      "shortDescription": "A heist-themed challenge where you orchestrate Promise chains and queueMicrotask calls to steal the 'last execution' slot — predict ordering and build sequences that produce exact log output.",
+      "longDescription": "## Microtask Heist\n\nYou are a scheduler-for-hire in the JavaScript event loop underworld. Each operation is a vault to crack: a required console output transcript is your target, and your weapons are `Promise.then`, `.catch`, `.finally`, `queueMicrotask`, and `async/await` boundaries. Build your sequence by dragging code blocks into the canvas, hit Execute, and watch the real browser scheduler verify your work instantly.\n\n### Features\n\n- **7 escalating operations** — from basic sync-before-microtask ordering through Promise rejection chains, async/await boundaries, nested concurrent chains, and queue starvation mechanics.\n- **Drag-and-drop code canvas** — drag `queueMicrotask`, `Promise.resolve`, `.then`, `.catch`, `.finally`, `await`, and `log` blocks into a reorderable sequence builder.\n- **Real browser verification** — clicking Execute runs an actual sandboxed script via `new Function()`, capturing real microtask ordering, not a simulation.\n- **Split output panel** — Required Output vs Your Output columns with per-line match/mismatch colouring and index markers.\n- **Microtask Queue visualiser** — the right panel shows which callbacks are queued, the current event loop phase, and a starvation risk gauge.\n- **Queue Starvation mechanic** — Level 7 demonstrates how recursive microtasks block the render step, with a live depth meter and starvation warning.\n- **Boundary Hint system** — click Hint to reveal exactly where the microtask boundary is crossed in the current level.\n- **Web Audio SFX** — synthesised success chime and error buzz; zero external audio files.\n- **Keyboard shortcuts** — Enter executes, Arrow keys change levels, H toggles hint, R resets.\n- **localStorage progress** — score, best streak, and per-level completion persist across sessions.",
+      "category": "js-fundamentals",
+      "tags": [
+        "async",
+        "event-loop",
+        "interactive",
+        "javascript",
+        "microtask",
+        "promises",
+        "quest",
+        "scheduling"
+      ],
+      "techStack": [
+        "CSS3",
+        "Google Fonts",
+        "HTML5",
+        "LocalStorage API",
+        "Vanilla JS",
+        "Web Audio API"
+      ],
+      "difficulty": "Hard",
+      "status": "live"
+    },
+    {
       "id": "patch-kitchen",
       "name": "Patch Kitchen",
       "shortDescription": "A short-order diner simulator that teaches JavaScript array methods by turning .map(), .filter(), and .reduce() into literal cooking actions.",
