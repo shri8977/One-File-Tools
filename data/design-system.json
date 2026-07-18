@@ -95,6 +95,29 @@
       ],
       "difficulty": "Medium",
       "status": "live"
+    },
+    {
+      "id": "weather-instrument-panel",
+      "name": "Weather Instrument Panel",
+      "shortDescription": "A responsive weather dashboard with forecasts, AQI, charts, and animated weather icons.",
+      "longDescription": "A modern weather dashboard featuring a current weather hero, 7-day forecast, hourly temperature chart, weather details, AQI gauge, radar placeholder, dummy location search, dark/light mode, and responsive layouts built with Tailwind CSS and Chart.js.",
+      "category": "dashboards",
+      "tags": [
+        "aqi",
+        "chart",
+        "dark-mode",
+        "dashboard",
+        "forecast",
+        "responsive",
+        "weather"
+      ],
+      "techStack": [
+        "Chart.js",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
     }
   ]
 }
