@@ -2005,6 +2005,30 @@
       "status": "live"
     },
     {
+      "id": "json-schema-validator-v2",
+      "name": "JSON Schema Validator",
+      "shortDescription": "Validate JSON data against JSON Schema with live error reporting, syntax highlighting, and detailed validation results.",
+      "longDescription": "## JSON Schema Validator\n\nValidate JSON data against a JSON Schema in real time. Edit the schema and JSON side by side, instantly detect validation errors, and view the exact JSON path for every issue.\n\n### Features\n\n- Live JSON Schema validation\n- Real-time syntax highlighting for JSON\n- Detailed validation errors with JSON Pointer paths\n- Built-in sample templates for quick testing\n- Supports Draft-07 JSON Schema features\n- Instant parsing and validation feedback\n- Responsive interface for desktop and mobile\n- Works completely offline in the browser",
+      "category": "json-api",
+      "tags": [
+        "api",
+        "developer-tools",
+        "draft-07",
+        "json",
+        "json-schema",
+        "schema",
+        "validation",
+        "validator"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
       "id": "json-csv-bidirectional-converter",
       "name": "JSON to CSV Converter",
       "shortDescription": "Convert between JSON and CSV formats instantly.",
@@ -2225,6 +2249,29 @@
         "CSS3",
         "HTML5",
         "Vanilla JS"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
+      "id": "markdown-table-generator-girly",
+      "name": "Markdown Table Generator (Girly)",
+      "description": "Generate Markdown tables with a cute pink-themed interface and live preview.",
+      "shortDescription": "A cute pink-themed Markdown table generator with live preview and one-click copy.",
+      "longDescription": "Markdown Table Generator (Girly) is a charming, pastel-themed utility for creating GitHub-flavored Markdown tables quickly and effortlessly. Users can define the number of rows and columns, edit cell values in an intuitive interface, preview the generated Markdown in real time, and copy the output with a single click. Designed with a playful pink aesthetic, smooth animations, and a responsive layout, it combines productivity with an enjoyable user experience while remaining a lightweight, standalone HTML tool.",
+      "category": "text",
+      "tags": [
+        "editor",
+        "generator",
+        "girly",
+        "markdown",
+        "productivity",
+        "table"
+      ],
+      "techStack": [
+        "CSS",
+        "HTML",
+        "JavaScript"
       ],
       "difficulty": "Easy",
       "status": "live"
