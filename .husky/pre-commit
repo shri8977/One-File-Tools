@@ -1,4 +1,6 @@
 npm run format
 npm run sort
+npm run build
+npm run sync-readme
 git add -u
 node scripts/validate.js
