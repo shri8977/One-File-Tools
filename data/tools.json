@@ -2577,10 +2577,8 @@
         "palette-generator"
       ],
       "techStack": [
-        "Canvas API",
         "CSS3",
         "HTML5",
-        "Tailwind CSS",
         "Vanilla JS"
       ],
       "difficulty": "Medium",

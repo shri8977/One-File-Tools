@@ -1950,11 +1950,11 @@
           panel.appendChild(s);
         }
 
-        sec("Element", row("Tag", "&lt;" + info.tag + "&gt;") + row("Type", info.type || "--") + row("ID", el.id || "--") + row("Class", el.className ? String(el.className).trim().substring(0, 60) : "--"));
+        sec("Element", row("Tag", "&lt;" + info.tag + "&gt;") + row("Type", info.type || "--") + row("ID", escapeHTML(el.id || "--")) + row("Class", el.className ? escapeHTML(String(el.className).trim().substring(0, 60)) : "--"));
 
         sec("Focus Behavior", row("Tab Order", "#" + (idx + 1) + " of " + state.tabOrder.length) + row("tabindex", info.tabindex !== null ? info.tabindex : "none (natural)", info.tabindex > 0 ? "warn" : "") + row("Focusable", info.focusable ? "Yes" : "No", info.focusable ? "ok" : "err") + row("Tabbable", info.tabbable ? "Yes" : "No", info.tabbable ? "ok" : "") + row("Visible", info.visible ? "Yes" : "No", info.visible ? "ok" : "err") + row("Disabled", info.disabled ? "Yes" : "No", info.disabled ? "err" : ""));
 
-        sec("Accessibility", row("Accessible Name", escapeHTML(info.ariaLabel || "(none)"), info.ariaLabel ? "" : "warn") + row("Role", info.role || "(implicit: " + info.tag + ")") + (el.getAttribute("aria-expanded") !== null ? row("aria-expanded", el.getAttribute("aria-expanded")) : "") + (el.getAttribute("aria-haspopup") !== null ? row("aria-haspopup", el.getAttribute("aria-haspopup")) : "") + (el.getAttribute("aria-disabled") !== null ? row("aria-disabled", el.getAttribute("aria-disabled")) : ""));
+        sec("Accessibility", row("Accessible Name", escapeHTML(info.ariaLabel || "(none)"), info.ariaLabel ? "" : "warn") + row("Role", escapeHTML(info.role || "(implicit: " + info.tag + ")")) + (el.getAttribute("aria-expanded") !== null ? row("aria-expanded", escapeHTML(el.getAttribute("aria-expanded"))) : "") + (el.getAttribute("aria-haspopup") !== null ? row("aria-haspopup", escapeHTML(el.getAttribute("aria-haspopup"))) : "") + (el.getAttribute("aria-disabled") !== null ? row("aria-disabled", escapeHTML(el.getAttribute("aria-disabled"))) : ""));
 
         sec("HTML", '<div class="insp-code">' + escapeHTML(snippetHTML(el)) + "<\/div>");
 
