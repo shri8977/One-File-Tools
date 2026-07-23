@@ -3376,6 +3376,33 @@
       "status": "live"
     },
     {
+      "id": "toast-notifications",
+      "name": "Toast Notifications",
+      "shortDescription": "Stackable success, error, warning, and info toasts with auto-dismiss, offline.",
+      "longDescription": "A self-contained toast notification component that runs entirely in your browser. Trigger success, error, warning, or info toasts and watch them slide in top-right, stack without overlapping, and auto-dismiss on a countdown you can pause on hover or close by hand. Includes light/dark theme support that follows your system preference, a full-width mobile layout, and demo buttons to fire one or all four types at once — all with zero dependencies and no data ever leaving your machine.",
+      "category": "design-system",
+      "tags": [
+        "client-side",
+        "components",
+        "dark-mode",
+        "developer-tools",
+        "feedback",
+        "javascript",
+        "notifications",
+        "offline",
+        "responsive",
+        "toast",
+        "ui"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "twitter-x-card-preview",
       "name": "Twitter / X Card Preview",
       "shortDescription": "Preview how Twitter/X cards appear with live updates for Summary and Summary Large Image layouts.",
