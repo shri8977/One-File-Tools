@@ -261,6 +261,29 @@
       "status": "live"
     },
     {
+      "id": "email-client-interface",
+      "name": "Folio Mail",
+      "shortDescription": "A responsive email client interface with folders, search, compose modal, and reading pane.",
+      "longDescription": "A modern email client UI featuring inbox management, searchable email lists, folder navigation, reading pane, compose modal, dark/light mode, bulk selection, inline reply, responsive mobile layout, and realistic sample emails built with Tailwind CSS and vanilla JavaScript.",
+      "category": "dashboards",
+      "tags": [
+        "dark-mode",
+        "dashboard",
+        "email",
+        "mail",
+        "responsive",
+        "search",
+        "ui"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "invoice-receipt-builder",
       "name": "Invoice / Receipt Builder",
       "shortDescription": "A professional invoice and receipt builder with custom branding, real-time calculations, dark/light settings, and image download.",
@@ -316,6 +339,29 @@
         "Bootstrap 5"
       ],
       "difficulty": "Easy",
+      "status": "live"
+    },
+    {
+      "id": "developer-portfolio-page",
+      "name": "Portfolio Dashboard",
+      "shortDescription": "A responsive personal portfolio with retro-inspired UI, animated sections, skill visualizations, and dark mode.",
+      "longDescription": "A modern personal portfolio website featuring an animated hero section with typing effect, oscilloscope canvas animation, responsive navigation, dark/light theme toggle, animated skill progress bars, project showcase, experience timeline, contact form validation, and a retro hardware-inspired interface built with Tailwind CSS, HTML5 Canvas, and vanilla JavaScript.",
+      "category": "portfolios",
+      "tags": [
+        "animation",
+        "canvas",
+        "dark-mode",
+        "portfolio",
+        "responsive",
+        "timeline",
+        "typing-effect"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "difficulty": "Medium",
       "status": "live"
     },
     {
@@ -423,29 +469,6 @@
         "Tailwind CSS"
       ],
       "difficulty": "Easy",
-      "status": "live"
-    },
-    {
-      "id": "developer-portfolio-page",
-      "name": "Portfolio Dashboard",
-      "shortDescription": "A responsive personal portfolio with retro-inspired UI, animated sections, skill visualizations, and dark mode.",
-      "longDescription": "A modern personal portfolio website featuring an animated hero section with typing effect, oscilloscope canvas animation, responsive navigation, dark/light theme toggle, animated skill progress bars, project showcase, experience timeline, contact form validation, and a retro hardware-inspired interface built with Tailwind CSS, HTML5 Canvas, and vanilla JavaScript.",
-      "category": "portfolios",
-      "tags": [
-        "animation",
-        "canvas",
-        "dark-mode",
-        "portfolio",
-        "responsive",
-        "timeline",
-        "typing-effect"
-      ],
-      "techStack": [
-        "HTML",
-        "JavaScript",
-        "Tailwind CSS"
-      ],
-      "difficulty": "Medium",
       "status": "live"
     },
     {
