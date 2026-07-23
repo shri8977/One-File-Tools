@@ -667,6 +667,31 @@
       "status": "live"
     },
     {
+      "id": "color-mixer-tool-v2",
+      "name": "Color Mixer",
+      "shortDescription": "Blend two colors to generate a mixed color and a five-shade palette instantly.",
+      "longDescription": "## Color Mixer\n\nBlend two colors using a perceptually accurate color mixing algorithm to generate a mixed color and a harmonious five-shade palette. Adjust the mix ratio, view RGB and HSL values, copy color codes with one click, and switch between light and dark themes.\n\n### Features\n\n- Mix two colors with a live preview\n- Adjustable color mix ratio slider\n- Generates a five-shade color palette\n- Displays HEX, RGB, and HSL color values\n- One-click HEX code copying\n- Light and dark theme support\n- Responsive and mobile-friendly design\n- Fully offline and self-contained",
+      "category": "design",
+      "tags": [
+        "color",
+        "color-mixer",
+        "design",
+        "hex",
+        "hsl",
+        "offline",
+        "palette",
+        "responsive",
+        "rgb"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "Vanilla JS"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
       "id": "color-mixer-tool",
       "name": "Color Mixer Tool",
       "shortDescription": "Mix colors and generate harmonious color palettes.",
