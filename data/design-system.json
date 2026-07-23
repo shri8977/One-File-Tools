@@ -430,7 +430,7 @@
       "name": "Portfolio Dashboard",
       "shortDescription": "A responsive personal portfolio with retro-inspired UI, animated sections, skill visualizations, and dark mode.",
       "longDescription": "A modern personal portfolio website featuring an animated hero section with typing effect, oscilloscope canvas animation, responsive navigation, dark/light theme toggle, animated skill progress bars, project showcase, experience timeline, contact form validation, and a retro hardware-inspired interface built with Tailwind CSS, HTML5 Canvas, and vanilla JavaScript.",
-      "category": "portfolio",
+      "category": "portfolios",
       "tags": [
         "animation",
         "canvas",
