@@ -507,7 +507,7 @@
       "status": "live"
     },
     {
-      "id": "toast-notifications",
+      "id": "notification-toast-stack",
       "name": "Toast Notifications",
       "shortDescription": "Stackable success, error, warning, and info toasts with auto-dismiss, offline.",
       "longDescription": "A self-contained toast notification component that runs entirely in your browser. Trigger success, error, warning, or info toasts and watch them slide in top-right, stack without overlapping, and auto-dismiss on a countdown you can pause on hover or close by hand. Includes light/dark theme support that follows your system preference, a full-width mobile layout, and demo buttons to fire one or all four types at once — all with zero dependencies and no data ever leaving your machine.",
