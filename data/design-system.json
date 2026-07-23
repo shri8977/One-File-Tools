@@ -319,6 +319,29 @@
       "status": "live"
     },
     {
+      "id": "developer-portfolio-page",
+      "name": "Portfolio Dashboard",
+      "shortDescription": "A responsive personal portfolio with retro-inspired UI, animated sections, skill visualizations, and dark mode.",
+      "longDescription": "A modern personal portfolio website featuring an animated hero section with typing effect, oscilloscope canvas animation, responsive navigation, dark/light theme toggle, animated skill progress bars, project showcase, experience timeline, contact form validation, and a retro hardware-inspired interface built with Tailwind CSS, HTML5 Canvas, and vanilla JavaScript.",
+      "category": "portfolios",
+      "tags": [
+        "animation",
+        "canvas",
+        "dark-mode",
+        "portfolio",
+        "responsive",
+        "timeline",
+        "typing-effect"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "difficulty": "Medium",
+      "status": "live"
+    },
+    {
       "id": "premium-ecommerce-product-page",
       "name": "Premium E-Commerce Product Page",
       "shortDescription": "Build a premium and fully responsive product detail page featuring image galleries, product variants, tabbed content and dark/light mode support.",
@@ -423,29 +446,6 @@
         "Tailwind CSS"
       ],
       "difficulty": "Easy",
-      "status": "live"
-    },
-    {
-      "id": "developer-portfolio-page",
-      "name": "Portfolio Dashboard",
-      "shortDescription": "A responsive personal portfolio with retro-inspired UI, animated sections, skill visualizations, and dark mode.",
-      "longDescription": "A modern personal portfolio website featuring an animated hero section with typing effect, oscilloscope canvas animation, responsive navigation, dark/light theme toggle, animated skill progress bars, project showcase, experience timeline, contact form validation, and a retro hardware-inspired interface built with Tailwind CSS, HTML5 Canvas, and vanilla JavaScript.",
-      "category": "portfolios",
-      "tags": [
-        "animation",
-        "canvas",
-        "dark-mode",
-        "portfolio",
-        "responsive",
-        "timeline",
-        "typing-effect"
-      ],
-      "techStack": [
-        "HTML",
-        "JavaScript",
-        "Tailwind CSS"
-      ],
-      "difficulty": "Medium",
       "status": "live"
     },
     {
@@ -581,6 +581,29 @@
         "Tailwind CSS"
       ],
       "difficulty": "Easy",
+      "status": "live"
+    },
+    {
+      "id": "music-player-ui",
+      "name": "Wavelength Player",
+      "shortDescription": "A responsive music player interface with playlists, search, queue, and playback controls.",
+      "longDescription": "A modern music streaming interface featuring playlist browsing, artist pages, search, liked songs, playback controls, queue management, vinyl-inspired animations, dark/light mode, responsive design, and interactive audio player UI built with Tailwind CSS and vanilla JavaScript.",
+      "category": "dashboards",
+      "tags": [
+        "audio-player",
+        "dark-mode",
+        "dashboard",
+        "media",
+        "music",
+        "playlist",
+        "responsive"
+      ],
+      "techStack": [
+        "HTML",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "difficulty": "Medium",
       "status": "live"
     },
     {
