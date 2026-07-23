@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shri Subashini M — CSE Student &amp; Aspiring Web Developer</title>
+<meta name="description" content="Portfolio of Shri Subashini M, a Computer Science student and aspiring web developer focused on Java, problem-solving, and open-source contribution.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Tailwind (Play CDN) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Space Grotesk"', 'sans-serif'],
+          mono: ['"IBM Plex Mono"', 'monospace'],
+          body: ['"Inter"', 'sans-serif'],
+        },
+        colors: {
+          bg: 'var(--bg)',
+          surface: 'var(--surface)',
+          surfacealt: 'var(--surface-alt)',
+          ink: 'var(--ink)',
+          inksoft: 'var(--ink-soft)',
+          amber: 'var(--amber)',
+          teal: 'var(--teal)',
+          hairline: 'var(--line)',
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  :root{
+    --bg: #F7F5EF;
+    --surface: #FFFFFF;
+    --surface-alt: #EFEBE0;
+    --ink: #1C1B19;
+    --ink-soft: #5B584F;
+    --amber: #C97A26;
+    --teal: #29716C;
+    --line: #DED8C8;
+  }
+  html.dark{
+    --bg: #14171B;
+    --surface: #1B1F25;
+    --surface-alt: #20252C;
+    --ink: #ECE8DC;
+    --ink-soft: #A6A296;
+    --amber: #F0A94E;
+    --teal: #55C9C1;
+    --line: #2A2F36;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  html{ scroll-behavior: smooth; }
+  body{
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    transition: background-color .3s ease, color .3s ease;
+  }
+
+  .font-display{ font-family: 'Space Grotesk', sans-serif; }
+  .font-mono{ font-family: 'IBM Plex Mono', monospace; letter-spacing: .02em; }
+
+  .eyebrow{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--amber);
+  }
+
+  .hairline{ border-color: var(--line); }
+  .bg-panel{ background-color: var(--surface); border: 1px solid var(--line); }
+
+  /* Segmented / LED style readout for the typing tagline */
+  .readout{
+    font-family: 'IBM Plex Mono', monospace;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--line);
+    color: var(--amber);
+    text-shadow: 0 0 8px color-mix(in srgb, var(--amber) 55%, transparent);
+  }
+  .cursor-blink{
+    display:inline-block; width:.55ch; margin-left:2px;
+    background-color: var(--amber);
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity: 0; } }
+
+  /* Rocker switch for theme toggle */
+  .rocker{
+    width: 52px; height: 28px; border-radius: 6px;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--line);
+    position: relative; cursor: pointer;
+    box-shadow: inset 0 2px 3px rgba(0,0,0,.15);
+  }
+  .rocker-knob{
+    position:absolute; top:2px; left:2px; width:22px; height:22px; border-radius:4px;
+    background-color: var(--amber);
+    transition: transform .25s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,.35);
+  }
+  html.dark .rocker-knob{ transform: translateX(24px); }
+
+  /* Fader / VU bar for skills */
+  .fader-track{
+    height: 8px; border-radius: 999px;
+    background-color: var(--surface-alt);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .fader-fill{
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--teal), var(--amber));
+    border-radius: 999px;
+    transition: width 1.1s cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* Project card */
+  .thumb{
+    aspect-ratio: 16/10; border-radius: 10px; position: relative; overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .tech-tag{
+    font-family: 'IBM Plex Mono', monospace; font-size: .68rem; letter-spacing: .03em;
+    padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line);
+    color: var(--ink-soft); background-color: var(--surface-alt);
+  }
+
+  /* Timeline */
+  .tape-line{ background-color: var(--line); }
+  .tape-dot{
+    width: 12px; height: 12px; border-radius: 999px;
+    background-color: var(--amber);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--line);
+  }
+  .tape-counter{
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--teal);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Nav link underline animation */
+  .nav-link{ position: relative; }
+  .nav-link::after{
+    content:''; position:absolute; left:0; bottom:-4px; width:0%; height:1px;
+    background-color: var(--amber); transition: width .25s ease;
+  }
+  .nav-link.active::after, .nav-link:hover::after{ width: 100%; }
+  .nav-link.active{ color: var(--amber); }
+
+  input, textarea{
+    background-color: var(--surface-alt);
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  input::placeholder, textarea::placeholder{ color: var(--ink-soft); }
+  input:focus, textarea:focus{ outline: 2px solid var(--amber); outline-offset: 1px; }
+
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline: 2px solid var(--amber); outline-offset: 2px;
+  }
+
+  .btn-primary{
+    background-color: var(--amber); color: #1C1B19; font-family: 'IBM Plex Mono', monospace;
+  }
+  .btn-primary:hover{ filter: brightness(1.08); }
+  .btn-ghost{
+    border: 1px solid var(--line); color: var(--ink); font-family: 'IBM Plex Mono', monospace;
+  }
+  .btn-ghost:hover{ border-color: var(--amber); color: var(--amber); }
+
+  .placeholder-note{
+    font-family: 'IBM Plex Mono', monospace; font-size: .68rem;
+    color: var(--amber); opacity: .85;
+  }
+
+  ::selection{ background-color: var(--amber); color: #1C1B19; }
+</style>
+</head>
+
+<body class="font-body">
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md" style="background-color: color-mix(in srgb, var(--bg) 82%, transparent); border-bottom:1px solid var(--line);">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+    <a href="#hero" class="font-display font-semibold tracking-tight text-lg">SHRI SUBASHINI"s PORTFOLIO<span style="color:var(--amber)">.</span></a>
+
+    <nav class="hidden md:flex items-center gap-8 eyebrow" id="desktop-nav">
+      <a href="#about" class="nav-link normal-case tracking-normal font-mono text-sm text-inksoft">About</a>
+      <a href="#skills" class="nav-link normal-case tracking-normal font-mono text-sm text-inksoft">Skills</a>
+      <a href="#work" class="nav-link normal-case tracking-normal font-mono text-sm text-inksoft">Work</a>
+      <a href="#experience" class="nav-link normal-case tracking-normal font-mono text-sm text-inksoft">Experience</a>
+      <a href="#contact" class="nav-link normal-case tracking-normal font-mono text-sm text-inksoft">Contact</a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <button id="theme-toggle" class="rocker" role="switch" aria-checked="false" aria-label="Toggle dark mode">
+        <span class="rocker-knob"></span>
+      </button>
+      <button id="menu-toggle" class="md:hidden flex flex-col gap-1.5 w-7" aria-label="Open menu" aria-expanded="false">
+        <span class="block h-[2px] w-full" style="background-color:var(--ink)"></span>
+        <span class="block h-[2px] w-full" style="background-color:var(--ink)"></span>
+        <span class="block h-[2px] w-2/3" style="background-color:var(--ink)"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile nav -->
+  <nav id="mobile-nav" class="md:hidden hidden flex-col px-5 pb-5 gap-4 font-mono text-sm" style="border-top:1px solid var(--line);">
+    <a href="#about" class="nav-link py-1 text-inksoft">About</a>
+    <a href="#skills" class="nav-link py-1 text-inksoft">Skills</a>
+    <a href="#work" class="nav-link py-1 text-inksoft">Work</a>
+    <a href="#experience" class="nav-link py-1 text-inksoft">Experience</a>
+    <a href="#contact" class="nav-link py-1 text-inksoft">Contact</a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="hero" class="pt-32 pb-20 sm:pt-40 sm:pb-28 px-5 sm:px-8 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+  <div>
+    <p class="eyebrow mb-4">Signal chain / 01 &mdash; input</p>
+    <h1 class="font-display text-5xl sm:text-6xl font-semibold leading-[1.05] mb-4">
+      Shri<br>Subashini&nbsp;M
+    </h1>
+    <p class="font-mono text-sm sm:text-base text-inksoft mb-6">CSE Student &middot; Aspiring Web Developer</p>
+
+    <div class="readout inline-flex items-center rounded-md px-4 py-3 text-sm sm:text-base mb-8 min-h-[3rem]">
+      <span class="mr-2 text-inksoft font-mono">&gt;</span>
+      <span id="typing-target"></span><span class="cursor-blink">&nbsp;</span>
+    </div>
+
+    <div class="flex flex-wrap gap-4">
+      <a href="#work" class="btn-primary px-6 py-3 rounded-md text-sm font-medium">View Work</a>
+      <a href="#contact" class="btn-ghost px-6 py-3 rounded-md text-sm font-medium">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="bg-panel rounded-xl p-4 sm:p-6">
+    <div class="flex items-center justify-between mb-3">
+      <span class="font-mono text-xs text-inksoft">OSCILLOSCOPE &mdash; CH.1</span>
+      <span class="font-mono text-xs" style="color:var(--teal)">● LIVE</span>
+    </div>
+    <canvas id="scope" class="w-full" height="220" aria-hidden="true"></canvas>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="py-20 sm:py-28 px-5 sm:px-8 max-w-6xl mx-auto">
+  <p class="eyebrow mb-3">Signal chain / 02 &mdash; source</p>
+  <div class="grid md:grid-cols-[280px_1fr] gap-10 items-start">
+    <div class="w-48 h-48 md:w-full md:h-64 rounded-xl flex items-center justify-center font-display text-5xl font-semibold shrink-0"
+         style="background: linear-gradient(155deg, var(--teal), var(--amber)); color:#14171B; border:1px solid var(--line);">
+      SM
+    </div>
+    <div>
+      <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-5">About</h2>
+      <p class="text-inksoft leading-relaxed mb-4">
+        I'm a Computer Science student with a strong interest in Java and web development. I've completed
+        internships in Web Development and Full Stack Development, where I gained hands-on experience with
+        HTML, CSS, basic backend concepts, and real-world project exposure.
+      </p>
+      <p class="text-inksoft leading-relaxed mb-4">
+        Right now I'm focused on improving my Java skills and problem-solving ability, and building practical
+        projects step by step. I believe in consistent learning, learning by doing, sharing my journey, and
+        growing through real experience.
+      </p>
+      <p class="text-inksoft leading-relaxed mb-4">
+        Alongside coursework, I'm a maintainer for Social Summer of Code (SSoC) 2026, part of the Cats in Tech
+        community, and an active open-source contributor &mdash; helping run a program with thousands of
+        contributors while continuing to build and ship my own projects.
+      </p>
+      <div class="flex flex-wrap gap-3 mt-6">
+        <span class="tech-tag">Coimbatore, Tamil Nadu, India</span>
+        <span class="tech-tag">CSE Student, P.A. College of Engineering and Technology</span>
+        <span class="tech-tag">Open to internships &amp; entry-level roles</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills" class="py-20 sm:py-28 px-5 sm:px-8 max-w-6xl mx-auto">
+  <p class="eyebrow mb-3">Signal chain / 03 &mdash; console</p>
+  <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-3">Skills</h2>
+  <p class="placeholder-note mb-8">// levels are approximate — nudge them once you've benchmarked yourself against real problems</p>
+
+  <div class="grid md:grid-cols-3 gap-10">
+    <div>
+      <h3 class="font-mono text-xs uppercase tracking-widest text-inksoft mb-5">Languages</h3>
+      <div class="space-y-5" data-skill-group>
+        <div data-skill data-value="60"><div class="flex justify-between text-sm mb-2"><span>Java</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="75"><div class="flex justify-between text-sm mb-2"><span>JavaScript</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="80"><div class="flex justify-between text-sm mb-2"><span>HTML / CSS</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="50"><div class="flex justify-between text-sm mb-2"><span>Data Structures &amp; Algorithms</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="font-mono text-xs uppercase tracking-widest text-inksoft mb-5">Frameworks &amp; Web</h3>
+      <div class="space-y-5" data-skill-group>
+        <div data-skill data-value="65"><div class="flex justify-between text-sm mb-2"><span>React</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="55"><div class="flex justify-between text-sm mb-2"><span>Node.js / Basic Backend</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="60"><div class="flex justify-between text-sm mb-2"><span>Responsive / Full-Stack Basics</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="50"><div class="flex justify-between text-sm mb-2"><span>Web Accessibility</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="font-mono text-xs uppercase tracking-widest text-inksoft mb-5">Tools &amp; Practices</h3>
+      <div class="space-y-5" data-skill-group>
+        <div data-skill data-value="82"><div class="flex justify-between text-sm mb-2"><span>Git &amp; GitHub</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="70"><div class="flex justify-between text-sm mb-2"><span>Open-Source Collaboration</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="55"><div class="flex justify-between text-sm mb-2"><span>Problem Solving</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+        <div data-skill data-value="45"><div class="flex justify-between text-sm mb-2"><span>UI / UX Basics</span><span class="font-mono text-xs text-inksoft skill-num">0%</span></div><div class="fader-track"><div class="fader-fill"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section id="work" class="py-20 sm:py-28 px-5 sm:px-8 max-w-6xl mx-auto">
+  <p class="eyebrow mb-3">Signal chain / 04 &mdash; output</p>
+  <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-10">Selected Work</h2>
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <article class="bg-panel rounded-xl overflow-hidden flex flex-col">
+      <div class="thumb" style="background: linear-gradient(135deg, var(--teal), #123);"></div>
+      <div class="p-5 flex flex-col flex-1">
+        <h3 class="font-display font-semibold text-lg mb-2">Web Wizards &mdash; VibeCoding Hackathon</h3>
+        <p class="text-sm text-inksoft mb-4 flex-1">Teamed up to identify a real-world problem and build a working solution under time pressure, landing a Top 5 finish out of many competing teams and a Certificate of Excellence for innovation and technical skills.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tech-tag">Frontend</span><span class="tech-tag">UI/UX</span><span class="tech-tag">Team Project</span>
+        </div>
+        <div class="flex gap-4 font-mono text-xs">
+          <a href="https://lnkd.in/gPbWwSUP" class="hover:underline" style="color:var(--amber)">Project Link →</a>
+          <span class="placeholder-note">// add repo link if public</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="bg-panel rounded-xl overflow-hidden flex flex-col">
+      <div class="thumb" style="background: linear-gradient(135deg, var(--amber), #2a1a05);"></div>
+      <div class="p-5 flex flex-col flex-1">
+        <h3 class="font-display font-semibold text-lg mb-2">AgentWatch &mdash; Open Source (SSoC'26)</h3>
+        <p class="text-sm text-inksoft mb-4 flex-1">Contributed as both a contributor and admin during Social Summer of Code 2026 &mdash; merging pull requests, working on accessibility improvements, and helping coordinate contributors and project tasks for the AgentWatch project.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tech-tag">Open Source</span><span class="tech-tag">Accessibility</span><span class="tech-tag">GitHub Workflows</span>
+        </div>
+        <div class="flex gap-4 font-mono text-xs">
+          <span class="placeholder-note">// add repo link here</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="bg-panel rounded-xl overflow-hidden flex flex-col">
+      <div class="thumb" style="background: linear-gradient(135deg, #6b5b95, #22182f);"></div>
+      <div class="p-5 flex flex-col flex-1">
+        <h3 class="font-display font-semibold text-lg mb-2">SSoC 2026 &mdash; 31+ PRs Merged</h3>
+        <p class="text-sm text-inksoft mb-4 flex-1">Ranked in the 97th percentile among Social Summer of Code contributors with 50+ merged pull requests, strengthening skills in Git, GitHub, HTML, CSS, JavaScript, and React through real open-source collaboration.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tech-tag">Git</span><span class="tech-tag">React</span><span class="tech-tag">Collaboration</span>
+        </div>
+        <div class="flex gap-4 font-mono text-xs">
+          <span class="placeholder-note">// link your SSoC profile page</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="bg-panel rounded-xl overflow-hidden flex flex-col border-dashed" style="border-style:dashed;">
+      <div class="thumb flex items-center justify-center" style="background: var(--surface-alt);">
+        <span class="font-mono text-xs text-inksoft">+ ADD PROJECT</span>
+      </div>
+      <div class="p-5 flex flex-col flex-1">
+        <h3 class="font-display font-semibold text-lg mb-2 text-inksoft">Your Next Java Project</h3>
+        <p class="text-sm text-inksoft mb-4 flex-1">Placeholder slot for a personal or DSA/Java practice project once you've built and pushed one to GitHub.</p>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <span class="tech-tag">Java</span><span class="tech-tag">Placeholder</span>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience" class="py-20 sm:py-28 px-5 sm:px-8 max-w-6xl mx-auto">
+  <p class="eyebrow mb-3">Signal chain / 05 &mdash; playback</p>
+  <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-2">Experience</h2>
+  <p class="text-inksoft text-sm mb-12">Reading like a tape counter &mdash; rewinding from now.</p>
+
+  <div class="relative pl-8">
+    <div class="tape-line absolute left-[5px] top-1 bottom-1 w-[2px]"></div>
+
+    <div class="relative mb-12">
+      <div class="tape-dot absolute -left-[29px] top-1.5"></div>
+      <span class="tape-counter text-xs">00:00</span>
+      <h3 class="font-display font-semibold text-lg mt-1">Maintainer &mdash; Social Summer of Code (SSoC) 2026</h3>
+      <p class="font-mono text-xs text-inksoft mb-2">2026 — Present</p>
+      <p class="text-inksoft text-sm leading-relaxed">Moved from contributor to admin/maintainer on the AgentWatch project during SSoC 2026 &mdash; reviewing PRs, coordinating contributors, and helping run a program with 3,000+ active contributors.</p>
+    </div>
+
+    <div class="relative mb-12">
+      <div class="tape-dot absolute -left-[29px] top-1.5"></div>
+      <span class="tape-counter text-xs">01:00</span>
+      <h3 class="font-display font-semibold text-lg mt-1">Full Stack Development Intern &mdash; <span class="placeholder-note">[Add company name]</span></h3>
+      <p class="font-mono text-xs text-inksoft mb-2"><span class="placeholder-note">[Add dates]</span></p>
+      <p class="text-inksoft text-sm leading-relaxed">Gained hands-on, real-world project exposure across the stack, building on frontend fundamentals with basic backend concepts.</p>
+    </div>
+
+    <div class="relative mb-12">
+      <div class="tape-dot absolute -left-[29px] top-1.5"></div>
+      <span class="tape-counter text-xs">02:00</span>
+      <h3 class="font-display font-semibold text-lg mt-1">Web Development Intern &mdash; <span class="placeholder-note">[Add company name]</span></h3>
+      <p class="font-mono text-xs text-inksoft mb-2"><span class="placeholder-note">[Add dates]</span></p>
+      <p class="text-inksoft text-sm leading-relaxed">Built hands-on experience with HTML, CSS, and core web development practices on real projects.</p>
+    </div>
+
+    <div class="relative">
+      <div class="tape-dot absolute -left-[29px] top-1.5"></div>
+      <span class="tape-counter text-xs">03:00</span>
+      <h3 class="font-display font-semibold text-lg mt-1">B.E. Computer Science &amp; Engineering</h3>
+      <p class="font-mono text-xs text-inksoft mb-2">P. A. College of Engineering and Technology, Pollachi</p>
+      <p class="text-inksoft text-sm leading-relaxed">Studying Computer Science while building practical projects, strengthening Java and problem-solving skills, and contributing to open source alongside coursework.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="py-20 sm:py-28 px-5 sm:px-8 max-w-6xl mx-auto">
+  <div class="grid md:grid-cols-[1fr_1.2fr] gap-12">
+    <div>
+      <p class="eyebrow mb-3">Signal chain / 06 &mdash; return</p>
+      <h2 class="font-display text-3xl sm:text-4xl font-semibold mb-5">Get in Touch</h2>
+      <p class="text-inksoft leading-relaxed mb-6">
+        Open to internships, entry-level roles, and learning opportunities. Send a note through the jack
+        below and I'll route it back to you soon.
+      </p>
+      <div class="space-y-2 font-mono text-sm">
+        <p><span class="text-inksoft">Email &nbsp;&nbsp;</span> <span class="placeholder-note">[add your email]</span></p>
+        <p><span class="text-inksoft">Location</span> Coimbatore, Tamil Nadu, India (open to hybrid / remote)</p>
+        <p><span class="text-inksoft">LinkedIn</span> <a href="https://www.linkedin.com/in/shri-subashini-m-9b76a4356" class="hover:underline" style="color:var(--amber)">linkedin.com/in/shri-subashini-m</a></p>
+        <p><span class="text-inksoft">GitHub &nbsp;</span> <span class="placeholder-note">[add your GitHub link]</span></p>
+      </div>
+    </div>
+
+    <form id="contact-form" class="bg-panel rounded-xl p-6 sm:p-8" novalidate>
+      <div class="mb-5">
+        <label for="name" class="block text-xs font-mono uppercase tracking-widest text-inksoft mb-2">Name</label>
+        <input id="name" name="name" type="text" placeholder="Your name" class="w-full rounded-md px-4 py-3 text-sm">
+        <p class="error-msg hidden text-xs mt-1" style="color:#c14f3d" data-for="name">Please enter your name.</p>
+      </div>
+      <div class="mb-5">
+        <label for="email" class="block text-xs font-mono uppercase tracking-widest text-inksoft mb-2">Email</label>
+        <input id="email" name="email" type="email" placeholder="you@example.com" class="w-full rounded-md px-4 py-3 text-sm">
+        <p class="error-msg hidden text-xs mt-1" style="color:#c14f3d" data-for="email">Please enter a valid email address.</p>
+      </div>
+      <div class="mb-6">
+        <label for="message" class="block text-xs font-mono uppercase tracking-widest text-inksoft mb-2">Message</label>
+        <textarea id="message" name="message" rows="4" placeholder="Tell me a bit about the project or role..." class="w-full rounded-md px-4 py-3 text-sm"></textarea>
+        <p class="error-msg hidden text-xs mt-1" style="color:#c14f3d" data-for="message">Message should be at least 10 characters.</p>
+      </div>
+      <button type="submit" class="btn-primary w-full sm:w-auto px-6 py-3 rounded-md text-sm font-medium">Send Message</button>
+      <p id="form-success" class="hidden mt-4 text-sm font-mono" style="color:var(--teal)">✓ Sent — thanks, I'll be in touch soon.</p>
+    </form>
+  </div>
+</section>
+
+<footer class="py-10 px-5 sm:px-8 text-center font-mono text-xs text-inksoft" style="border-top:1px solid var(--line)">
+  © 2026 Shri Subashini M. Built with care, curiosity, and consistent learning.
+</footer>
+
+<script>
+  // ---------- Theme toggle ----------
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('theme-toggle');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if(prefersDark){ root.classList.add('dark'); themeToggle.setAttribute('aria-checked','true'); }
+
+  themeToggle.addEventListener('click', () => {
+    const isDark = root.classList.toggle('dark');
+    themeToggle.setAttribute('aria-checked', String(isDark));
+  });
+
+  // ---------- Mobile nav ----------
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  menuToggle.addEventListener('click', () => {
+    const isHidden = mobileNav.classList.toggle('hidden');
+    mobileNav.classList.toggle('flex', !isHidden);
+    menuToggle.setAttribute('aria-expanded', String(!isHidden));
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileNav.classList.add('hidden');
+    mobileNav.classList.remove('flex');
+    menuToggle.setAttribute('aria-expanded','false');
+  }));
+
+  // ---------- Active nav link on scroll ----------
+  const navLinks = document.querySelectorAll('.nav-link');
+  const sectionEls = document.querySelectorAll('section[id]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+  sectionEls.forEach(sec => observer.observe(sec));
+
+  // ---------- Typing tagline ----------
+  const phrases = [
+    'learns Java, one problem at a time.',
+    'builds projects step by step.',
+    'contributes to open source.',
+    'shares the journey, learns in public.'
+  ];
+  const typingTarget = document.getElementById('typing-target');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if(reduceMotion){
+    typingTarget.textContent = phrases[0];
+  } else {
+    let phraseIndex = 0, charIndex = 0, deleting = false;
+
+    function tick(){
+      const current = phrases[phraseIndex];
+      if(!deleting){
+        charIndex++;
+        typingTarget.textContent = current.slice(0, charIndex);
+        if(charIndex === current.length){
+          deleting = true;
+          setTimeout(tick, 1600);
+          return;
+        }
+      } else {
+        charIndex--;
+        typingTarget.textContent = current.slice(0, charIndex);
+        if(charIndex === 0){
+          deleting = false;
+          phraseIndex = (phraseIndex + 1) % phrases.length;
+        }
+      }
+      setTimeout(tick, deleting ? 35 : 55);
+    }
+    tick();
+  }
+
+  // ---------- Oscilloscope canvas ----------
+  const canvas = document.getElementById('scope');
+  const ctx = canvas.getContext('2d');
+  let mouseX = 0.5;
+
+  function resizeCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * devicePixelRatio;
+    canvas.height = rect.height * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = (e.clientX - rect.left) / rect.width;
+  });
+
+  let t = 0;
+  function drawScope(){
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+    ctx.clearRect(0, 0, w, h);
+
+    const styles = getComputedStyle(root);
+    const teal = styles.getPropertyValue('--teal').trim();
+    const amber = styles.getPropertyValue('--amber').trim();
+    const line = styles.getPropertyValue('--line').trim();
+
+    // grid
+    ctx.strokeStyle = line;
+    ctx.lineWidth = 1;
+    for(let x = 0; x <= w; x += w/8){
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+    }
+    for(let y = 0; y <= h; y += h/4){
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+
+    const amp = 0.18 + mouseX * 0.22;
+
+    // waveform 1
+    ctx.beginPath();
+    ctx.strokeStyle = teal;
+    ctx.lineWidth = 2;
+    for(let x = 0; x <= w; x++){
+      const p = x / w;
+      const y = h/2 + Math.sin(p * 14 + t) * h * amp + Math.sin(p * 37 + t * 1.7) * h * 0.04;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // waveform 2
+    ctx.beginPath();
+    ctx.strokeStyle = amber;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 0.85;
+    for(let x = 0; x <= w; x++){
+      const p = x / w;
+      const y = h/2 + Math.sin(p * 9 - t * 1.3) * h * (amp * 0.6);
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    t += reduceMotion ? 0 : 0.02;
+    requestAnimationFrame(drawScope);
+  }
+  drawScope();
+
+  // ---------- Skill bars animate on scroll ----------
+  const skillEls = document.querySelectorAll('[data-skill]');
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const value = el.getAttribute('data-value');
+        const fill = el.querySelector('.fader-fill');
+        const num = el.querySelector('.skill-num');
+        requestAnimationFrame(() => { fill.style.width = value + '%'; });
+        num.textContent = value + '%';
+        skillObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  skillEls.forEach(el => skillObserver.observe(el));
+
+  // ---------- Contact form validation ----------
+  const form = document.getElementById('contact-form');
+  const successMsg = document.getElementById('form-success');
+
+  function showError(field, show){
+    const msg = form.querySelector('.error-msg[data-for="' + field + '"]');
+    const input = document.getElementById(field);
+    if(show){
+      msg.classList.remove('hidden');
+      input.style.borderColor = '#c14f3d';
+    } else {
+      msg.classList.add('hidden');
+      input.style.borderColor = '';
+    }
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    successMsg.classList.add('hidden');
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const message = form.message.value.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    let valid = true;
+    if(name.length === 0){ showError('name', true); valid = false; } else { showError('name', false); }
+    if(!emailRe.test(email)){ showError('email', true); valid = false; } else { showError('email', false); }
+    if(message.length < 10){ showError('message', true); valid = false; } else { showError('message', false); }
+
+    if(valid){
+      successMsg.classList.remove('hidden');
+      form.reset();
+    }
+  });
+</script>
+
+</body>
+</html>
