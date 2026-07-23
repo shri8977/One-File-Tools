@@ -1,0 +1,1708 @@
+<!--
+Hreflang Tag Generator (Retro Terminal Edition)
+Single-file client-side hreflang <link> tag generator with a CRT terminal aesthetic.
+Built for One File Tools.
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hreflang Tag Generator (Retro) - One File Tools</title>
+    <meta name="description" content="Generate valid hreflang link tags for multilingual and multi-regional websites. Retro terminal edition." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --bg: #0a0a0a;
+        --crt-bg: #0d1117;
+        --panel: rgba(13, 17, 23, 0.95);
+        --panel-border: #1b3a1b;
+        --accent: #33ff33;
+        --accent-hover: #66ff66;
+        --accent-glow: rgba(51, 255, 51, 0.15);
+        --accent-dim: #1a8c1a;
+        --text: #33ff33;
+        --text-muted: #22aa22;
+        --text-dim: #116611;
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --font-terminal: "VT323", "Courier New", monospace;
+        --font-mono: "Share Tech Mono", "Courier New", monospace;
+        --font-pixel: "Press Start 2P", monospace;
+
+        --color-weak: #ff3333;
+        --color-fair: #ffaa00;
+        --color-good: #3399ff;
+        --color-strong: #33ff33;
+
+        --input-bg: rgba(0, 20, 0, 0.6);
+        --row-bg: rgba(0, 15, 0, 0.4);
+        --checkbox-bg: rgba(0, 20, 0, 0.3);
+        --checkbox-bg-hover: rgba(0, 40, 0, 0.4);
+        --ghost-bg: rgba(0, 30, 0, 0.5);
+        --ghost-bg-hover: rgba(0, 50, 0, 0.6);
+        --shadow: rgba(0, 255, 0, 0.1);
+        --scanline: rgba(0, 0, 0, 0.15);
+      }
+
+      :root[data-theme="light"] {
+        --bg: #d4c9a8;
+        --crt-bg: #c8bc96;
+        --panel: rgba(200, 188, 150, 0.95);
+        --panel-border: #8b7d5e;
+        --accent: #4a3728;
+        --accent-hover: #2c1f14;
+        --accent-glow: rgba(74, 55, 40, 0.15);
+        --accent-dim: #6b5842;
+        --text: #3a2a1a;
+        --text-muted: #5a4a3a;
+        --text-dim: #8a7a6a;
+
+        --input-bg: rgba(180, 168, 130, 0.6);
+        --row-bg: rgba(170, 158, 120, 0.4);
+        --checkbox-bg: rgba(180, 168, 130, 0.3);
+        --checkbox-bg-hover: rgba(160, 148, 110, 0.4);
+        --ghost-bg: rgba(160, 148, 110, 0.5);
+        --ghost-bg-hover: rgba(140, 128, 90, 0.6);
+        --shadow: rgba(74, 55, 40, 0.1);
+        --scanline: rgba(0, 0, 0, 0.04);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-terminal);
+        background-color: var(--bg);
+        color: var(--text);
+        padding: 48px 20px 80px;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%);
+        pointer-events: none;
+        z-index: 998;
+      }
+
+      .app {
+        width: 100%;
+        max-width: 760px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .eyebrow {
+        font-family: var(--font-pixel);
+        font-size: 8px;
+        letter-spacing: 0.3em;
+        color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 16px;
+        text-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      .wordmark {
+        font-family: var(--font-terminal);
+        font-weight: 400;
+        font-size: clamp(32px, 6vw, 52px);
+        letter-spacing: 0.05em;
+        line-height: 1.1;
+        margin-bottom: 12px;
+        text-shadow:
+          0 0 10px var(--accent-glow),
+          0 0 20px var(--accent-glow);
+      }
+
+      .tagline {
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.6;
+        max-width: 520px;
+        margin: 0 auto;
+      }
+
+      .blink-cursor::after {
+        content: "\2588";
+        animation: blink 1s step-end infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .studio {
+        background: var(--panel);
+        border: 2px solid var(--panel-border);
+        border-radius: var(--radius-md);
+        padding: 32px;
+        box-shadow:
+          0 0 15px var(--shadow),
+          inset 0 0 30px rgba(0, 0, 0, 0.3);
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      .studio::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 28px;
+        background: var(--panel-border);
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .studio::after {
+        content: "\25CF  \25CF  \25CF";
+        position: absolute;
+        top: 5px;
+        left: 12px;
+        font-size: 10px;
+        color: var(--text-dim);
+        letter-spacing: 2px;
+      }
+
+      .studio > *:first-child {
+        margin-top: 12px;
+      }
+
+      .section-label {
+        font-family: var(--font-pixel);
+        font-size: 9px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        text-shadow: 0 0 8px var(--accent-glow);
+      }
+
+      .control-group {
+        margin-bottom: 28px;
+      }
+
+      .control-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .group-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .helper-text {
+        font-family: var(--font-mono);
+        color: var(--text-muted);
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+      }
+
+      .rows-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .lang-row {
+        background: var(--row-bg);
+        border: 1px solid var(--panel-border);
+        border-left: 3px solid var(--accent-dim);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        display: grid;
+        grid-template-columns: 90px 90px 1fr 44px;
+        gap: 10px;
+        align-items: start;
+        transition: border-color 0.2s;
+      }
+
+      .lang-row:hover {
+        border-left-color: var(--accent);
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .field label {
+        font-family: var(--font-pixel);
+        font-size: 8px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .field input {
+        background: var(--input-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: var(--radius-sm);
+        color: var(--text);
+        font-family: var(--font-terminal);
+        font-size: 18px;
+        padding: 8px 10px;
+        width: 100%;
+        transition: all 0.2s;
+      }
+
+      .field input::placeholder {
+        color: var(--text-dim);
+      }
+
+      .field input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow:
+          0 0 0 2px var(--accent-glow),
+          0 0 10px var(--accent-glow);
+      }
+
+      .field input.invalid {
+        border-color: var(--color-weak);
+        box-shadow: 0 0 8px rgba(255, 51, 51, 0.2);
+      }
+
+      .field-error {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--color-weak);
+        min-height: 14px;
+        line-height: 1.3;
+      }
+
+      .field.url-field {
+        grid-column: auto;
+      }
+
+      .btn-remove-row {
+        background: var(--ghost-bg);
+        border: 1px solid var(--panel-border);
+        color: var(--text-muted);
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        align-self: flex-end;
+        margin-top: 20px;
+        flex-shrink: 0;
+        font-family: var(--font-terminal);
+        font-size: 22px;
+      }
+
+      .btn-remove-row:hover {
+        background: rgba(255, 51, 51, 0.15);
+        color: var(--color-weak);
+        border-color: var(--color-weak);
+        text-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+      }
+
+      .btn-remove-row:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      .btn-remove-row:disabled:hover {
+        background: var(--ghost-bg);
+        color: var(--text-muted);
+        border-color: var(--panel-border);
+        text-shadow: none;
+      }
+
+      .btn-ghost {
+        background: var(--ghost-bg);
+        border: 1px solid var(--panel-border);
+        color: var(--text);
+        border-radius: var(--radius-sm);
+        padding: 12px 20px;
+        font-family: var(--font-terminal);
+        font-size: 18px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.2s;
+        text-shadow: 0 0 5px var(--accent-glow);
+      }
+
+      .btn-ghost:hover {
+        background: var(--ghost-bg-hover);
+        border-color: var(--accent-dim);
+        text-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      .btn-ghost:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+        background: var(--checkbox-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+      }
+
+      .checkbox-group:hover {
+        background: var(--checkbox-bg-hover);
+        border-color: var(--accent-dim);
+      }
+
+      .checkbox-group:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px var(--accent-glow);
+      }
+
+      .checkbox-group input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        margin: 0;
+        pointer-events: none;
+      }
+
+      .custom-checkbox {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--text-dim);
+        border-radius: 2px;
+        margin-right: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        font-family: var(--font-terminal);
+        font-size: 16px;
+        color: var(--bg);
+      }
+
+      .custom-checkbox .check-mark {
+        opacity: 0;
+        transform: scale(0.5);
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .checkbox-group input:checked + .custom-checkbox {
+        background: var(--accent);
+        border-color: var(--accent);
+        box-shadow: 0 0 8px var(--accent-glow);
+      }
+
+      .checkbox-group input:checked + .custom-checkbox .check-mark {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .checkbox-label {
+        font-family: var(--font-terminal);
+        font-size: 20px;
+        color: var(--text);
+      }
+
+      #xDefaultWrapper {
+        margin-top: 16px;
+        display: none;
+      }
+
+      #xDefaultWrapper.visible {
+        display: block;
+      }
+
+      .action-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 32px;
+      }
+
+      .btn-generate {
+        flex: 1;
+        min-width: 200px;
+        background: var(--accent);
+        color: var(--bg);
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 16px;
+        font-family: var(--font-pixel);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        transition: all 0.2s;
+        box-shadow: 0 0 20px var(--accent-glow);
+      }
+
+      .btn-generate:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow:
+          0 0 30px var(--accent-glow),
+          0 0 60px rgba(51, 255, 51, 0.1);
+      }
+
+      .btn-generate:active {
+        transform: translateY(0);
+      }
+
+      .btn-clear {
+        background: rgba(255, 51, 51, 0.1);
+        color: #ff6666;
+        border: 1px solid rgba(255, 51, 51, 0.3);
+        border-radius: var(--radius-sm);
+        padding: 16px 22px;
+        font-family: var(--font-pixel);
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.2s;
+      }
+
+      .btn-clear:hover {
+        background: rgba(255, 51, 51, 0.18);
+        border-color: rgba(255, 51, 51, 0.5);
+        text-shadow: 0 0 8px rgba(255, 51, 51, 0.5);
+      }
+
+      .output-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .output-container {
+        background: var(--input-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: var(--radius-sm);
+        padding: 20px;
+        position: relative;
+      }
+
+      #outputCode {
+        font-family: var(--font-terminal);
+        font-size: 16px;
+        line-height: 1.8;
+        color: var(--text);
+        white-space: pre-wrap;
+        word-break: break-all;
+        min-height: 60px;
+        text-shadow: 0 0 5px var(--accent-glow);
+      }
+
+      #outputCode:empty::before {
+        content: "> Awaiting input... tags will render here_";
+        color: var(--text-dim);
+      }
+
+      .icon-btn {
+        background: var(--ghost-bg);
+        border: 1px solid var(--panel-border);
+        color: var(--text-muted);
+        width: 40px;
+        height: 40px;
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        font-family: var(--font-terminal);
+        font-size: 20px;
+      }
+
+      .icon-btn:hover {
+        background: var(--ghost-bg-hover);
+        color: var(--text);
+        border-color: var(--accent-dim);
+        text-shadow: 0 0 8px var(--accent-glow);
+      }
+
+      .icon-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .icon-btn:disabled:hover {
+        background: var(--ghost-bg);
+        color: var(--text-muted);
+        border-color: var(--panel-border);
+        text-shadow: none;
+      }
+
+      .icon-btn:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 3px var(--accent-glow);
+        color: var(--text);
+      }
+
+      .output-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .format-toggle {
+        border: none;
+        margin: 0 0 16px;
+        padding: 0;
+        min-width: 0;
+      }
+
+      .format-toggle-legend {
+        padding: 0;
+        margin-bottom: 12px;
+      }
+
+      .segmented-control {
+        display: flex;
+        gap: 4px;
+        background: var(--row-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: var(--radius-sm);
+        padding: 4px;
+      }
+
+      .segment {
+        flex: 1;
+        display: flex;
+        min-width: 0;
+      }
+
+      .segment input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .segment-label {
+        flex: 1;
+        text-align: center;
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        border: 1px solid transparent;
+      }
+
+      .segment-label:hover {
+        color: var(--text);
+        background: var(--checkbox-bg-hover);
+      }
+
+      .segment input:checked + .segment-label {
+        background: var(--accent);
+        color: var(--bg);
+        box-shadow: 0 0 10px var(--accent-glow);
+      }
+
+      .segment input:focus-visible + .segment-label {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+
+      .warnings-panel {
+        margin-top: 20px;
+        background: rgba(255, 170, 0, 0.06);
+        border: 1px solid rgba(255, 170, 0, 0.3);
+        border-left: 3px solid var(--color-fair);
+        border-radius: var(--radius-sm);
+        padding: 16px 20px;
+      }
+
+      .warnings-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        font-family: var(--font-pixel);
+        font-size: 8px;
+        color: var(--color-fair);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        text-shadow: 0 0 8px rgba(255, 170, 0, 0.3);
+      }
+
+      .warnings-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .warnings-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        line-height: 1.6;
+        color: var(--text-muted);
+      }
+
+      .warnings-list li .warn-icon {
+        flex-shrink: 0;
+        margin-top: 2px;
+        color: var(--color-fair);
+        font-family: var(--font-terminal);
+        font-size: 16px;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .topbar {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        display: flex;
+        gap: 8px;
+        z-index: 50;
+      }
+
+      .shortcut-hint {
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 11px;
+        font-family: var(--font-mono);
+        margin-top: 20px;
+        line-height: 1.8;
+      }
+
+      .shortcut-hint kbd {
+        background: var(--ghost-bg);
+        border: 1px solid var(--panel-border);
+        border-radius: 2px;
+        padding: 2px 6px;
+        font-family: var(--font-mono);
+        font-size: 10px;
+        color: var(--text-muted);
+        white-space: nowrap;
+      }
+
+      @media (max-width: 640px) {
+        .topbar {
+          top: 10px;
+          right: 10px;
+        }
+        .shortcut-hint {
+          display: none;
+        }
+      }
+
+      .footer-note {
+        text-align: center;
+        color: var(--text-dim);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        margin-top: 8px;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: var(--accent);
+        color: var(--bg);
+        padding: 12px 24px;
+        border-radius: var(--radius-sm);
+        font-family: var(--font-terminal);
+        font-size: 20px;
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 100;
+        box-shadow: 0 0 20px var(--accent-glow);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .toast.error {
+        background: var(--color-weak);
+        color: #ffffff;
+        box-shadow: 0 0 20px rgba(255, 51, 51, 0.3);
+      }
+
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+
+      @media (max-width: 640px) {
+        .lang-row {
+          grid-template-columns: 1fr 1fr;
+          grid-template-areas:
+            "lang region"
+            "url url"
+            "remove remove";
+        }
+        .lang-row .field:nth-child(1) {
+          grid-area: lang;
+        }
+        .lang-row .field:nth-child(2) {
+          grid-area: region;
+        }
+        .lang-row .field:nth-child(3) {
+          grid-area: url;
+        }
+        .btn-remove-row {
+          grid-area: remove;
+          margin-top: 4px;
+          width: 100%;
+          justify-self: stretch;
+        }
+        .studio {
+          padding: 22px;
+        }
+        .action-row {
+          flex-direction: column;
+        }
+        .btn-clear {
+          width: 100%;
+        }
+        .segmented-control {
+          gap: 2px;
+          padding: 3px;
+        }
+        .segment-label {
+          padding: 9px 6px;
+          font-size: 11px;
+        }
+        .output-header {
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        #outputHeaderLabel {
+          min-width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <button class="icon-btn" id="btnShare" type="button" title="Share this tool" aria-label="Share this tool">&uarr;</button>
+      <button class="icon-btn" id="btnThemeToggle" type="button" title="Toggle light/dark theme" aria-label="Toggle light or dark theme" aria-pressed="false">&#9790;</button>
+    </div>
+
+    <div class="sr-only" id="srStatus" role="status" aria-live="polite"></div>
+
+    <div class="app">
+      <header class="hero">
+        <div class="eyebrow">// Developer Utilities</div>
+        <h1 class="wordmark">Hreflang Tag Generator<span class="blink-cursor"></span></h1>
+        <p class="tagline">
+          Build clean, valid
+          <code>&lt;link rel="alternate" hreflang="..."&gt;</code> tags for multilingual and multi-regional websites. 100% offline, privacy guaranteed.
+        </p>
+      </header>
+
+      <main class="studio">
+        <div class="control-group">
+          <div class="group-header">
+            <span class="section-label">&gt; Language Variants</span>
+          </div>
+          <p class="helper-text">
+            Region is optional (e.g. leave it blank to target all speakers of a language). If you set a global fallback page, enable
+            <strong>x-default</strong> below &mdash; it's recommended so search engines know which page to show visitors who don't match any listed language.
+          </p>
+
+          <div class="rows-container" id="rowsContainer"></div>
+
+          <button class="btn-ghost" id="btnAddRow" type="button">[+] Add Language</button>
+        </div>
+
+        <div class="control-group">
+          <label class="checkbox-group" id="xDefaultToggleLabel">
+            <input type="checkbox" id="chkXDefault" />
+            <div class="custom-checkbox">
+              <span class="check-mark">&#10003;</span>
+            </div>
+            <span class="checkbox-label">Include x-default</span>
+          </label>
+
+          <div id="xDefaultWrapper">
+            <div class="field">
+              <label for="xDefaultUrl">x-default URL</label>
+              <input type="text" id="xDefaultUrl" placeholder="https://example.com" autocomplete="off" spellcheck="false" />
+              <div class="field-error" id="xDefaultUrlError"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="btn-generate" id="btnGenerate" type="button">&gt; Generate Tags</button>
+          <button class="btn-clear" id="btnClearAll" type="button">[x] Clear All</button>
+        </div>
+      </main>
+
+      <main class="studio">
+        <fieldset class="format-toggle">
+          <legend class="section-label format-toggle-legend">&gt; Output Format</legend>
+          <div class="segmented-control" role="radiogroup" aria-label="Output format">
+            <div class="segment">
+              <input type="radio" name="outputFormat" id="fmtHtml" value="html" checked />
+              <label class="segment-label" for="fmtHtml">HTML &lt;link&gt;</label>
+            </div>
+            <div class="segment">
+              <input type="radio" name="outputFormat" id="fmtXml" value="xml" />
+              <label class="segment-label" for="fmtXml">XML Sitemap</label>
+            </div>
+            <div class="segment">
+              <input type="radio" name="outputFormat" id="fmtHttp" value="http" />
+              <label class="segment-label" for="fmtHttp">HTTP Header</label>
+            </div>
+          </div>
+        </fieldset>
+        <div class="output-header">
+          <span class="section-label" id="outputHeaderLabel">&gt; Generated HTML</span>
+          <div class="output-actions">
+            <button class="icon-btn" id="btnCopyOutput" title="Copy to clipboard" aria-label="Copy to clipboard" type="button">&#9112;</button>
+            <button class="icon-btn" id="btnDownloadOutput" title="Download" aria-label="Download" type="button">&darr;</button>
+          </div>
+        </div>
+        <div class="output-container">
+          <code id="outputCode"></code>
+        </div>
+
+        <section class="warnings-panel" id="warningsPanel" role="region" aria-label="Validation warnings" hidden>
+          <div class="warnings-header">! Warnings</div>
+          <ul class="warnings-list" id="warningsList"></ul>
+        </section>
+      </main>
+
+      <p class="footer-note">// Generated tags follow Google's hreflang recommendations.</p>
+
+      <p class="shortcut-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> generate &nbsp;&middot;&nbsp; <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> copy &nbsp;&middot;&nbsp; <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> download &nbsp;&middot;&nbsp; <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd> theme &nbsp;&middot;&nbsp; <kbd>Alt</kbd> + <kbd>N</kbd> add row</p>
+    </div>
+
+    <div class="toast" id="toast" role="presentation">
+      <span id="toastText">Copied to clipboard!</span>
+    </div>
+
+    <script>
+      const LANGUAGE_CODE_PATTERN = /^[a-z]{2}$/;
+      const REGION_CODE_PATTERN = /^[A-Z]{2}$/;
+
+      const rowsContainer = document.getElementById("rowsContainer");
+      const btnAddRow = document.getElementById("btnAddRow");
+      const chkXDefault = document.getElementById("chkXDefault");
+      const xDefaultWrapper = document.getElementById("xDefaultWrapper");
+      const xDefaultUrlInput = document.getElementById("xDefaultUrl");
+      const xDefaultUrlError = document.getElementById("xDefaultUrlError");
+      const btnGenerate = document.getElementById("btnGenerate");
+      const btnClearAll = document.getElementById("btnClearAll");
+      const btnCopyOutput = document.getElementById("btnCopyOutput");
+      const btnDownloadOutput = document.getElementById("btnDownloadOutput");
+      const outputCode = document.getElementById("outputCode");
+      const outputHeaderLabel = document.getElementById("outputHeaderLabel");
+      const warningsPanel = document.getElementById("warningsPanel");
+      const warningsList = document.getElementById("warningsList");
+      const formatRadios = document.querySelectorAll('input[name="outputFormat"]');
+      const toast = document.getElementById("toast");
+      const toastText = document.getElementById("toastText");
+      const btnThemeToggle = document.getElementById("btnThemeToggle");
+      const btnShare = document.getElementById("btnShare");
+      const srStatus = document.getElementById("srStatus");
+
+      let rowIdCounter = 0;
+
+      function addLanguageRow() {
+        rowIdCounter += 1;
+        const rowId = `row-${rowIdCounter}`;
+
+        const row = document.createElement("div");
+        row.className = "lang-row";
+        row.dataset.rowId = rowId;
+
+        row.innerHTML = `
+          <div class="field">
+            <label for="${rowId}-lang">Language</label>
+            <input type="text" id="${rowId}-lang" class="input-lang" placeholder="en" maxlength="2" autocomplete="off" spellcheck="false" aria-describedby="${rowId}-lang-error" />
+            <div class="field-error" id="${rowId}-lang-error"></div>
+          </div>
+          <div class="field">
+            <label for="${rowId}-region">Region</label>
+            <input type="text" id="${rowId}-region" class="input-region" placeholder="US" maxlength="2" autocomplete="off" spellcheck="false" aria-describedby="${rowId}-region-error" />
+            <div class="field-error" id="${rowId}-region-error"></div>
+          </div>
+          <div class="field url-field">
+            <label for="${rowId}-url">URL</label>
+            <input type="text" id="${rowId}-url" class="input-url" placeholder="https://example.com" autocomplete="off" spellcheck="false" aria-describedby="${rowId}-url-error" />
+            <div class="field-error" id="${rowId}-url-error"></div>
+          </div>
+          <button class="btn-remove-row" type="button" title="Remove language" aria-label="Remove this language row">&times;</button>
+        `;
+
+        rowsContainer.appendChild(row);
+
+        const langInput = row.querySelector(".input-lang");
+        const regionInput = row.querySelector(".input-region");
+        const urlInput = row.querySelector(".input-url");
+
+        langInput.addEventListener("input", () => {
+          langInput.value = langInput.value.toLowerCase();
+        });
+
+        regionInput.addEventListener("input", () => {
+          regionInput.value = regionInput.value.toUpperCase();
+        });
+
+        langInput.addEventListener("input", schedulePipeline);
+        regionInput.addEventListener("input", schedulePipeline);
+        urlInput.addEventListener("input", schedulePipeline);
+
+        row.querySelector(".btn-remove-row").addEventListener("click", () => {
+          removeLanguageRow(row);
+        });
+
+        updateRemoveButtonsState();
+      }
+
+      function removeLanguageRow(rowElement) {
+        const rows = Array.from(rowsContainer.querySelectorAll(".lang-row"));
+        if (rows.length <= 1) return;
+
+        const index = rows.indexOf(rowElement);
+        const neighbour = rows[index - 1] || rows[index + 1] || null;
+
+        rowElement.remove();
+        updateRemoveButtonsState();
+
+        if (neighbour) {
+          const neighbourBtn = neighbour.querySelector(".btn-remove-row");
+          if (neighbourBtn && !neighbourBtn.disabled) {
+            neighbourBtn.focus();
+          } else {
+            btnAddRow.focus();
+          }
+        } else {
+          btnAddRow.focus();
+        }
+
+        announce("Language row removed");
+        schedulePipeline();
+      }
+
+      function updateRemoveButtonsState() {
+        const rows = rowsContainer.querySelectorAll(".lang-row");
+        const removeButtons = rowsContainer.querySelectorAll(".btn-remove-row");
+        const shouldDisable = rows.length <= 1;
+        removeButtons.forEach((btn) => {
+          btn.disabled = shouldDisable;
+        });
+      }
+
+      const DEFAULT_FORMAT = "html";
+
+      function readSelectedFormat() {
+        const selected = document.querySelector('input[name="outputFormat"]:checked');
+        return selected ? selected.value : DEFAULT_FORMAT;
+      }
+
+      function readFormState() {
+        const rows = rowsContainer.querySelectorAll(".lang-row");
+        const entries = [];
+
+        rows.forEach((row) => {
+          const langInput = row.querySelector(".input-lang");
+          const regionInput = row.querySelector(".input-region");
+          const urlInput = row.querySelector(".input-url");
+
+          entries.push({
+            language: langInput.value.trim().toLowerCase(),
+            region: regionInput.value.trim().toUpperCase(),
+            url: urlInput.value.trim(),
+            rowId: row.dataset.rowId
+          });
+        });
+
+        return {
+          entries,
+          xDefaultEnabled: chkXDefault.checked,
+          xDefaultUrl: xDefaultUrlInput.value.trim(),
+          format: readSelectedFormat()
+        };
+      }
+
+      chkXDefault.addEventListener("change", () => {
+        xDefaultWrapper.classList.toggle("visible", chkXDefault.checked);
+        if (!chkXDefault.checked) {
+          clearFieldError(xDefaultUrlInput, xDefaultUrlError);
+        }
+        schedulePipeline();
+      });
+
+      xDefaultUrlInput.addEventListener("input", schedulePipeline);
+
+      function setFieldError(inputEl, errorEl, message) {
+        inputEl.classList.add("invalid");
+        errorEl.textContent = message;
+      }
+
+      function clearFieldError(inputEl, errorEl) {
+        inputEl.classList.remove("invalid");
+        errorEl.textContent = "";
+      }
+
+      function isValidUrl(value) {
+        try {
+          const parsed = new URL(value);
+          return parsed.protocol === "http:" || parsed.protocol === "https:";
+        } catch (err) {
+          return false;
+        }
+      }
+
+      function validate(formState) {
+        const fieldErrors = [];
+        const warnings = [];
+        const validEntries = [];
+
+        formState.entries.forEach((entry) => {
+          const { language, region, url, rowId } = entry;
+
+          const row = rowsContainer.querySelector(`.lang-row[data-row-id="${rowId}"]`);
+          const langInput = row ? row.querySelector(".input-lang") : null;
+          const regionInput = row ? row.querySelector(".input-region") : null;
+          const urlInput = row ? row.querySelector(".input-url") : null;
+          const langError = row ? row.querySelector(`#${rowId}-lang-error`) : null;
+          const regionError = row ? row.querySelector(`#${rowId}-region-error`) : null;
+          const urlError = row ? row.querySelector(`#${rowId}-url-error`) : null;
+
+          if (langInput && langError) clearFieldError(langInput, langError);
+          if (regionInput && regionError) clearFieldError(regionInput, regionError);
+          if (urlInput && urlError) clearFieldError(urlInput, urlError);
+
+          if (!LANGUAGE_CODE_PATTERN.test(language)) {
+            const message = "2 lowercase letters (e.g. en)";
+            if (langInput && langError) setFieldError(langInput, langError, message);
+            fieldErrors.push({ rowId, field: "language", message });
+          }
+
+          if (region !== "" && !REGION_CODE_PATTERN.test(region)) {
+            const message = "2 uppercase letters (e.g. US)";
+            if (regionInput && regionError) setFieldError(regionInput, regionError, message);
+            fieldErrors.push({ rowId, field: "region", message });
+          }
+
+          if (url === "" || !isValidUrl(url)) {
+            const message = "Enter a valid URL (https://...)";
+            if (urlInput && urlError) setFieldError(urlInput, urlError, message);
+            fieldErrors.push({ rowId, field: "url", message });
+          }
+        });
+
+        const codeToRowIds = new Map();
+        formState.entries.forEach((entry) => {
+          const { language, region, rowId } = entry;
+          const languageUsable = LANGUAGE_CODE_PATTERN.test(language);
+          const regionUsable = region === "" || REGION_CODE_PATTERN.test(region);
+          if (!languageUsable || !regionUsable) return;
+
+          const code = region ? `${language}-${region}` : language;
+          if (!codeToRowIds.has(code)) codeToRowIds.set(code, []);
+          codeToRowIds.get(code).push(rowId);
+        });
+
+        const duplicateRowIds = new Set();
+        codeToRowIds.forEach((rowIds) => {
+          if (rowIds.length > 1) {
+            rowIds.forEach((rowId) => duplicateRowIds.add(rowId));
+          }
+        });
+
+        formState.entries.forEach((entry) => {
+          const { region, rowId } = entry;
+          if (!duplicateRowIds.has(rowId)) return;
+
+          const message = "Duplicate hreflang code — each must be unique";
+          const targetIsRegion = region !== "";
+          const field = targetIsRegion ? "region" : "language";
+          const row = rowsContainer.querySelector(`.lang-row[data-row-id="${rowId}"]`);
+          const input = row ? row.querySelector(targetIsRegion ? ".input-region" : ".input-lang") : null;
+          const errorEl = row ? row.querySelector(`#${rowId}-${targetIsRegion ? "region" : "lang"}-error`) : null;
+          if (input && errorEl) setFieldError(input, errorEl, message);
+          fieldErrors.push({ rowId, field, message });
+        });
+
+        let xDefaultEntry = null;
+        if (formState.xDefaultEnabled) {
+          clearFieldError(xDefaultUrlInput, xDefaultUrlError);
+
+          if (formState.xDefaultUrl === "" || !isValidUrl(formState.xDefaultUrl)) {
+            const message = "Enter a valid URL (https://...)";
+            setFieldError(xDefaultUrlInput, xDefaultUrlError, message);
+            fieldErrors.push({ rowId: null, field: "x-default", message });
+          } else {
+            xDefaultEntry = formState.xDefaultUrl;
+          }
+        }
+
+        formState.entries.forEach((entry) => {
+          const { language, region, rowId } = entry;
+
+          if (language === "uk") {
+            warnings.push({
+              code: "language-uk",
+              message: "“uk” is the language code for Ukrainian. The United Kingdom is expressed as language “en” with region “GB”.",
+              rowId
+            });
+          }
+
+          if (region === "UK") {
+            warnings.push({
+              code: "region-uk",
+              message: "“UK” is not a valid ISO 3166-1 region code. Use “GB”, the correct code for the United Kingdom.",
+              rowId
+            });
+          }
+
+          if (region !== "" && language === "") {
+            warnings.push({
+              code: "region-without-language",
+              message: "A region requires a language — add a language code before the region.",
+              rowId
+            });
+          }
+        });
+
+        if (!formState.xDefaultEnabled) {
+          const languageToRegions = new Map();
+          formState.entries.forEach((entry) => {
+            const { language, region } = entry;
+            if (language === "") return;
+            if (!languageToRegions.has(language)) languageToRegions.set(language, new Set());
+            languageToRegions.get(language).add(region);
+          });
+
+          let hasSharedLanguageDifferingRegions = false;
+          languageToRegions.forEach((regions) => {
+            if (regions.size > 1) hasSharedLanguageDifferingRegions = true;
+          });
+
+          if (hasSharedLanguageDifferingRegions) {
+            warnings.push({
+              code: "x-default-recommended",
+              message: "Multiple entries share a language with different regions. Consider adding an x-default entry as a fallback for unmatched visitors.",
+              rowId: null
+            });
+          }
+        }
+
+        warnings.push({
+          code: "self-referencing",
+          message: "Each page’s hreflang set should be self-referential — include a tag pointing to the page itself.",
+          rowId: null
+        });
+
+        const isValid = fieldErrors.length === 0;
+
+        if (isValid) {
+          formState.entries.forEach((entry) => {
+            validEntries.push({
+              language: entry.language,
+              region: entry.region,
+              url: entry.url,
+              rowId: entry.rowId
+            });
+          });
+        }
+
+        return { isValid, fieldErrors, warnings, validEntries, xDefaultEntry };
+      }
+
+      function escapeHtmlAttribute(value) {
+        return value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      }
+
+      function buildHreflangMarkup(validationResult) {
+        const { validEntries, xDefaultEntry } = validationResult;
+        const lines = [];
+
+        validEntries.forEach(({ language, region, url }) => {
+          const hreflangValue = region ? `${language}-${region}` : language;
+          const safeHreflang = escapeHtmlAttribute(hreflangValue);
+          const safeUrl = escapeHtmlAttribute(url);
+          lines.push(`<link rel="alternate" hreflang="${safeHreflang}" href="${safeUrl}">`);
+        });
+
+        if (xDefaultEntry) {
+          const safeUrl = escapeHtmlAttribute(xDefaultEntry);
+          lines.push(`<link rel="alternate" hreflang="x-default" href="${safeUrl}">`);
+        }
+
+        return lines.join("\n");
+      }
+
+      const OutputFormat = {
+        html: {
+          id: "html",
+          label: "HTML <link>",
+          extension: ".html",
+          mime: "text/html"
+        },
+        xml: {
+          id: "xml",
+          label: "XML Sitemap",
+          extension: ".xml",
+          mime: "application/xml"
+        },
+        http: {
+          id: "http",
+          label: "HTTP Header",
+          extension: ".txt",
+          mime: "text/plain"
+        }
+      };
+
+      function renderHtmlLinks(validEntries, xDefaultEntry) {
+        return buildHreflangMarkup({ validEntries, xDefaultEntry });
+      }
+
+      function renderXmlSitemap(validEntries, xDefaultEntry) {
+        const lines = ['<!-- Place inside each <url> element in your sitemap; declare xmlns:xhtml="http://www.w3.org/1999/xhtml" on <urlset> -->'];
+
+        validEntries.forEach(({ language, region, url }) => {
+          const hreflangValue = region ? `${language}-${region}` : language;
+          const safeHreflang = escapeHtmlAttribute(hreflangValue);
+          const safeUrl = escapeHtmlAttribute(url);
+
+          lines.push(`<xhtml:link rel="alternate" hreflang="${safeHreflang}" href="${safeUrl}"/>`);
+        });
+
+        if (xDefaultEntry) {
+          const safeUrl = escapeHtmlAttribute(xDefaultEntry);
+
+          lines.push(`<xhtml:link rel="alternate" hreflang="x-default" href="${safeUrl}"/>`);
+        }
+
+        return lines.join("\n");
+      }
+
+      function escapeHttpHeaderValue(value, isUrl) {
+        let result = String(value).replace(/[ -]/g, "");
+
+        if (isUrl) {
+          result = result.replace(/</g, "%3C").replace(/>/g, "%3E");
+        }
+
+        return result.replace(/"/g, '\\"');
+      }
+
+      function renderHttpHeader(validEntries, xDefaultEntry) {
+        const parts = [];
+
+        validEntries.forEach(({ language, region, url }) => {
+          const hreflangValue = region ? `${language}-${region}` : language;
+          const safeHreflang = escapeHttpHeaderValue(hreflangValue, false);
+          const safeUrl = escapeHttpHeaderValue(url, true);
+
+          parts.push(`<${safeUrl}>; rel="alternate"; hreflang="${safeHreflang}"`);
+        });
+
+        if (xDefaultEntry) {
+          const safeUrl = escapeHttpHeaderValue(xDefaultEntry, true);
+
+          parts.push(`<${safeUrl}>; rel="alternate"; hreflang="x-default"`);
+        }
+
+        if (parts.length === 0) {
+          return "";
+        }
+
+        return `Link: ${parts.join(", ")}`;
+      }
+
+      function format(validEntries, xDefaultEntry, formatId) {
+        switch (formatId) {
+          case "xml":
+            return renderXmlSitemap(validEntries, xDefaultEntry);
+          case "http":
+            return renderHttpHeader(validEntries, xDefaultEntry);
+          case "html":
+          default:
+            return renderHtmlLinks(validEntries, xDefaultEntry);
+        }
+      }
+
+      const OUTPUT_HEADER_LABELS = {
+        html: "> Generated HTML",
+        xml: "> Generated XML Sitemap",
+        http: "> Generated HTTP Header"
+      };
+
+      function updateOutputHeaderLabel(formatId) {
+        outputHeaderLabel.textContent = OUTPUT_HEADER_LABELS[formatId] || OUTPUT_HEADER_LABELS.html;
+      }
+
+      function renderWarnings(warnings) {
+        warningsList.textContent = "";
+
+        if (!warnings || warnings.length === 0) {
+          warningsPanel.hidden = true;
+          return;
+        }
+
+        warnings.forEach((warning) => {
+          const item = document.createElement("li");
+
+          const icon = document.createElement("span");
+          icon.className = "warn-icon";
+          icon.textContent = "⚠";
+
+          const text = document.createElement("span");
+          text.textContent = warning.message;
+
+          item.appendChild(icon);
+          item.appendChild(text);
+          warningsList.appendChild(item);
+        });
+
+        warningsPanel.hidden = false;
+      }
+
+      function updateOutputActionsState() {
+        const hasOutput = outputCode.textContent.trim().length > 0;
+        [btnCopyOutput, btnDownloadOutput].forEach((btn) => {
+          btn.disabled = !hasOutput;
+          btn.setAttribute("aria-disabled", String(!hasOutput));
+        });
+      }
+
+      function runPipeline() {
+        const formState = readFormState();
+        const validationResult = validate(formState);
+
+        updateOutputHeaderLabel(formState.format);
+
+        renderWarnings(validationResult.warnings);
+
+        if (!validationResult.isValid) {
+          outputCode.textContent = "";
+          updateOutputActionsState();
+          return;
+        }
+
+        const formatId = formState.format || "html";
+        const markup = format(validationResult.validEntries, validationResult.xDefaultEntry, formatId);
+        outputCode.textContent = markup;
+        updateOutputActionsState();
+      }
+
+      const PIPELINE_DEBOUNCE_MS = 250;
+      let pipelineTimerId = null;
+
+      function schedulePipeline() {
+        if (pipelineTimerId !== null) {
+          clearTimeout(pipelineTimerId);
+        }
+        pipelineTimerId = setTimeout(() => {
+          pipelineTimerId = null;
+          runPipeline();
+        }, PIPELINE_DEBOUNCE_MS);
+      }
+
+      btnGenerate.addEventListener("click", runPipeline);
+
+      btnClearAll.addEventListener("click", () => {
+        rowsContainer.innerHTML = "";
+        rowIdCounter = 0;
+        addLanguageRow();
+
+        chkXDefault.checked = false;
+        xDefaultWrapper.classList.remove("visible");
+        xDefaultUrlInput.value = "";
+        clearFieldError(xDefaultUrlInput, xDefaultUrlError);
+
+        outputCode.textContent = "";
+        updateOutputActionsState();
+
+        renderWarnings([]);
+
+        announce("Cleared all fields");
+      });
+
+      btnCopyOutput.addEventListener("click", () => {
+        const textToCopy = outputCode.textContent;
+        if (!textToCopy) return;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(textToCopy)
+            .then(() => {
+              showToast("Tags copied to clipboard!");
+            })
+            .catch(() => {
+              showToast("Copy failed — select the text to copy manually", true);
+            });
+        } else {
+          showToast("Copy failed — select the text to copy manually", true);
+        }
+      });
+
+      function downloadOutput() {
+        const content = outputCode.textContent;
+        if (!content) return;
+
+        try {
+          const fmt = OutputFormat[readSelectedFormat()] || OutputFormat[DEFAULT_FORMAT];
+          const blob = new Blob([content], { type: fmt.mime });
+          const url = URL.createObjectURL(blob);
+          const anchor = document.createElement("a");
+          anchor.href = url;
+          anchor.download = "hreflang-tags" + fmt.extension;
+          document.body.appendChild(anchor);
+          anchor.click();
+          document.body.removeChild(anchor);
+          setTimeout(() => URL.revokeObjectURL(url), 0);
+          showToast("Downloaded hreflang-tags" + fmt.extension);
+        } catch (err) {
+          showToast("Download failed — copy the tags instead", true);
+        }
+      }
+
+      btnDownloadOutput.addEventListener("click", downloadOutput);
+
+      btnAddRow.addEventListener("click", () => {
+        addLanguageRow();
+        schedulePipeline();
+      });
+
+      formatRadios.forEach((radio) => {
+        radio.addEventListener("change", runPipeline);
+      });
+
+      let toastTimerId = null;
+
+      function showToast(message, isError) {
+        toastText.textContent = message;
+        toast.classList.toggle("error", Boolean(isError));
+        toast.classList.add("show");
+        if (toastTimerId !== null) clearTimeout(toastTimerId);
+        toastTimerId = setTimeout(() => toast.classList.remove("show"), 2500);
+        announce(message);
+      }
+
+      function announce(message) {
+        srStatus.textContent = "";
+        requestAnimationFrame(() => {
+          srStatus.textContent = message;
+        });
+      }
+
+      const THEME_STORAGE_KEY = "hreflang-generator-retro-theme";
+
+      function readStoredTheme() {
+        try {
+          return localStorage.getItem(THEME_STORAGE_KEY);
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function storeTheme(theme) {
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, theme);
+        } catch (err) {
+          /* noop */
+        }
+      }
+
+      function applyTheme(theme) {
+        const isLight = theme === "light";
+        document.documentElement.setAttribute("data-theme", isLight ? "light" : "dark");
+
+        btnThemeToggle.innerHTML = isLight ? "&#9788;" : "&#9790;";
+        btnThemeToggle.setAttribute("aria-pressed", isLight ? "true" : "false");
+        btnThemeToggle.setAttribute("aria-label", isLight ? "Switch to dark theme" : "Switch to light theme");
+      }
+
+      function toggleTheme() {
+        const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+        applyTheme(next);
+        storeTheme(next);
+        showToast(next === "light" ? "Light theme" : "Dark theme");
+      }
+
+      btnThemeToggle.addEventListener("click", toggleTheme);
+
+      function initTheme() {
+        const stored = readStoredTheme();
+        if (stored === "light" || stored === "dark") {
+          applyTheme(stored);
+          return;
+        }
+        const prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+        applyTheme(prefersLight ? "light" : "dark");
+      }
+
+      function shareTool() {
+        const shareData = {
+          title: "Hreflang Tag Generator (Retro)",
+          text: "Generate valid hreflang tags for multilingual sites. Retro terminal edition.",
+          url: window.location.href
+        };
+
+        if (navigator.share) {
+          navigator.share(shareData).catch((err) => {
+            if (err && err.name === "AbortError") return;
+            shareViaClipboard();
+          });
+          return;
+        }
+        shareViaClipboard();
+      }
+
+      function shareViaClipboard() {
+        const url = window.location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard
+            .writeText(url)
+            .then(() => showToast("Link copied to clipboard!"))
+            .catch(() => showToast("Share unavailable — copy the URL manually", true));
+        } else {
+          showToast("Share unavailable — copy the URL manually", true);
+        }
+      }
+
+      btnShare.addEventListener("click", shareTool);
+
+      document.addEventListener("keydown", (event) => {
+        const mod = event.ctrlKey || event.metaKey;
+
+        if (mod && !event.shiftKey && !event.altKey && event.key === "Enter") {
+          event.preventDefault();
+          runPipeline();
+          showToast("Tags generated");
+          return;
+        }
+
+        if (mod && event.shiftKey && (event.key === "C" || event.key === "c")) {
+          event.preventDefault();
+          btnCopyOutput.click();
+          return;
+        }
+
+        if (mod && event.shiftKey && (event.key === "S" || event.key === "s")) {
+          event.preventDefault();
+          btnDownloadOutput.click();
+          return;
+        }
+
+        if (mod && event.shiftKey && (event.key === "D" || event.key === "d")) {
+          event.preventDefault();
+          toggleTheme();
+          return;
+        }
+
+        if (event.altKey && !mod && (event.key === "N" || event.key === "n")) {
+          event.preventDefault();
+          btnAddRow.click();
+          const rows = rowsContainer.querySelectorAll(".lang-row");
+          const lastRow = rows[rows.length - 1];
+          if (lastRow) {
+            const langInput = lastRow.querySelector(".input-lang");
+            if (langInput) langInput.focus();
+          }
+        }
+      });
+
+      initTheme();
+      addLanguageRow();
+      updateOutputHeaderLabel(readSelectedFormat());
+      updateOutputActionsState();
+    </script>
+  </body>
+</html>
