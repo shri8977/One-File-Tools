@@ -503,6 +503,34 @@
       "status": "live"
     },
     {
+      "id": "settings-panel",
+      "name": "Settings Panel",
+      "shortDescription": "A polished settings experience with responsive tabs, theme controls, toggles, and toast feedback in a ShadCN-inspired layout.",
+      "longDescription": "## Settings Panel\n\nA clean, modern settings page for the Design System pillar. It features grouped preference sections, a responsive sidebar that becomes a dropdown on mobile, light/dark/system theme handling, accent color selection, toggle switches, and a toast confirmation on save.\n\n### Features\n\n- Sidebar tabs for Profile, Notifications, Appearance, Security, and Billing\n- Profile section with avatar upload, name and email fields, and save action\n- Notification toggles for update preferences\n- Theme selector and accent color picker\n- Security section with password inputs and 2FA toggle\n- Responsive layout with a mobile-friendly tab dropdown\n- Dark/light mode and smooth ShadCN-inspired styling",
+      "category": "components",
+      "tags": [
+        "accessibility",
+        "appearance",
+        "dark-mode",
+        "forms",
+        "javascript",
+        "responsive",
+        "settings",
+        "tailwind"
+      ],
+      "techStack": [
+        "CSS3",
+        "HTML5",
+        "JavaScript",
+        "Tailwind CSS"
+      ],
+      "frameworks": [
+        "Tailwind CSS"
+      ],
+      "difficulty": "Easy",
+      "status": "live"
+    },
+    {
       "id": "social-media-feed",
       "name": "Social Media Feed",
       "shortDescription": "A Twitter/X-style design-system feed with composer, threaded reply preview, interactive post actions, trending, and dark/light mode.",
